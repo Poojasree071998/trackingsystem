@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AlertTriangle, CheckCircle, XCircle, FileText } from 'lucide-react';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+import { API_BASE_URL } from '../apiConfig';
 
 const EmployeeLOPView = ({ userId }) => {
   const [records, setRecords] = useState([]);

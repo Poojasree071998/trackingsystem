@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { AlertTriangle, CheckCircle, XCircle, Clock, User, FileText, Send, Shield } from 'lucide-react';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+import { API_BASE_URL } from '../apiConfig';
 
 const LOPManager = () => {
   const { user } = useContext(AuthContext);
