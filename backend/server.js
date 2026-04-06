@@ -96,7 +96,14 @@ const PORT = process.env.PORT || 5001;
 
 server.listen(PORT, () => {
     console.log(`🚀 FIC Backend Service is online on port ${PORT}`);
-    const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/taskmanagementsystem';
+    let uri = (process.env.MONGO_URI || '').trim();
+    // Strip accidental quotes if they were pasted into environment variables
+    if (uri.startsWith('"') && uri.endsWith('"')) uri = uri.substring(1, uri.length - 1);
+    if (uri.startsWith("'") && uri.endsWith("'")) uri = uri.substring(1, uri.length - 1);
+    
+    // Final fallback
+    if (!uri) uri = 'mongodb://127.0.0.1:27017/taskmanagementsystem';
+    
     console.log(`📡 URI prefix check: ${uri.substring(0, 15)}...`);
     
     mongoose.connect(uri)
