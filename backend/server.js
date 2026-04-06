@@ -96,9 +96,10 @@ const PORT = process.env.PORT || 5001;
 
 server.listen(PORT, () => {
     console.log(`🚀 FIC Backend Service is online on port ${PORT}`);
-    console.log(`📡 Attempting connection to MongoDB Hub...`);
+    const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/taskmanagementsystem';
+    console.log(`📡 URI prefix check: ${uri.substring(0, 15)}...`);
     
-    mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/taskmanagementsystem')
+    mongoose.connect(uri)
       .then(() => {
         console.log('✅ Successfully connected to MongoDB Central');
       })
