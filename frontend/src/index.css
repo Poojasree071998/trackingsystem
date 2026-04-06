@@ -1,0 +1,846 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Authentic Jira / Atlassian Design System (ADS) Palette */
+  --bg-color: #FFFFFF;
+  --text-color: #172B4D;    /* ADS Dark Neutral */
+  --text-muted: #42526E;    /* ADS Medium Neutral */
+  
+  /* Core Jira Identity Blue */
+  --primary: #0052CC;       /* ADS Blue */
+  --primary-rgb: 0, 82, 204;
+  --primary-hover: #0747A6; 
+  --header-bg: #0747A6;     /* Classic Jira Header Blue */
+  
+  --secondary: #00B8D9;     /* ADS Teal/Cyan */
+  --secondary-rgb: 0, 184, 217;
+  --accent: #6554C0;        /* ADS Purple */
+  --accent-rgb: 101, 84, 192;
+  
+  --success: #36B37E;       /* ADS Green */
+  --warning: #FFAB00;       /* ADS Yellow */
+  --danger: #FF5630;        /* ADS Red */
+  
+  /* Layout & Surfaces */
+  --card-bg: #FFFFFF;
+  --card-border: #DFE1E6;   /* ADS Border Neutral */
+  --sidebar-bg: #F4F5F7;    /* ADS Subsurface Neutral */
+  --column-bg: #F4F5F7;     /* Standard Jira Board Background */
+  
+  --sidebar-width: 260px;
+}
+
+[data-theme="dark"] {
+  --bg-color: #010409;      /* GitHub/Jira Dark Background */
+  --text-color: #E6EDF3;    /* Light Neutral for text */
+  --text-muted: #8B949E;    /* Muted Neutral for secondary text */
+  
+  --primary: #579DFF;       /* Lighter Jira Blue for dark mode */
+  --primary-rgb: 87, 157, 255;
+  --primary-hover: #79B1FF; 
+  --header-bg: #161B22;     /* Dark Header Background */
+  
+  --secondary: #39C5BB;
+  --accent: #B388FF;
+  
+  --card-bg: #0D1117;       /* Card Background */
+  --card-border: #30363D;   /* Card Border */
+  --sidebar-bg: #0D1117;    /* Sidebar Background */
+  --column-bg: #161B22;     /* Kanban Column Background */
+  
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Section Backgrounds */
+.section-bg-alt {
+  background-color: #f4f5f7;
+}
+
+/* Utility Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Premium Card Variants */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.jira-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-card {
+  background: white;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px -10px rgba(9, 30, 66, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.premium-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px -12px rgba(9, 30, 66, 0.25);
+  border-color: var(--primary);
+}
+
+/* Button Upgrades */
+button.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1rem;
+  box-shadow: 0 4px 14px 0 rgba(var(--primary-rgb), 0.39);
+}
+
+button.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.23);
+}
+
+button.btn-secondary {
+  background: white;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+button.btn-secondary:hover {
+  background: rgba(var(--primary-rgb), 0.05);
+  transform: translateY(-2px);
+}
+
+/* Text Enhancements */
+.text-gradient {
+  background: linear-gradient(135deg, #091e42 0%, #0052cc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-subtle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+/* Mesh Gradients */
+.bg-mesh {
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(0, 82, 204, 0.05) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, rgba(101, 84, 192, 0.05) 0, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(0, 184, 217, 0.03) 0, transparent 50%);
+  background-size: 100% 100%;
+}
+
+/* Pricing Table Styles */
+.pricing-card {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  color: var(--text-color);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.jira-card:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--primary);
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px -10px rgba(0, 82, 204, 0.1);
+  z-index: 2;
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* FAQ Styles */
+.faq-item {
+  border-bottom: 1px solid var(--card-border);
+  padding: 1.5rem 0;
+  cursor: pointer;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.faq-answer {
+  margin-top: 1rem;
+  color: var(--text-muted);
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-icon {
+  transition: transform 0.3s ease;
+}
+
+/* Floating Animations */
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.float {
+  animation: floating 6s ease-in-out infinite;
+}
+
+/* --- FIC Unified Dashboard Styles --- */
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dashboard-sidebar {
+  width: var(--sidebar-width);
+  border-right: 1px solid var(--card-border);
+  padding: 2rem 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.dashboard-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 2.5rem;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Sidebar Navigation Items */
+.nav-item {
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0.4rem;
+}
+
+.nav-item:hover {
+  background: rgba(var(--primary-rgb), 0.05);
+  color: var(--primary);
+  transform: translateX(4px);
+}
+
+.nav-item.active {
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.nav-icon-container {
+  padding: 8px;
+  background: rgba(var(--primary-rgb), 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Stat Cards */
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 1.8rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -10px rgba(9, 30, 66, 0.15);
+  border-color: var(--primary);
+}
+
+.stat-icon-wrapper {
+  padding: 12px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Kanban Cards Premium */
+.kanban-card-premium {
+  background: white;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  cursor: grab;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(9, 30, 66, 0.08);
+}
+
+.kanban-card-premium:hover {
+  box-shadow: 0 8px 16px rgba(9, 30, 66, 0.12);
+  border-color: var(--primary);
+}
+
+.kanban-card-premium:active {
+  cursor: grabbing;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+}
+
+.badge-high { background: rgba(255, 86, 48, 0.15); color: #FF5630; }
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .glass-panel {
+  background: rgba(22, 27, 34, 0.85); /* Darker obsidian glass */
+  border: 1px solid var(--card-border);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(9, 30, 66, 0.54);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+[data-theme="dark"] .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fic-gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Jira Style Drawer */
+.right-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 30, 66, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.right-drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.right-drawer {
+  position: fixed;
+  top: 0;
+  right: -550px;
+  width: 550px;
+  height: 100vh;
+  background: var(--bg-color);
+  box-shadow: -10px 0 30px rgba(9, 30, 66, 0.15);
+  z-index: 1100;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.right-drawer.open {
+  right: 0;
+}
+
+.drawer-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--glass-bg);
+}
+
+.drawer-content {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.drawer-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  background: var(--glass-bg);
+}
+
+/* Enhanced Input Styles for Form */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Premium Inbox Cards */
+.inbox-card {
+  background: var(--bg-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  transition: transform 0.2s;
+  border: 1px solid transparent;
+}
+
+.inbox-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--primary-rgb), 0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.inbox-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.inbox-message {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.inbox-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* JIRA UI CLONE STYLES */
+.jira-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-color);
+}
+
+.jira-top-nav {
+  flex-shrink: 0;
+  width: 100%;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  z-index: 1000;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  color: #FFFFFF;
+}
+
+.jira-body-container {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.jira-top-nav .nav-link, 
+.jira-top-nav span, 
+.jira-top-nav div:not(.nav-icon-container) {
+  color: #FFFFFF !important;
+}
+
+.jira-top-nav .nav-icon-container {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.jira-top-nav input {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.jira-top-nav input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.jira-sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--card-border);
+  padding: 1.5rem 0.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .jira-sidebar {
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--card-border);
+}
+
+/* Flexbox-aware content container */
+.jira-main-content {
+  overflow-y: auto;
+  padding: 2.5rem 3.5rem; /* Increased side padding to prevent text-to-edge issues */
+  background-color: var(--bg-color);
+  min-width: 0;
+  position: relative;
+}
+
+.jira-sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 4px;
+}
+
+.jira-sidebar-btn:hover {
+  background-color: var(--card-border);
+  color: var(--primary);
+  transform: translateX(2px);
+}
+
+.jira-sidebar-btn.active {
+  background-color: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 4px 4px 0;
+}
+
+[data-theme="dark"] .jira-sidebar-btn:hover {
+  background-color: rgba(255,255,255,0.05);
+}
+
+.jira-sidebar-btn.active {
+  background-color: #E6EFFC;
+  color: #0052CC;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .jira-sidebar-btn.active {
+  background-color: rgba(var(--primary-rgb), 0.2);
+  color: #818cf8;
+}
+
+.jira-tab {
+  padding: 8px 0;
+  margin-right: 24px;
+  color: #5E6C84;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.jira-tab:hover {
+  color: #172B4D;
+  border-bottom: 2px solid #C1C7D0;
+}
+
+.jira-tab.active {
+  color: #0052CC;
+  border-bottom: 2px solid #0052CC;
+}
+
+/* Jira List View Table */
+.jira-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 1.5rem;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  background: var(--bg-color);
+}
+
+.jira-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.jira-table thead th {
+  padding: 14px 16px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+  border-bottom: 2px solid var(--card-border);
+  position: sticky;
+  top: 0;
+  background: var(--column-bg); /* Subsurface grey for table headers */
+  z-index: 10;
+}
+
+.jira-table td {
+  padding: 10px 16px;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.jira-table tr {
+  transition: background-color 0.1s;
+}
+
+.jira-table tr:hover {
+  background-color: #FAFBFC;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .jira-table tr:hover {
+  background-color: rgba(255,255,255,0.02);
+}
+
+.jira-table .table-key {
+  color: var(--text-muted);
+}
+
+.jira-table .table-summary {
+  font-weight: 500;
+}
+
+/* Drawer Component Styles */
+.jira-drawer-overlay {
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(9, 30, 66, 0.54);
+  z-index: 9999;
+  display: flex;
+  pointer-events: none;
+  justify-content: flex-end;
+}
+
+.jira-drawer-content {
+  width: 500px;
+  max-width: 90vw; /* Responsive width */
+  background: var(--bg-color);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+  animation: slideRightIn 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  overflow-y: auto; /* Internal scroll */
+}
+
+.kanban-card-premium {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.15, 1, 0.3, 1);
+}
+
+.kanban-card-premium:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+  background-color: var(--column-bg);
+}
+
+@keyframes slideRightIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
