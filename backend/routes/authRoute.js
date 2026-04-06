@@ -6,8 +6,8 @@ const User = require('../models/User');
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'secret123';
 
-// Seed initial users for testing (Run once)
-router.post('/seed', async (req, res) => {
+// Seed initial users (GET for easy browser setup)
+router.get('/seed-get', async (req, res) => {
   try {
     const count = await User.countDocuments();
     if (count > 0) return res.status(400).json({ message: 'Users already seeded' });
@@ -20,7 +20,7 @@ router.post('/seed', async (req, res) => {
       { name: 'HR Manager', email: 'hr@trackpro.com', password: await hashPassword('password123'), role: 'hr' },
       { name: 'John Doe', email: 'employee@trackpro.com', password: await hashPassword('password123'), role: 'employee', employeeId: 'EMP001' }
     ]);
-    res.status(201).json({ message: 'Initial users created. Passwords are "password123"' });
+    res.status(201).json({ message: 'Initial users created! You can now login with password "password123"' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
