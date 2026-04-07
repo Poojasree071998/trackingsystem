@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const dns = require('dns');
 require('dotenv').config();
+
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 const User = require('./models/User');
 
 const reset = async () => {

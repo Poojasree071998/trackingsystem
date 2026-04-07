@@ -7,7 +7,12 @@ const { Server } = require('socket.io');
 const dns = require('dns');
 
 // Force DNS resolution to Google Public DNS to avoid SRV query issues on local networks
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4']);
+  console.log('🌐 DNS resolution paths secured (Google DNS)');
+} catch (e) {
+  console.warn('⚠️  Note: Custom DNS configuration failed, using system defaults.');
+}
 
 dotenv.config();
 

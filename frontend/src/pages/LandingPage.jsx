@@ -30,7 +30,7 @@ const LandingPage = () => {
     if (showAuthModal) {
       const checkHealth = async () => {
         try {
-          const res = await axios.get(API_ENDPOINTS.HEALTH || `${API_BASE_URL}/api/health`);
+        const res = await axios.get(API_ENDPOINTS.HEALTH);
           setSystemStatus({ 
             backend: 'online', 
             database: res.data.dbReady ? 'connected' : 'disconnected' 
@@ -71,7 +71,7 @@ const LandingPage = () => {
       setIsLoading(false);
       if (err.response) {
         // The server responded with a status code that falls out of the range of 2xx
-        setError(err.response.data.message || 'Authentication failed. Check your credentials.');
+        setError(err.response.data.message || 'Authentication failed. Please verify your credentials and try again.');
       } else if (err.request) {
         // The request was made but no response was received
         setError('Server unreachable. Please ensure the backend service is running on port 5001.');

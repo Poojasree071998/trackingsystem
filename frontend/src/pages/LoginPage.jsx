@@ -115,7 +115,7 @@ const LoginPage = () => {
       } catch (err) {
         setIsLoading(false);
         if (err.response) {
-          setError(err.response.data.message || 'We couldn\'t find an account matching those credentials.');
+          setError(err.response.data.message || 'Authentication failed. Please verify your credentials and try again.');
         } else if (err.request) {
           setError('Server unreachable. Please verify the backend service status (Port 5001).');
         } else {

@@ -98,12 +98,17 @@ const AdminDashboard = () => {
   const handleCreateProject = async (e) => {
     e.preventDefault();
     try {
+      if (!API_BASE_URL && window.location.hostname !== 'localhost') {
+        throw new Error('Project deployment is missing API configuration. Please set VITE_API_BASE_URL.');
+      }
       await axios.post(`${API_BASE_URL}/api/projects`, projectForm);
       setProjectForm({ projectName: '', projectKey: '', description: '', lead: '', projectType: 'Software Project', priority: 'Medium', deadline: '' });
       setShowCreateProjectModal(false);
       fetchData();
     } catch (err) {
-      alert(err.response?.data?.error || 'Error creating project');
+      console.error("Create Project Failed:", err);
+      const msg = err.response?.data?.error || err.response?.data?.message || err.message || 'Error creating project';
+      alert(`Deployment Error: ${msg}`);
     }
   };
 

@@ -53,6 +53,11 @@ router.get('/:id', async (req, res) => {
 // Create a new project
 router.post('/', async (req, res) => {
   try {
+    // Critical: Verify DB connection before attempting create
+    if (require('mongoose').connection.readyState !== 1) {
+      return res.status(503).json({ error: 'Database Connection Error. Write operations are disabled.' });
+    }
+
     const { lead, ...otherData } = req.body;
     const projectData = { ...otherData };
     

@@ -22,7 +22,7 @@ router.get('/seed-get', async (req, res) => {
     ]);
     res.status(201).json({ message: 'Initial users created! You can now login with password "password123"' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
