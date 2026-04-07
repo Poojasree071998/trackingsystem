@@ -4,6 +4,10 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const http = require('http');
 const { Server } = require('socket.io');
+const dns = require('dns');
+
+// Force DNS resolution to Google Public DNS to avoid SRV query issues on local networks
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 dotenv.config();
 
@@ -73,10 +77,19 @@ app.use('/api/lop', require('./routes/lopRoute'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState;
+  const statusMap = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting'
+  };
+  
   res.json({ 
     status: 'online', 
     timestamp: new Date(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    database: statusMap[dbStatus] || 'unknown',
+    dbReady: dbStatus === 1
   });
 });
 
@@ -109,10 +122,13 @@ server.listen(PORT, () => {
     mongoose.connect(uri)
       .then(() => {
         console.log('✅ Successfully connected to MongoDB Central');
+        console.log(`📂 Database: ${mongoose.connection.name}`);
       })
       .catch((err) => {
-        console.error('❌ Critical: MongoDB Connection Failed', err.message);
-        console.log('⚠️  The server is running but data persistent features will be unavailable.');
+        console.error('❌ Critical: MongoDB Connection Failed');
+        console.error(`📝 Error Detail: ${err.message}`);
+        console.log('⚠️  The server is running but authentication and data features will be restricted.');
+        console.log('💡 TIP: Check if your IP address is whitelisted in MongoDB Atlas or if the MONGO_URI is correct.');
       });
 });
 

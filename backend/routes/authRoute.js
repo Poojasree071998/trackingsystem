@@ -29,6 +29,11 @@ router.get('/seed-get', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
+    // Critical: Verify DB connection before attempting lookup
+    if (require('mongoose').connection.readyState !== 1) {
+      return res.status(503).json({ message: 'Database Connection Error. Please verify your internet connection and ensure your IP is whitelisted in MongoDB Atlas.' });
+    }
+
     const { email, password } = req.body;
     
     const user = await User.findOne({ email });

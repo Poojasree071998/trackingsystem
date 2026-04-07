@@ -22,6 +22,29 @@ const LandingPage = () => {
   const [signupForm, setSignupForm] = useState({ name: '', email: '', password: '', role: 'employee', designation: '', department: '' });
   const [demoForm, setDemoForm] = useState({ name: '', email: '', company: '', size: '1-10' });
   const [demoSubmitted, setDemoSubmitted] = useState(false);
+  const [systemStatus, setSystemStatus] = useState({ backend: 'checking', database: 'checking' });
+
+  // Poll for system health
+  useEffect(() => {
+    let interval;
+    if (showAuthModal) {
+      const checkHealth = async () => {
+        try {
+          const res = await axios.get(API_ENDPOINTS.HEALTH || `${API_BASE_URL}/api/health`);
+          setSystemStatus({ 
+            backend: 'online', 
+            database: res.data.dbReady ? 'connected' : 'disconnected' 
+          });
+        } catch (err) {
+          setSystemStatus({ backend: 'offline', database: 'unknown' });
+        }
+      };
+      
+      checkHealth();
+      interval = setInterval(checkHealth, 10000); // Check every 10s
+    }
+    return () => clearInterval(interval);
+  }, [showAuthModal]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,7 +69,16 @@ const LandingPage = () => {
       }
     } catch (err) {
       setIsLoading(false);
-      setError(err.response?.data?.message || 'Authentication failed. Check your credentials.');
+      if (err.response) {
+        // The server responded with a status code that falls out of the range of 2xx
+        setError(err.response.data.message || 'Authentication failed. Check your credentials.');
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError('Server unreachable. Please ensure the backend service is running on port 5001.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError('Request setup failed. Please check your connection.');
+      }
       // Explicitly reset success state to ensure no accidental redirect
       setShowSuccess(false);
     }
@@ -538,6 +570,27 @@ const LandingPage = () => {
                   <button onClick={() => setShowAuthModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '8px', color: '#5e6c84', borderRadius: '50%' }}>
                     <X size={24} />
                   </button>
+                </div>
+
+                {/* Service Status Indicator */}
+                <div style={{ 
+                  margin: '12px 40px 0', 
+                  padding: '8px 12px', 
+                  borderRadius: '8px', 
+                  background: '#F4F5F7', 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 700 
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: systemStatus.backend === 'online' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.backend === 'online' ? '0 0 6px rgba(54, 179, 126, 0.5)' : 'none' }}></div>
+                    <span style={{ color: '#42526E' }}>Backend: {systemStatus.backend.toUpperCase()}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.database === 'connected' ? '0 0 6px rgba(54, 179, 126, 0.5)' : 'none' }}></div>
+                    <span style={{ color: '#42526E' }}>Database: {systemStatus.database.toUpperCase()}</span>
+                  </div>
                 </div>
 
                 <div style={{ padding: '32px 40px 48px' }}>

@@ -62,6 +62,27 @@ const LoginPage = () => {
     logout();
   };
 
+  const [systemStatus, setSystemStatus] = useState({ backend: 'checking', database: 'checking' });
+
+  // Poll for system health
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const res = await axios.get(API_ENDPOINTS.HEALTH);
+        setSystemStatus({ 
+          backend: 'online', 
+          database: res.data.dbReady ? 'connected' : 'disconnected' 
+        });
+      } catch (err) {
+        setSystemStatus({ backend: 'offline', database: 'unknown' });
+      }
+    };
+    
+    checkHealth();
+    const interval = setInterval(checkHealth, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Redirect if logged in OR clear if legacy session
   useEffect(() => {
     if (user) {
@@ -93,10 +114,12 @@ const LoginPage = () => {
         setShowSuccess(true);
       } catch (err) {
         setIsLoading(false);
-        if(err.response) {
-           setError(err.response.data.message || 'We couldn\'t find an account matching those credentials.');
+        if (err.response) {
+          setError(err.response.data.message || 'We couldn\'t find an account matching those credentials.');
+        } else if (err.request) {
+          setError('Server unreachable. Please verify the backend service status (Port 5001).');
         } else {
-           setError('Network interruption. Please verify the backend service status.');
+          setError('Unexpected failure. Please refresh and try again.');
         }
       }
     }, 600);
@@ -141,6 +164,28 @@ const LoginPage = () => {
           boxShadow: '0 10px 40px rgba(9, 30, 66, 0.08)',
           border: '1px solid #DFE1E6'
         }} className="fade-in-up">
+          
+          {/* Service Status Indicator */}
+          <div style={{ 
+            marginBottom: '20px', 
+            padding: '8px 12px', 
+            borderRadius: '3px', 
+            background: '#F4F5F7', 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            fontSize: '0.7rem', 
+            fontWeight: 700,
+            border: '1px solid #DFE1E6'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.backend === 'online' ? '#36B37E' : '#FF5630' }}></div>
+              <span style={{ color: '#42526E' }}>BACKEND: {systemStatus.backend.toUpperCase()}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630' }}></div>
+              <span style={{ color: '#42526E' }}>DATABASE: {systemStatus.database.toUpperCase()}</span>
+            </div>
+          </div>
           
           {user ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
