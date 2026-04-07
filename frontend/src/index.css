@@ -434,7 +434,7 @@ button.btn-secondary:hover {
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
-  pointer-events: none;
+  pointer-events: auto; /* Corrected: Must be auto to allow clicks in modals */
   align-items: center;
   justify-content: center;
   padding: 2rem;

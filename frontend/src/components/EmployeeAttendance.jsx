@@ -296,7 +296,17 @@ const EmployeeAttendance = () => {
                         required
                         value={leaveForm.startDate}
                         onChange={e => setLeaveForm({...leaveForm, startDate: e.target.value})}
-                        style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'rgba(255,255,255,0.05)', color: 'inherit', marginTop: '5px' }}
+                        style={{ 
+                          width: '100%', 
+                          padding: '12px', 
+                          borderRadius: '10px', 
+                          border: '2px solid var(--card-border)', 
+                          background: 'var(--bg-color)', 
+                          color: 'var(--text-color)', 
+                          marginTop: '8px',
+                          outline: 'none',
+                          fontSize: '0.95rem'
+                        }}
                       />
                    </div>
                    <div>
@@ -306,7 +316,17 @@ const EmployeeAttendance = () => {
                         required
                         value={leaveForm.endDate}
                         onChange={e => setLeaveForm({...leaveForm, endDate: e.target.value})}
-                        style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'rgba(255,255,255,0.05)', color: 'inherit', marginTop: '5px' }}
+                        style={{ 
+                          width: '100%', 
+                          padding: '12px', 
+                          borderRadius: '10px', 
+                          border: '2px solid var(--card-border)', 
+                          background: 'var(--bg-color)', 
+                          color: 'var(--text-color)', 
+                          marginTop: '8px',
+                          outline: 'none',
+                          fontSize: '0.95rem'
+                        }}
                       />
                    </div>
                 </div>
@@ -315,7 +335,17 @@ const EmployeeAttendance = () => {
                    <select 
                      value={leaveForm.leaveType}
                      onChange={e => setLeaveForm({...leaveForm, leaveType: e.target.value})}
-                     style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'rgba(255,255,255,0.05)', color: 'inherit', marginTop: '5px' }}
+                     style={{ 
+                       width: '100%', 
+                       padding: '12px', 
+                       borderRadius: '10px', 
+                       border: '2px solid var(--card-border)', 
+                       background: 'var(--bg-color)', 
+                       color: 'var(--text-color)', 
+                       marginTop: '8px',
+                       outline: 'none',
+                       fontSize: '0.95rem'
+                     }}
                    >
                       <option value="Casual">Casual Leave</option>
                       <option value="Sick">Sick Leave</option>
@@ -330,7 +360,18 @@ const EmployeeAttendance = () => {
                      rows="3"
                      value={leaveForm.reason}
                      onChange={e => setLeaveForm({...leaveForm, reason: e.target.value})}
-                     style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'rgba(255,255,255,0.05)', color: 'inherit', marginTop: '5px', resize: 'none' }}
+                     style={{ 
+                       width: '100%', 
+                       padding: '12px', 
+                       borderRadius: '10px', 
+                       border: '2px solid var(--card-border)', 
+                       background: 'var(--bg-color)', 
+                       color: 'var(--text-color)', 
+                       marginTop: '8px', 
+                       outline: 'none',
+                       fontSize: '0.95rem',
+                       resize: 'none' 
+                     }}
                    />
                 </div>
                 <button type="submit" className="btn-primary" style={{ width: '100%', padding: '14px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
