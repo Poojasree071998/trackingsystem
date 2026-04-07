@@ -281,10 +281,19 @@ const EmployeeAttendance = () => {
 
       {/* LEAVE REQUEST MODAL (Outside animation to fix position:fixed centering) */}
       {showLeaveModal && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" style={{ pointerEvents: 'auto' }}>
           <div className="glass-panel" style={{ width: '100%', maxWidth: '500px', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
-             <button onClick={() => setShowLeaveModal(false)} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
-               <X size={24} />
+             <button 
+                onClick={() => setShowLeaveModal(false)} 
+                className="close-hover"
+                style={{ 
+                  position: 'absolute', top: '1.5rem', right: '1.5rem', 
+                  background: 'rgba(0,0,0,0.05)', border: 'none', color: 'var(--text-color)', 
+                  cursor: 'pointer', padding: '8px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'background 0.2s'
+                }}>
+               <X size={20} />
              </button>
              <h2 className="fic-gradient-text" style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem' }}>Apply for Leave</h2>
              <form onSubmit={handleApplyLeave}>
@@ -374,9 +383,18 @@ const EmployeeAttendance = () => {
                      }}
                    />
                 </div>
-                <button type="submit" className="btn-primary" style={{ width: '100%', padding: '14px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                   <Send size={18} /> Submit Leave Request
-                </button>
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                  <button 
+                    type="button" 
+                    onClick={() => setShowLeaveModal(false)} 
+                    className="btn-secondary" 
+                    style={{ flex: 1, padding: '14px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn-primary" style={{ flex: 2, padding: '14px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                     <Send size={18} /> Submit Leave Request
+                  </button>
+                </div>
              </form>
           </div>
         </div>

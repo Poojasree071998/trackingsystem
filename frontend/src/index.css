@@ -469,7 +469,7 @@ button.btn-secondary:hover {
   z-index: 1050;
   transition: opacity 0.3s ease;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: auto; /* Fix: allow clicks */
 }
 
 .right-drawer-overlay.open {
@@ -806,7 +806,7 @@ button.btn-secondary:hover {
   background-color: rgba(9, 30, 66, 0.54);
   z-index: 9999;
   display: flex;
-  pointer-events: none;
+  pointer-events: auto; /* Fix: allow clicks */
   justify-content: flex-end;
 }
 
