@@ -54,23 +54,33 @@ const EmployeeDashboard = () => {
   }, [socket, user]);
 
   const fetchData = async () => {
-    if (!user || !user.id) return;
+    if (!user || !user.id) {
+       console.error("❌ Authentication Error: user.id is missing");
+       setSysStatus('offline');
+       return;
+    }
     try {
       const [tasksRes, statsRes, notifRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/api/tasks?role=employee&userId=${user.id}`),
-        axios.get(`${API_BASE_URL}/api/tasks/stats?role=employee&userId=${user.id}`),
-        axios.get(`${API_BASE_URL}/api/notifications?userId=${user.id}`)
+        axios.get(`${API_BASE_URL}/api/tasks?role=employee&userId=${user.id}`).catch(err => { throw new Error(`Tasks: ${err.message}`); }),
+        axios.get(`${API_BASE_URL}/api/tasks/stats?role=employee&userId=${user.id}`).catch(err => { throw new Error(`Stats: ${err.message}`); }),
+        axios.get(`${API_BASE_URL}/api/notifications?userId=${user.id}`).catch(err => { throw new Error(`Notifications: ${err.message}`); })
       ]);
       setTasks(tasksRes.data);
       setStats(statsRes.data);
       setNotifications(notifRes.data);
-      // Get unique projects from tasks
+      
       const uniqueProjects = Array.from(new Set(tasksRes.data.map(t => t.project?._id).filter(Boolean)))
         .map(id => tasksRes.data.find(t => t.project?._id === id).project);
       setProjects(uniqueProjects);
       setUnreadCount(notifRes.data.filter(n => n.status === 'Unread').length);
+      setSysStatus('online');
     } catch (e) {
       console.error("Failed fetching employee data", e);
+      setSysStatus('offline');
+      // If we are in production and it failed, it's likely the API_BASE_URL
+      if (window.location.hostname !== 'localhost' && !API_BASE_URL) {
+         alert("Critical: API Configuration missing. Tasks cannot be loaded.");
+      }
     }
   };
 

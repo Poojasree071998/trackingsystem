@@ -33,6 +33,9 @@ const sendRealTimeNotification = async (req, notification) => {
 router.get('/', async (req, res) => {
   try {
     const { role, userId } = req.query; // Send from frontend after decrypting JWT
+    
+    // Debug logging for production visibility
+    console.log(`🔍 Fetching tasks: Role=${role}, UserId=${userId}`);
 
     if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ error: 'Valid userId is required' });
@@ -62,8 +65,10 @@ router.get('/', async (req, res) => {
         .populate('assignedByHR', 'name')
         .populate('project', 'projectName projectKey');
     }
+    console.log(`✅ Returned ${tasks.length} tasks for UserId=${userId}`);
     res.json(tasks);
   } catch (err) {
+    console.error(`❌ Task Fetch Error for UserId=${userId}:`, err.message);
     res.status(500).json({ error: err.message });
   }
 });

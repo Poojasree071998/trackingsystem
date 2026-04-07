@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     if (token && storedUser) {
       const parsedUser = JSON.parse(storedUser);
       if (parsedUser._id && !parsedUser.id) parsedUser.id = parsedUser._id;
+      console.log("🔐 Authenticator: Session Restored", { role: parsedUser.role, id: parsedUser.id });
       setUser(parsedUser);
     }
     setLoading(false);
