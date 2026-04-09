@@ -114,10 +114,11 @@ const LoginPage = () => {
         setShowSuccess(true);
       } catch (err) {
         setIsLoading(false);
+        const isLocal = window.location.hostname === 'localhost';
         if (err.response) {
           setError(err.response.data.message || 'Authentication failed. Please verify your credentials and try again.');
         } else if (err.request) {
-          setError('Server unreachable. Please verify the backend service status (Port 5001).');
+          setError(`Server unreachable. Please ensure the backend is running at ${API_ENDPOINTS.LOGIN.replace('/api/auth/login', '')} ${isLocal ? '(Check Port 5001)' : ''}`);
         } else {
           setError('Unexpected failure. Please refresh and try again.');
         }
@@ -201,13 +202,19 @@ const LoginPage = () => {
             border: '1px solid #DFE1E6'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.backend === 'online' ? '#36B37E' : '#FF5630' }}></div>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.backend === 'online' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.backend === 'online' ? '0 0 5px #36B37E' : 'none' }}></div>
               <span style={{ color: '#42526E' }}>BACKEND: {systemStatus.backend.toUpperCase()}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630' }}></div>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.database === 'connected' ? '0 0 5px #36B37E' : 'none' }}></div>
               <span style={{ color: '#42526E' }}>DATABASE: {systemStatus.database.toUpperCase()}</span>
             </div>
+            <button 
+              onClick={() => window.location.reload()} 
+              style={{ padding: '2px 6px', fontSize: '0.6rem', background: '#DFE1E6', border: 'none', borderRadius: '2px', cursor: 'pointer' }}
+            >
+              RETRY
+            </button>
           </div>
           
           {user ? (
