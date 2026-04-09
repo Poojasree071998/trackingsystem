@@ -6,7 +6,7 @@ import {
   LogOut, PlusCircle, Briefcase, Users, FileBarChart, 
   Sun, Moon, Search, Filter, MessageSquare, Paperclip, X, CheckCircle, 
   Clock, AlertCircle, Activity, TrendingUp, BarChart, UserCheck, UserMinus, 
-  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send
+  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield
 } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -359,13 +359,13 @@ const HRDashboard = () => {
             <div className={`jira-sidebar-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}><Activity size={18} /> HR Overview</div>
             <div className={`jira-sidebar-btn ${activeTab === 'list' ? 'active' : ''}`} onClick={() => setActiveTab('list')}><List size={18} /> Task Control</div>
             <div className={`jira-sidebar-btn ${activeTab === 'board' ? 'active' : ''}`} onClick={() => setActiveTab('board')}><Layout size={18} /> Team Board</div>
+            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><Shield size={18} /> Loss of Pay</div>
           </div>
           
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Organization</div>
             <div className={`jira-sidebar-btn ${activeTab === 'employees' ? 'active' : ''}`} onClick={() => setActiveTab('employees')}><Users size={18} /> Team Units</div>
             <div className={`jira-sidebar-btn ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}><Briefcase size={18} /> Workspace</div>
-            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: activeTab === 'lop' ? 800 : 500 }}><ShieldAlert size={18} /> Loss of Pay</div>
             <div className={`jira-sidebar-btn ${activeTab === 'attendance' ? 'active' : ''}`} style={{ position: 'relative' }} onClick={() => setActiveTab('attendance')}>
               <Calendar size={18} /> Attendance Tracker
               {pendingLeaveCount > 0 && (
