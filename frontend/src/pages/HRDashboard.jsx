@@ -14,7 +14,7 @@ import axios from 'axios';
 import { useSocket } from '../context/SocketContext';
 import LOPManager from '../components/LOPManager';
 import { ShieldAlert } from 'lucide-react';
-import { API_BASE_URL } from '../apiConfig';
+import { API_BASE_URL, UPLOADS_BASE_URL } from '../apiConfig';
 import HRAttendance from '../components/HRAttendance';
 
 const HRDashboard = () => {
@@ -340,8 +340,12 @@ const HRDashboard = () => {
               <div 
                 onClick={logout}
                 title="Logout"
-                style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>
-                {user?.name?.charAt(0)}
+                style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontWeight: 'bold', overflow: 'hidden' }}>
+                {user?.profileImage ? (
+                  <img src={user.profileImage.startsWith('http') ? user.profileImage : `${UPLOADS_BASE_URL}/${user.profileImage}`} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  user?.name?.charAt(0)
+                )}
               </div>
            </div>
         </div>
@@ -361,6 +365,7 @@ const HRDashboard = () => {
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Organization</div>
             <div className={`jira-sidebar-btn ${activeTab === 'employees' ? 'active' : ''}`} onClick={() => setActiveTab('employees')}><Users size={18} /> Team Units</div>
             <div className={`jira-sidebar-btn ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}><Briefcase size={18} /> Workspace</div>
+            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: activeTab === 'lop' ? 800 : 500 }}><ShieldAlert size={18} /> Loss of Pay</div>
             <div className={`jira-sidebar-btn ${activeTab === 'attendance' ? 'active' : ''}`} style={{ position: 'relative' }} onClick={() => setActiveTab('attendance')}>
               <Calendar size={18} /> Attendance Tracker
               {pendingLeaveCount > 0 && (
@@ -404,7 +409,7 @@ const HRDashboard = () => {
           {activeTab === 'dashboard' && (
             <div className="fade-in-up">
               {/* TOP: HR STATS */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1.2rem', marginBottom: '2.5rem' }}>
                 <div className="jira-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                    <div style={{ width: 44, height: 44, background: 'rgba(54, 179, 126, 0.1)', color: 'var(--success)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Users size={24} />
@@ -439,6 +444,19 @@ const HRDashboard = () => {
                    <div>
                       <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{stats.totalInterviews || 0}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>INTERVIEWS</div>
+                   </div>
+                </div>
+                <div 
+                  className="jira-card" 
+                  onClick={() => setActiveTab('lop')}
+                  style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', border: '1px solid var(--card-border)' }}
+                >
+                   <div style={{ width: 44, height: 44, background: 'rgba(255, 86, 48, 0.1)', color: '#FF5630', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <ShieldAlert size={24} />
+                   </div>
+                   <div>
+                      <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{stats.totalLopUsers || 0}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>LOP ISSUES</div>
                    </div>
                 </div>
               </div>
@@ -670,7 +688,13 @@ const HRDashboard = () => {
                      {employees.filter(e => e.name.toLowerCase().includes(memberSearch.toLowerCase()) || e.email.toLowerCase().includes(memberSearch.toLowerCase())).map(emp => (
                        <tr key={emp._id} onClick={() => { setSelectedMember(emp); setShowMemberModal(true); }}>
                          <td style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <div style={{ width: 40, height: 40, borderRadius: '10px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800 }}>{emp.name.charAt(0)}</div>
+                            <div style={{ width: 40, height: 40, borderRadius: '10px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, overflow: 'hidden' }}>
+                              {emp.profileImage ? (
+                                <img src={emp.profileImage.startsWith('http') ? emp.profileImage : `${UPLOADS_BASE_URL}/${emp.profileImage}`} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              ) : (
+                                emp.name.charAt(0)
+                              )}
+                            </div>
                             <div>
                                <div style={{ fontWeight: 800 }}>{emp.name}</div>
                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{emp.email}</div>

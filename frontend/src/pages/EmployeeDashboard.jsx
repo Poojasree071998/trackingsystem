@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell, PieChart, Pie } from 'recharts';
 import axios from 'axios';
-import { API_BASE_URL } from '../apiConfig';
+import { API_BASE_URL, UPLOADS_BASE_URL } from '../apiConfig';
 import EmployeeAttendance from '../components/EmployeeAttendance';
 import EmployeeLOPView from '../components/EmployeeLOPView';
 
@@ -201,8 +201,12 @@ const EmployeeDashboard = () => {
               <div 
                 onClick={logout}
                 title="Logout"
-                style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>
-                {user?.name?.charAt(0)}
+                style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontWeight: 'bold', overflow: 'hidden' }}>
+                {user?.profileImage ? (
+                  <img src={user.profileImage.startsWith('http') ? user.profileImage : `${UPLOADS_BASE_URL}/${user.profileImage}`} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  user?.name?.charAt(0)
+                )}
               </div>
            </div>
         </div>
@@ -545,9 +549,13 @@ const EmployeeDashboard = () => {
           {activeTab === 'profile' && (
             <div className="fade-in-up">
                <div className="jira-card" style={{ maxWidth: '600px', margin: '0 auto', padding: '3rem', textAlign: 'center' }}>
-                  <div style={{ width: 100, height: 100, background: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 800, borderRadius: '24px', margin: '0 auto 1.5rem' }}>
-                    {user?.name?.charAt(0)}
-                  </div>
+                <div style={{ width: 100, height: 100, background: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 800, borderRadius: '24px', margin: '0 auto 1.5rem', overflow: 'hidden' }}>
+                  {user?.profileImage ? (
+                    <img src={user.profileImage.startsWith('http') ? user.profileImage : `${UPLOADS_BASE_URL}/${user.profileImage}`} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    user?.name?.charAt(0)
+                  )}
+                </div>
                   <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>{user?.name}</h2>
                   <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>{user?.email}</p>
                   <div style={{ textAlign: 'left', display: 'grid', gap: '1.5rem' }}>

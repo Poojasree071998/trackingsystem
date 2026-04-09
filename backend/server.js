@@ -53,6 +53,13 @@ const io = new Server(server, {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
+
+const fs = require('fs');
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+  console.log('📁 Created uploads directory');
+}
 
 // Socket.io User Map
 const userSockets = new Map();

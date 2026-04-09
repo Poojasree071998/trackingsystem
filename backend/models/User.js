@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
   employeeId: { type: String }, // For employees
   department: { type: String },
   designation: { type: String },
+  profileImage: { type: String }, // URL or path to the profile image
   status: { type: String, enum: ['Active', 'On Leave'], default: 'Active' }
 }, { timestamps: true });
 

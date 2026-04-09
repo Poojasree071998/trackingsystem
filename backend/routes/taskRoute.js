@@ -202,6 +202,7 @@ router.get('/stats', async (req, res) => {
     const totalGlobalTasks = await Task.countDocuments();
 
     const totalInterviews = await Task.countDocuments({ ...match, issueType: 'Interview' });
+    const totalLopUsers = await LOP.countDocuments({ lopStatus: 'Applied' });
 
     res.json({ 
       total, 
@@ -209,6 +210,7 @@ router.get('/stats', async (req, res) => {
       pending, 
       overdue,
       totalInterviews,
+      totalLopUsers,
       totalGlobalUsers,
       totalGlobalProjects,
       totalGlobalTasks

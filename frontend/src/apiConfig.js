@@ -18,6 +18,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
     ? getDevUrl('5001')
     : 'https://trackingsystem-3mdl.onrender.com'
 );
+export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
 console.log('📡 FIC API Strategy:', (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1') ? 'LOCAL' : 'PRODUCTION');
 console.log('🔗 Target Base URL:', API_BASE_URL);

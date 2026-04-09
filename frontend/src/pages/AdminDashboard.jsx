@@ -6,7 +6,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import { LogOut, Users, FileText, Activity, LayoutDashboard, Briefcase, BarChart2, TrendingUp, TrendingDown, Sun, Moon, Search, PlusCircle, Plus, X, Layout, List, Settings, ChevronLeft, Bell, ChevronRight, UserPlus, Filter, LayoutList, Calendar, ShieldAlert } from 'lucide-react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { API_BASE_URL } from '../apiConfig';
+import { API_BASE_URL, UPLOADS_BASE_URL } from '../apiConfig';
 import LOPManager from '../components/LOPManager';
 
 import { useSocket } from '../context/SocketContext';
@@ -366,8 +366,12 @@ const AdminDashboard = () => {
               <div 
                 onClick={logout}
                 title="Logout"
-                style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>
-                {user?.name?.charAt(0)}
+                style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontWeight: 'bold', overflow: 'hidden' }}>
+                {user?.profileImage ? (
+                  <img src={user.profileImage.startsWith('http') ? user.profileImage : `${UPLOADS_BASE_URL}/${user.profileImage}`} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  user?.name?.charAt(0)
+                )}
               </div>
            </div>
         </div>
