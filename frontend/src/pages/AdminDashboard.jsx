@@ -39,17 +39,13 @@ const AdminDashboard = () => {
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [selectedUserForProject, setSelectedUserForProject] = useState('');
 
-  // Project Creation State
+  // Project Creation State (Individual Primitives for Absolute Reliability)
+  const [newProjectName, setNewProjectName] = useState('');
+  const [newProjectKey, setNewProjectKey] = useState('');
+  const [newProjectDescription, setNewProjectDescription] = useState('');
+  const [newProjectLead, setNewProjectLead] = useState('');
+  const [newProjectDeadline, setNewProjectDeadline] = useState('');
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
-  const [projectForm, setProjectForm] = useState({ 
-    projectName: '', 
-    projectKey: '', 
-    description: '', 
-    lead: '',
-    projectType: 'Software Project',
-    priority: 'Medium',
-    deadline: ''
-  });
 
   useEffect(() => {
     if (socket) {
@@ -100,10 +96,28 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       if (!API_BASE_URL && window.location.hostname !== 'localhost') {
-        throw new Error('Project deployment is missing API configuration. Please set VITE_API_BASE_URL.');
+        throw new Error('Project deployment is missing API configuration.');
       }
-      await axios.post(`${API_BASE_URL}/api/projects`, projectForm);
-      setProjectForm({ projectName: '', projectKey: '', description: '', lead: '', projectType: 'Software Project', priority: 'Medium', deadline: '' });
+      
+      const payload = {
+        projectName: newProjectName,
+        projectKey: newProjectKey,
+        description: newProjectDescription,
+        lead: newProjectLead,
+        deadline: newProjectDeadline,
+        projectType: 'Software Project',
+        priority: 'Medium'
+      };
+
+      await axios.post(`${API_BASE_URL}/api/projects`, payload);
+      
+      // Reset individual states
+      setNewProjectName('');
+      setNewProjectKey('');
+      setNewProjectDescription('');
+      setNewProjectLead('');
+      setNewProjectDeadline('');
+      
       setShowCreateProjectModal(false);
       fetchData();
     } catch (err) {
@@ -786,7 +800,7 @@ const AdminDashboard = () => {
               <form id="drawerTaskFormAdmin" onSubmit={handleCreateTaskDrawer} style={{ pointerEvents: 'auto', position: 'relative', zIndex: 2147483647 }}>
                 <div className="form-group">
                    <label className="form-label">Portfolio Space</label>
-                   <select className="form-select" required value={taskDrawerForm.project} onChange={e => setTaskDrawerForm({...taskDrawerForm, project: e.target.value})}>
+                   <select className="form-select focus-debug" required value={taskDrawerForm.project} onChange={e => setTaskDrawerForm({...taskDrawerForm, project: e.target.value})}>
                       <option value="">Global Backlog</option>
                       {projects.map(p => <option key={p._id} value={p._id}>{p.projectName} ({p.projectKey})</option>)}
                    </select>
@@ -794,7 +808,7 @@ const AdminDashboard = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                    <div className="form-group">
                       <label className="form-label">Issue Type</label>
-                      <select className="form-select" required value={taskDrawerForm.issueType} onChange={e => setTaskDrawerForm({...taskDrawerForm, issueType: e.target.value})}>
+                      <select className="form-select focus-debug" required value={taskDrawerForm.issueType} onChange={e => setTaskDrawerForm({...taskDrawerForm, issueType: e.target.value})}>
                         <option value="Task">Task</option>
                         <option value="Bug">Bug</option>
                         <option value="Story">Story</option>
@@ -802,7 +816,7 @@ const AdminDashboard = () => {
                    </div>
                    <div className="form-group">
                       <label className="form-label">Initial Status</label>
-                      <select className="form-select" value={taskDrawerForm.status} onChange={e => setTaskDrawerForm({...taskDrawerForm, status: e.target.value})}>
+                      <select className="form-select focus-debug" value={taskDrawerForm.status} onChange={e => setTaskDrawerForm({...taskDrawerForm, status: e.target.value})}>
                          <option value="To Do">TO DO</option>
                          <option value="In Progress">IN PROGRESS</option>
                          <option value="Done">DONE</option>
@@ -811,23 +825,23 @@ const AdminDashboard = () => {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Work Summary</label>
-                  <input type="text" className="form-input" required value={taskDrawerForm.taskTitle} onChange={e => setTaskDrawerForm({...taskDrawerForm, taskTitle: e.target.value})} placeholder="Clear objective..." />
+                  <input type="text" className="form-input focus-debug" required value={taskDrawerForm.taskTitle} onChange={e => setTaskDrawerForm({...taskDrawerForm, taskTitle: e.target.value})} placeholder="Clear objective..." />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Functional Description</label>
-                  <textarea className="form-textarea" value={taskDrawerForm.taskDescription} onChange={e => setTaskDrawerForm({...taskDrawerForm, taskDescription: e.target.value})} rows="6" placeholder="Context, details, and requirements..." />
+                  <textarea className="form-textarea focus-debug" value={taskDrawerForm.taskDescription} onChange={e => setTaskDrawerForm({...taskDrawerForm, taskDescription: e.target.value})} rows="6" placeholder="Context, details, and requirements..." />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                    <div className="form-group">
                       <label className="form-label">Assignee</label>
-                      <select className="form-select" required value={taskDrawerForm.assignedToEmployee} onChange={e => setTaskDrawerForm({...taskDrawerForm, assignedToEmployee: e.target.value})}>
+                      <select className="form-select focus-debug" required value={taskDrawerForm.assignedToEmployee} onChange={e => setTaskDrawerForm({...taskDrawerForm, assignedToEmployee: e.target.value})}>
                          <option value="">Choose Unit</option>
                          {allUsers.filter(u => u.role !== 'admin').map(u => <option key={u._id} value={u._id}>{u.name}</option>)}
                       </select>
                    </div>
                    <div className="form-group">
                       <label className="form-label">Priority</label>
-                      <select className="form-select" value={taskDrawerForm.priority} onChange={e => setTaskDrawerForm({...taskDrawerForm, priority: e.target.value})}>
+                      <select className="form-select focus-debug" value={taskDrawerForm.priority} onChange={e => setTaskDrawerForm({...taskDrawerForm, priority: e.target.value})}>
                         <option value="High">🔴 High</option>
                         <option value="Medium">🟡 Medium</option>
                         <option value="Low">🟢 Low</option>
@@ -836,7 +850,7 @@ const AdminDashboard = () => {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Maturity Date</label>
-                  <input type="date" className="form-input" required value={taskDrawerForm.deadline} onChange={e => setTaskDrawerForm({...taskDrawerForm, deadline: e.target.value})} />
+                  <input type="date" className="form-input focus-debug" required value={taskDrawerForm.deadline} onChange={e => setTaskDrawerForm({...taskDrawerForm, deadline: e.target.value})} />
                 </div>
               </form>
             </div>
@@ -864,12 +878,11 @@ const AdminDashboard = () => {
                       <label className="form-label">Portfolio Name</label>
                       <input 
                         type="text" 
-                        className="form-input" 
+                        className="form-input focus-debug" 
                         required 
                         autoFocus
                         onMouseDown={(e) => e.currentTarget.focus()}
-                        value={projectForm.projectName} 
-                        onChange={e => setProjectForm({...projectForm, projectName: e.target.value})} 
+                        value={newProjectName} onChange={e => setNewProjectName(e.target.value)} 
                         placeholder="e.g. Apollo Mission" 
                       />
                    </div>
@@ -877,11 +890,10 @@ const AdminDashboard = () => {
                       <label className="form-label">Identifier</label>
                       <input 
                         type="text" 
-                        className="form-input" 
+                        className="form-input focus-debug" 
                         required 
                         onMouseDown={(e) => e.currentTarget.focus()}
-                        value={projectForm.projectKey} 
-                        onChange={e => setProjectForm({...projectForm, projectKey: e.target.value.toUpperCase()})} 
+                        value={newProjectKey} onChange={e => setNewProjectKey(e.target.value.toUpperCase())} 
                         placeholder="APO" 
                       />
                    </div>
@@ -889,25 +901,24 @@ const AdminDashboard = () => {
                 <div className="form-group">
                   <label className="form-label">Strategic Objective</label>
                   <textarea 
-                    className="form-textarea" 
+                    className="form-textarea focus-debug" 
                     required 
                     rows="4" 
                     onMouseDown={(e) => e.currentTarget.focus()}
-                    value={projectForm.description} 
-                    onChange={e => setProjectForm({...projectForm, description: e.target.value})} 
+                    value={newProjectDescription} onChange={e => setNewProjectDescription(e.target.value)} 
                     placeholder="Project scope and goals..." 
                   />
                 </div>
                 <div className="form-group">
                    <label className="form-label">Appointed Lead</label>
-                   <select className="form-select" required value={projectForm.lead} onChange={e => setProjectForm({...projectForm, lead: e.target.value})}>
+                   <select className="form-select focus-debug" required value={newProjectLead} onChange={e => setNewProjectLead(e.target.value)}>
                       <option value="">Assign Commander</option>
                       {allUsers.filter(u => u.role === 'hr' || u.role === 'admin').map(u => <option key={u._id} value={u._id}>{u.name} ({u.role.toUpperCase()})</option>)}
                    </select>
                 </div>
                 <div className="form-group">
                   <label className="form-label">Operational Deadline</label>
-                  <input type="date" className="form-input" required value={projectForm.deadline} onChange={e => setProjectForm({...projectForm, deadline: e.target.value})} />
+                  <input type="date" className="form-input focus-debug" required value={newProjectDeadline} onChange={e => setNewProjectDeadline(e.target.value)} />
                 </div>
               </form>
             </div>
@@ -927,7 +938,7 @@ const AdminDashboard = () => {
             <h2 style={{ marginBottom: '1.5rem', fontSize: '1.2rem', fontWeight: 800 }}>Add Unit to Project</h2>
             <div className="form-group">
               <label className="form-label" style={{ fontWeight: 800 }}>Search Identity</label>
-              <select className="form-select" value={selectedUserForProject} onChange={e => setSelectedUserForProject(e.target.value)}>
+              <select className="form-select focus-debug" value={selectedUserForProject} onChange={e => setSelectedUserForProject(e.target.value)}>
                 <option value="">Select individual...</option>
                 {allUsers.filter(u => u.role !== 'admin' && !projectData?.members?.some(m => m._id === u._id) && projectData?.lead?._id !== u._id).map(u => (
                   <option key={u._id} value={u._id}>{u.name} ({u.role.toUpperCase()})</option>

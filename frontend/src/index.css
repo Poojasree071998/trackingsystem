@@ -430,15 +430,13 @@ button.btn-secondary:hover {
 .modal-overlay {
   position: fixed;
   top: 0; bottom: 0; left: 0; right: 0;
-  background-color: rgba(9, 30, 66, 0.54);
-  backdrop-filter: blur(4px);
+  background-color: rgba(9, 30, 66, 0.75); /* Darker and more solid for better contrast */
   z-index: 2000;
   display: flex;
-  pointer-events: auto !important; /* Force interaction to be enabled */
+  pointer-events: auto !important;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  animation: fadeIn 0.3s ease;
 }
 
 [data-theme="dark"] .modal-overlay {
@@ -464,12 +462,11 @@ button.btn-secondary:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(9, 30, 66, 0.4);
-  backdrop-filter: blur(4px);
+  background: rgba(9, 30, 66, 0.6); /* More solid background */
   z-index: 1050;
   transition: opacity 0.3s ease;
   opacity: 0;
-  pointer-events: none; /* Only allow clicks when .open class is added */
+  pointer-events: none;
 }
 
 .right-drawer-overlay.open {
@@ -867,4 +864,12 @@ button.btn-secondary:hover {
 .jira-drawer-content {
   pointer-events: auto !important;
   z-index: 2147483647 !important;
+}
+
+/* High-Contrast Focus Debugging */
+.focus-debug:focus {
+  border: 4px solid #FF1493 !important; /* Bright Pink */
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.4) !important;
+  background: white !important;
+  color: #000 !important;
 }
