@@ -850,12 +850,21 @@ button.btn-secondary:hover {
   to { transform: translateX(0); }
 }
 
-/* Portal Fix for Production Interaction */
+/* Nuclear Portal Fix for Production Interaction */
 .portal-fix {
   pointer-events: auto !important;
-  z-index: 10000 !important;
+  z-index: 2147483647 !important; /* Max possible z-index */
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .portal-fix * {
   pointer-events: auto !important;
+  user-select: auto !important;
+}
+
+.jira-drawer-content {
+  pointer-events: auto !important;
+  z-index: 2147483647 !important;
 }
