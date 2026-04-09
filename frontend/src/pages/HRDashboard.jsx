@@ -401,7 +401,7 @@ const HRDashboard = () => {
               FIC <ChevronRight size={14} /> HR Control Hub <ChevronRight size={14} /> {activeTab.toUpperCase()}
             </div>
             <h1 style={{ fontSize: '2rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-              {activeTab === 'dashboard' ? 'Operational Summary' : activeTab === 'list' ? 'Task Control Center' : activeTab === 'board' ? 'Enterprise Workflow' : activeTab === 'employees' ? 'Unit Directory' : activeTab === 'attendance' ? 'Attendance Monitor' : 'Communications'}
+              {activeTab === 'dashboard' ? 'Operational Summary' : activeTab === 'list' ? 'Task Control Center' : activeTab === 'board' ? 'Enterprise Workflow' : activeTab === 'employees' ? 'Unit Directory' : activeTab === 'attendance' ? 'Attendance Monitor' : activeTab === 'lop' ? 'Loss of Pay Management' : 'Communications'}
             </h1>
           </header>
 
@@ -651,6 +651,13 @@ const HRDashboard = () => {
               {renderColumn('In Progress', 'Active Operations', <TrendingUp size={16}/>)}
               {renderColumn('Under Review', 'Validation Pending', <AlertCircle size={16}/>)}
               {renderColumn('Completed', 'Successfully Executed', <CheckCircle size={16}/>)}
+            </div>
+          )}
+
+          {/* LOSS OF PAY TAB */}
+          {activeTab === 'lop' && (
+            <div className="fade-in-up">
+              <LOPManager />
             </div>
           )}
 
