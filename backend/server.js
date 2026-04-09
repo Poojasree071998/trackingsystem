@@ -112,7 +112,16 @@ process.on('uncaughtException', (err) => {
 
 const PORT = process.env.PORT || 5001;
 
-server.listen(PORT, () => {
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Critical: Port ${PORT} is already in use by another process.`);
+  } else {
+    console.error('❌ Critical: Server failed to start:', err.message);
+  }
+  process.exit(1);
+});
+
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 FIC Backend Service is online on port ${PORT}`);
     let uri = (process.env.MONGO_URI || '').trim();
     // Strip accidental quotes if they were pasted into environment variables

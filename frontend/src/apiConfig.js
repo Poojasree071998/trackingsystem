@@ -1,5 +1,19 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5001' : '');
-export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5001' : '');
+const getDevUrl = (port) => {
+  const { hostname } = window.location;
+  const devHostnames = ['localhost', '127.0.0.1', '::1'];
+  if (devHostnames.includes(hostname)) {
+    return `http://${hostname}:${port}`;
+  }
+  // Fallback for other local network IPs
+  if (hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.')) {
+     return `http://${hostname}:${port}`;
+  }
+  // Production fallback for Vercel (points to Render)
+  return 'https://trackingsystem-3mdl.onrender.com'; 
+};
+
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || getDevUrl('5001');
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || getDevUrl('5001');
 
 if (!API_BASE_URL && window.location.hostname !== 'localhost') {
   console.warn('⚠️  VITE_API_BASE_URL is missing in production. API calls will fail.');
