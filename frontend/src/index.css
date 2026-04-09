@@ -849,3 +849,13 @@ button.btn-secondary:hover {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
+
+/* Portal Fix for Production Interaction */
+.portal-fix {
+  pointer-events: auto !important;
+  z-index: 10000 !important;
+}
+
+.portal-fix * {
+  pointer-events: auto !important;
+}

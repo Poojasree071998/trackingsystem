@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -774,8 +775,8 @@ const AdminDashboard = () => {
       </div>
 
       {/* CREATE TASK DRAWER (RIGHT SIDE) */}
-      {isTaskDrawerOpen && (
-        <div className="jira-drawer-overlay" onClick={() => setIsTaskDrawerOpen(false)}>
+      {isTaskDrawerOpen && createPortal(
+        <div className="jira-drawer-overlay portal-fix" onClick={() => setIsTaskDrawerOpen(false)}>
           <div className="jira-drawer-content" onClick={e => e.stopPropagation()}>
             <div className="drawer-header">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Initialize System Issue</h2>
@@ -844,12 +845,13 @@ const AdminDashboard = () => {
                <button type="submit" form="drawerTaskFormAdmin" className="btn-primary" style={{ padding: '10px 24px' }}>Commit Artifact</button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* CREATE PROJECT DRAWER (RIGHT SIDE) */}
-      {showCreateProjectModal && (
-        <div className="jira-drawer-overlay" onClick={() => setShowCreateProjectModal(false)}>
+      {showCreateProjectModal && createPortal(
+        <div className="jira-drawer-overlay portal-fix" onClick={() => setShowCreateProjectModal(false)}>
           <div className="jira-drawer-content" onClick={e => e.stopPropagation()}>
             <div className="drawer-header">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Setup Portfolio Workspace</h2>
@@ -889,12 +891,13 @@ const AdminDashboard = () => {
                <button type="submit" form="projectCreateFormAdmin" className="btn-primary" style={{ padding: '10px 24px' }}>Launch Workspace</button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ADD MEMBER MODAL */}
-      {showAddMemberModal && (
-        <div className="modal-overlay" onClick={() => setShowAddMemberModal(false)}>
+      {showAddMemberModal && createPortal(
+        <div className="modal-overlay portal-fix" onClick={() => setShowAddMemberModal(false)}>
           <div className="glass-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '400px', padding: '2.5rem', borderRadius: '16px' }}>
             <h2 style={{ marginBottom: '1.5rem', fontSize: '1.2rem', fontWeight: 800 }}>Add Unit to Project</h2>
             <div className="form-group">
@@ -911,7 +914,8 @@ const AdminDashboard = () => {
               <button onClick={handleAddMember} className="btn-primary" style={{ flex: 1, padding: '12px' }}>Confirm Access</button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
