@@ -782,7 +782,7 @@ const AdminDashboard = () => {
               <X size={24} onClick={() => setIsTaskDrawerOpen(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
             </div>
             <div className="drawer-content">
-              <form id="drawerTaskFormAdmin" onSubmit={handleCreateTaskDrawer}>
+              <form id="drawerTaskFormAdmin" onSubmit={handleCreateTaskDrawer} style={{ pointerEvents: 'auto', position: 'relative', zIndex: 1 }}>
                 <div className="form-group">
                    <label className="form-label">Portfolio Space</label>
                    <select className="form-select" required value={taskDrawerForm.project} onChange={e => setTaskDrawerForm({...taskDrawerForm, project: e.target.value})}>
@@ -856,7 +856,7 @@ const AdminDashboard = () => {
               <X size={24} onClick={() => setShowCreateProjectModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
             </div>
             <div className="drawer-content">
-              <form id="projectCreateFormAdmin" onSubmit={handleCreateProject}>
+              <form id="projectCreateFormAdmin" onSubmit={handleCreateProject} style={{ pointerEvents: 'auto', position: 'relative', zIndex: 1 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
                    <div className="form-group">
                       <label className="form-label">Portfolio Name</label>

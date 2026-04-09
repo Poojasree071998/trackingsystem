@@ -434,7 +434,7 @@ button.btn-secondary:hover {
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
-  pointer-events: auto; /* Corrected: Must be auto to allow clicks in modals */
+  pointer-events: auto !important; /* Force interaction to be enabled */
   align-items: center;
   justify-content: center;
   padding: 2rem;
@@ -807,7 +807,8 @@ button.btn-secondary:hover {
   background-color: rgba(9, 30, 66, 0.54);
   z-index: 9999;
   display: flex;
-  pointer-events: auto; /* Allow clicks when rendered */
+  pointer-events: auto !important; /* Force interaction to be enabled */
+  z-index: 9999;
   justify-content: flex-end;
 }
 
@@ -815,6 +816,9 @@ button.btn-secondary:hover {
   width: 500px;
   max-width: 90vw; /* Responsive width */
   background: var(--bg-color);
+  pointer-events: auto !important; /* Ensure content itself is interactable */
+  position: relative;
+  z-index: 10000; /* Above the overlay background */
   height: 100%;
   display: flex;
   flex-direction: column;
