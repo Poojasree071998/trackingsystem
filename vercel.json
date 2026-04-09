@@ -1,9 +1,10 @@
 {
-  "buildCommand": "cd frontend && npm install --include=dev && npm run build",
+  "version": 2,
+  "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "echo skip",
-  "framework": null,
+  "framework": "vite",
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://trackingsystem-3mdl.onrender.com/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

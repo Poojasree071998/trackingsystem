@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+/* Build Marker: 2026-04-09 16:16:14 */
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import LandingPage from './pages/LandingPage';
@@ -55,6 +56,10 @@ function AppRoutes() {
 import { SocketProvider } from './context/SocketContext';
 
 function App() {
+  useEffect(() => {
+    console.log('🚀 FIC Production Bridge Initialized');
+    console.log('📍 Current Origin:', window.location.origin);
+  }, []);
 
   return (
     <AuthProvider>
