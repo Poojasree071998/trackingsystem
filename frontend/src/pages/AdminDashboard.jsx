@@ -386,7 +386,6 @@ const AdminDashboard = () => {
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Governance</div>
             <div className={`jira-sidebar-btn ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}><Users size={18} /> Identity Manager</div>
-            <div className={`jira-sidebar-btn ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}><Briefcase size={18} /> Portfolio Map</div>
             <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: activeTab === 'lop' ? 800 : 500 }}><ShieldAlert size={18} /> Loss of Pay</div>
             <div className={`jira-sidebar-btn ${activeTab === 'attendance' ? 'active' : ''}`} style={{ position: 'relative' }} onClick={() => setActiveTab('attendance')}>
               <Calendar size={18} /> Attendance Hub
@@ -405,7 +404,6 @@ const AdminDashboard = () => {
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Alerts</div>
             <div className={`jira-sidebar-btn ${activeTab === 'notifications' ? 'active' : ''}`} onClick={() => setActiveTab('notifications')}><Bell size={18} /> System Audio</div>
-            <div className="jira-sidebar-btn" onClick={() => setShowCreateProjectModal(true)} style={{ color: 'var(--primary)' }}><Plus size={18} /> New Portfolio</div>
           </div>
           
           <div style={{ marginTop: 'auto', padding: '1rem' }}>
