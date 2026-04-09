@@ -134,6 +134,29 @@ const LoginPage = () => {
       color: '#172B4D',
       fontFamily: "'Plus Jakarta Sans', sans-serif"
     }}>
+      {/* Production Visual Heartbeat */}
+      <div id="production-heartbeat" style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        background: window.location.hostname === 'localhost' ? '#00B8D9' : '#36B37E',
+        color: 'white',
+        padding: '4px 10px',
+        fontSize: '0.65rem',
+        fontWeight: 700,
+        textAlign: 'center',
+        zIndex: 1000000,
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '20px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        <span>🌐 ENV: {window.location.hostname === 'localhost' ? 'DEVELOPMENT' : 'PRODUCTION'}</span>
+        <span>🔗 API: {API_ENDPOINTS.HEALTH.replace('/api/health', '')}</span>
+        <span>⏰ BUILD: 2026-04-09 16:20</span>
+      </div>
+
       {/* Header / Logo */}
       <div style={{ padding: '40px 0', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px' }}>
