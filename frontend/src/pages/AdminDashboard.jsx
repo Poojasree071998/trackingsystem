@@ -862,16 +862,41 @@ const AdminDashboard = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
                    <div className="form-group">
                       <label className="form-label">Portfolio Name</label>
-                      <input type="text" className="form-input" required value={projectForm.projectName} onChange={e => setProjectForm({...projectForm, projectName: e.target.value})} placeholder="e.g. Apollo Mission" />
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        required 
+                        autoFocus
+                        onMouseDown={(e) => e.currentTarget.focus()}
+                        value={projectForm.projectName} 
+                        onChange={e => setProjectForm({...projectForm, projectName: e.target.value})} 
+                        placeholder="e.g. Apollo Mission" 
+                      />
                    </div>
                    <div className="form-group">
                       <label className="form-label">Identifier</label>
-                      <input type="text" className="form-input" required value={projectForm.projectKey} onChange={e => setProjectForm({...projectForm, projectKey: e.target.value.toUpperCase()})} placeholder="APO" />
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        required 
+                        onMouseDown={(e) => e.currentTarget.focus()}
+                        value={projectForm.projectKey} 
+                        onChange={e => setProjectForm({...projectForm, projectKey: e.target.value.toUpperCase()})} 
+                        placeholder="APO" 
+                      />
                    </div>
                 </div>
                 <div className="form-group">
                   <label className="form-label">Strategic Objective</label>
-                  <textarea className="form-textarea" required rows="4" value={projectForm.description} onChange={e => setProjectForm({...projectForm, description: e.target.value})} placeholder="Project scope and goals..." />
+                  <textarea 
+                    className="form-textarea" 
+                    required 
+                    rows="4" 
+                    onMouseDown={(e) => e.currentTarget.focus()}
+                    value={projectForm.description} 
+                    onChange={e => setProjectForm({...projectForm, description: e.target.value})} 
+                    placeholder="Project scope and goals..." 
+                  />
                 </div>
                 <div className="form-group">
                    <label className="form-label">Appointed Lead</label>
