@@ -13,16 +13,16 @@ const getDevUrl = (port) => {
 };
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
-  // Explicit production detection for Vercel/Render
-  (import.meta.env.PROD || window.location.hostname.includes('vercel.app'))
-    ? 'https://trackingsystem-3mdl.onrender.com' 
-    : getDevUrl('5001')
+  // Foolproof detection: Use production URL for any domain OTHER than localhost
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
+    ? getDevUrl('5001')
+    : 'https://trackingsystem-3mdl.onrender.com'
 );
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
-  (import.meta.env.PROD || window.location.hostname.includes('vercel.app'))
-    ? 'https://trackingsystem-3mdl.onrender.com' 
-    : getDevUrl('5001')
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
+    ? getDevUrl('5001')
+    : 'https://trackingsystem-3mdl.onrender.com'
 );
 
 if (!API_BASE_URL && window.location.hostname !== 'localhost') {
