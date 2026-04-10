@@ -6,15 +6,22 @@ const router = express.Router();
 // Get notifications for a user
 router.get('/', async (req, res) => {
   try {
-    const { userId } = req.query;
+    const { userId, role } = req.query;
     if (!userId) return res.status(400).json({ error: "userId is required" });
 
-    const notifications = await Notification.find({ 
+    let query = { 
       $or: [
         { recipient: userId },
-        { sender: userId, type: { $ne: 'System' } } // HR/Employees want to see what they sent, except system internals
+        { sender: userId, type: { $ne: 'System' } }
       ]
-    })
+    };
+
+    // Admin can see everything for oversight
+    if (role === 'admin') {
+      query = {}; 
+    }
+
+    const notifications = await Notification.find(query)
       .sort({ createdAt: -1 })
       .populate('sender', 'name')
       .populate('recipient', 'name');

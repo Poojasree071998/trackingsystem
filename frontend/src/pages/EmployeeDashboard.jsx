@@ -526,7 +526,7 @@ const EmployeeDashboard = () => {
                 <div onClick={() => setNotifTab('sent')} style={{ paddingBottom: '12px', borderBottom: notifTab === 'sent' ? '3px solid var(--primary)' : 'none', cursor: 'pointer', fontWeight: 800, color: notifTab === 'sent' ? 'var(--primary)' : 'var(--text-muted)' }}>Sent</div>
               </div>
               <div style={{ display: 'grid', gap: '1rem' }}>
-                {notifications.filter(n => notifTab === 'sent' ? n.sender?._id === user.id : n.recipient?._id === user.id).map(notif => (
+                {notifications.filter(n => notifTab === 'sent' ? n.sender?._id?.toString() === user.id?.toString() : n.recipient?._id?.toString() === user.id?.toString()).map(notif => (
                   <div key={notif._id} onClick={() => notifTab === 'inbox' && markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
                     <div style={{ padding: '8px', background: notif.type === 'interview_assignment' ? 'rgba(111, 110, 245, 0.1)' : 'rgba(0, 82, 204, 0.1)', color: notif.type === 'interview_assignment' ? '#6F6EF5' : 'var(--primary)', borderRadius: '8px', height: 'fit-content' }}>
                       {notif.type === 'interview_assignment' ? <Calendar size={20} /> : <Bell size={20} />}

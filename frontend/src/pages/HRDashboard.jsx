@@ -767,7 +767,7 @@ const HRDashboard = () => {
                  </button>
               </div>
               <div style={{ display: 'grid', gap: '1rem' }}>
-                {notifications.filter(n => notifTab === 'sent' ? n.sender?._id === user.id : n.recipient?._id === user.id).map(notif => (
+                {notifications.filter(n => notifTab === 'sent' ? n.sender?._id?.toString() === user.id?.toString() : n.recipient?._id?.toString() === user.id?.toString()).map(notif => (
                   <div key={notif._id} onClick={() => notifTab === 'inbox' && markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' && notifTab === 'inbox' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
                     <div style={{ padding: '8px', background: 'rgba(54, 179, 126, 0.1)', color: 'var(--success)', borderRadius: '8px', height: 'fit-content' }}>
                        <Bell size={20} />

@@ -71,7 +71,7 @@ const AdminDashboard = () => {
       const [statsRes, tasksRes, notifRes, usersRes, projectsRes, leavesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/api/tasks/stats?role=admin&userId=${user.id}`),
         axios.get(`${API_BASE_URL}/api/tasks?role=admin&userId=${user.id}`),
-        axios.get(`${API_BASE_URL}/api/notifications?userId=${user.id}`),
+        axios.get(`${API_BASE_URL}/api/notifications?userId=${user.id}&role=admin`),
         axios.get(`${API_BASE_URL}/api/users`),
         axios.get(`${API_BASE_URL}/api/projects`),
         axios.get(`${API_BASE_URL}/api/leaves`)
