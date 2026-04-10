@@ -412,7 +412,7 @@ const HRDashboard = () => {
           {activeTab === 'dashboard' && (
             <div className="fade-in-up">
               {/* TOP: HR STATS */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1.2rem', marginBottom: '2.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.2rem', marginBottom: '2.5rem' }}>
                 <div className="jira-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                    <div style={{ width: 44, height: 44, background: 'rgba(54, 179, 126, 0.1)', color: 'var(--success)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Users size={24} />
@@ -447,19 +447,6 @@ const HRDashboard = () => {
                    <div>
                       <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{stats.totalInterviews || 0}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>INTERVIEWS</div>
-                   </div>
-                </div>
-                <div 
-                  className="jira-card" 
-                  onClick={() => setActiveTab('lop')}
-                  style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', border: '1px solid var(--card-border)' }}
-                >
-                   <div style={{ width: 44, height: 44, background: 'rgba(255, 86, 48, 0.1)', color: '#FF5630', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <ShieldAlert size={24} />
-                   </div>
-                   <div>
-                      <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{stats.totalLopUsers || 0}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>LOP ISSUES</div>
                    </div>
                 </div>
               </div>
