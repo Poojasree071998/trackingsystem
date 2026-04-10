@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'; // SYNC: 2026-04-10-LOP-STABLE-PROD-V5
 import { useNavigate } from 'react-router-dom'; // Deploy Marker: 2026-04-10-LOP-FORCE
 import { AuthContext } from '../context/AuthContext';
-import { ThemeContext } from '../context/ThemeContext';
+import { ThemeContext } from '../context/ThemeContext.jsx';
 import { 
   LogOut, PlusCircle, Briefcase, Users, FileBarChart, 
   Sun, Moon, Search, Filter, MessageSquare, Paperclip, X, CheckCircle, 

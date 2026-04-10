@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 /* Deploy Marker: 2026-04-10-LOP-FORCE-DEPLOY-V2 */
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
@@ -64,13 +65,15 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </SocketProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SocketProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </SocketProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

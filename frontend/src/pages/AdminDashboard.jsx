@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { ThemeContext } from '../context/ThemeContext';
+import { ThemeContext } from '../context/ThemeContext.jsx';
 import { LogOut, Users, FileText, Activity, LayoutDashboard, Briefcase, BarChart2, TrendingUp, TrendingDown, Sun, Moon, Search, PlusCircle, Plus, X, Layout, List, Settings, ChevronLeft, Bell, ChevronRight, UserPlus, Filter, LayoutList, Calendar, ShieldAlert } from 'lucide-react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
