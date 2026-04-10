@@ -552,9 +552,6 @@ const HRDashboard = () => {
 
           {/* DASHBOARD SUMMARY ETC RENDERING CONTINUES... */}
 
-          {/* LOP MANAGEMENT */}
-          {activeTab === 'lop' && <LOPManager />}
-
           {/* ATTENDANCE SECTION */}
           {activeTab === 'attendance' && (
             <HRAttendance />
