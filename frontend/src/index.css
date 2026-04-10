@@ -180,6 +180,7 @@ button.btn-secondary:hover {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  padding-bottom: 0.15em;
 }
 
 .text-subtle {
@@ -454,6 +455,7 @@ button.btn-secondary:hover {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  padding-bottom: 0.15em;
 }
 
 /* Jira Style Drawer */
