@@ -16,9 +16,9 @@ router.get('/seed-get', async (req, res) => {
     const hashPassword = (pwd) => bcrypt.hash(pwd, salt);
 
     await User.create([
-      { name: 'Admin User', email: 'admin@trackpro.com', password: await hashPassword('password123'), role: 'admin' },
-      { name: 'HR Manager', email: 'hr@trackpro.com', password: await hashPassword('password123'), role: 'hr' },
-      { name: 'John Doe', email: 'employee@trackpro.com', password: await hashPassword('password123'), role: 'employee', employeeId: 'EMP001' }
+      { name: 'Admin User', email: 'admin@techpro.com', password: await hashPassword('password123'), role: 'admin' },
+      { name: 'HR Manager', email: 'hr@techpro.com', password: await hashPassword('password123'), role: 'hr' },
+      { name: 'John Doe', email: 'employee@techpro.com', password: await hashPassword('password123'), role: 'employee', employeeId: 'EMP001' }
     ]);
     res.status(201).json({ message: 'Initial users created! You can now login with password "password123"' });
   } catch (err) {

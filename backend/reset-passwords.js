@@ -14,7 +14,7 @@ const reset = async () => {
     const hashedPassword = await bcrypt.hash('password123', salt);
     
     await User.updateMany(
-      { email: { $in: ['admin@trackpro.com', 'hr@trackpro.com', 'employee@trackpro.com'] } },
+      { email: { $in: ['admin@techpro.com', 'hr@techpro.com', 'employee@techpro.com'] } },
       { $set: { password: hashedPassword } }
     );
     
