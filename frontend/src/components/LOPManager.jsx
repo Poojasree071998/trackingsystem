@@ -26,10 +26,17 @@ const LOPManager = () => {
         axios.get(`${API_BASE_URL}/api/lop`)
       ]);
 
+      // Sort tasks to prioritize those with existing LOP records
+      const sortedOverdue = overdueRes.data.sort((a, b) => {
+        if (a.lopRecord && !b.lopRecord) return -1;
+        if (!a.lopRecord && b.lopRecord) return 1;
+        return 0;
+      });
+
       // Deduplicate Overdue Tasks (Key: EmployeeID + TaskTitle)
       const uniqueTasks = [];
       const taskSeen = new Set();
-      overdueRes.data.forEach(task => {
+      sortedOverdue.forEach(task => {
         const key = `${task.assignedToEmployee?._id}-${task.taskTitle}`;
         if (!taskSeen.has(key)) {
           uniqueTasks.push(task);
@@ -38,10 +45,13 @@ const LOPManager = () => {
       });
       setOverdueTasks(uniqueTasks);
 
+      // Sort history to show most recent records first
+      const sortedHistory = lopRes.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
       // Deduplicate History (Key: EmployeeID + TaskTitle)
       const uniqueRecords = [];
       const recordSeen = new Set();
-      lopRes.data.forEach(record => {
+      sortedHistory.forEach(record => {
         const key = `${record.employeeId?._id}-${record.taskId?.taskTitle || record.reason}`;
         if (!recordSeen.has(key)) {
           uniqueRecords.push(record);
