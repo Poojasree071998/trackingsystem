@@ -226,7 +226,7 @@ const EmployeeDashboard = () => {
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Direct Links</div>
             <div className={`jira-sidebar-btn ${activeTab === 'notifications' ? 'active' : ''}`} onClick={() => setActiveTab('notifications')}><Bell size={18} /> Notifications</div>
-             <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: '#FF5630' }}><ShieldAlert size={18} /> My LOP</div>
+            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: activeTab === 'lop' ? 800 : 500 }}><ShieldAlert size={18} /> My LOP</div>
             <div className={`jira-sidebar-btn ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}><UserIcon size={18} /> Profile</div>
           </div>
 
@@ -258,7 +258,7 @@ const EmployeeDashboard = () => {
               Governance <ChevronRight size={14} /> FIC <ChevronRight size={14} /> <span style={{ color: 'var(--primary)' }}>{activeTab.toUpperCase()}</span>
             </div>
             <h1 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-1px', color: 'var(--text-color)', margin: 0 }}>
-              {activeTab === 'dashboard' ? 'Performance Summary' : activeTab === 'list' ? 'Task Backlog' : activeTab === 'board' ? 'Work Board' : activeTab === 'attendance' ? 'My Attendance' : 'Profile'}
+              {activeTab === 'dashboard' ? 'Performance Summary' : activeTab === 'list' ? 'Task Backlog' : activeTab === 'board' ? 'Work Board' : activeTab === 'attendance' ? 'My Attendance' : activeTab === 'lop' ? 'My Loss of Pay' : 'Profile'}
             </h1>
           </header>
 

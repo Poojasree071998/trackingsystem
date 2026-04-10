@@ -359,7 +359,7 @@ const HRDashboard = () => {
             <div className={`jira-sidebar-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}><Activity size={18} /> HR Overview</div>
             <div className={`jira-sidebar-btn ${activeTab === 'list' ? 'active' : ''}`} onClick={() => setActiveTab('list')}><List size={18} /> Task Control</div>
             <div className={`jira-sidebar-btn ${activeTab === 'board' ? 'active' : ''}`} onClick={() => setActiveTab('board')}><Layout size={18} /> Team Board</div>
-            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><Shield size={18} /> Loss of Pay</div>
+            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><ShieldAlert size={18} /> Loss of Pay</div>
           </div>
           
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
