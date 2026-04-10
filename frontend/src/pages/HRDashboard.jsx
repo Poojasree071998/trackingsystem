@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react'; // SYNC: 2026-04-10-LOP-STABLE-PROD-V5
 import { useNavigate } from 'react-router-dom'; // Deploy Marker: 2026-04-10-LOP-FORCE
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -296,12 +296,7 @@ const HRDashboard = () => {
 
   return (
     <div className="jira-layout">
-      {/* FORCE VISIBILITY BANNER */}
-      <div style={{ background: '#FF5630', color: 'white', padding: '12px', textAlign: 'center', fontWeight: 900, fontSize: '0.8rem', letterSpacing: '2px', zIndex: 9999 }}>
-        DEPLOYED VERSION: STABLE-V4 (ALL LOP BUTTONS ENABLED)
-      </div>
-
-      {/* JIRA TOP NAV - HR */}
+      {/* FINAL SYSTEM SYNC - HR DASHBOARD */}
       <nav className="jira-top-nav">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
            <div className="nav-icon-container" style={{ background: 'var(--success)', color: 'white' }}>
@@ -394,7 +389,7 @@ const HRDashboard = () => {
           
           <div style={{ marginTop: 'auto', padding: '1rem', borderTop: '1px solid var(--card-border)' }}>
               <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                 Build: 2026-04-10-LOP-STABLE-V4
+                 Build: 2026-04-10-LOP-PROD-STABLE
               </div>
              <div className="jira-sidebar-btn" onClick={handleLogout} style={{ color: 'var(--danger)', background: 'rgba(255, 86, 48, 0.05)' }}>
                 <LogOut size={18} /> Logout
