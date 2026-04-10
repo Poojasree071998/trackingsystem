@@ -1,0 +1,4 @@
+FORCE BUILD SYNC: 2026-04-10-12:30
+This file is added to trigger a fresh Vercel detection of the repository.
+Current Commit Ref: fd91f68
+Final Build ID: STABLE-FINAL-v2
