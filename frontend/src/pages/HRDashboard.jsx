@@ -6,7 +6,7 @@ import {
   LogOut, PlusCircle, Briefcase, Users, FileBarChart, 
   Sun, Moon, Search, Filter, MessageSquare, Paperclip, X, CheckCircle, 
   Clock, AlertCircle, Activity, TrendingUp, UserCheck, UserMinus, 
-  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield, ShieldAlert
+  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield, ShieldAlert, Plus
 } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
