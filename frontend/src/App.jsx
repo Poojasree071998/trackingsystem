@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-/* Build Marker: 2026-04-09 16:16:14 */
+/* Build Marker: 2026-04-10 10:20-LOP-FORCE */
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import LandingPage from './pages/LandingPage';

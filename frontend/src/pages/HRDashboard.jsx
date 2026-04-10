@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Deploy Marker: 2026-04-10 10:12:00
+import { useNavigate } from 'react-router-dom'; // Deploy Marker: 2026-04-10-LOP-FORCE
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { 
@@ -387,7 +387,10 @@ const HRDashboard = () => {
             <div className="jira-sidebar-btn" onClick={() => setShowAddMemberModal(true)} style={{ color: 'var(--success)' }}><PlusCircle size={18} /> Add Operator</div>
           </div>
           
-          <div style={{ marginTop: 'auto', padding: '1rem' }}>
+          <div style={{ marginTop: 'auto', padding: '1rem', borderTop: '1px solid var(--card-border)' }}>
+             <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                Build: 2026-04-10-LOP-V1
+             </div>
              <div className="jira-sidebar-btn" onClick={handleLogout} style={{ color: 'var(--danger)', background: 'rgba(255, 86, 48, 0.05)' }}>
                 <LogOut size={18} /> Logout
              </div>
@@ -553,6 +556,9 @@ const HRDashboard = () => {
                        </button>
                        <button onClick={() => setShowNotificationModal(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', fontSize: '0.85rem', color: 'white' }}>
                           <Send size={16} /> Send Notification
+                       </button>
+                       <button onClick={() => setActiveTab('lop')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', fontSize: '0.85rem', color: 'white', background: '#FF5630' }}>
+                          <ShieldAlert size={16} /> Manage Loss of Pay
                        </button>
                     </div>
                  </div>
