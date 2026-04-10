@@ -7,8 +7,6 @@ import { LogOut, Users, FileText, Activity, LayoutDashboard, Briefcase, BarChart
 import axios from 'axios';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { API_BASE_URL, UPLOADS_BASE_URL } from '../apiConfig';
-import LOPManager from '../components/LOPManager';
-
 import { useSocket } from '../context/SocketContext';
 import AdminAttendance from '../components/AdminAttendance';
 
@@ -390,7 +388,6 @@ const AdminDashboard = () => {
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Governance</div>
             <div className={`jira-sidebar-btn ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}><Users size={18} /> Identity Manager</div>
-            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: activeTab === 'lop' ? 800 : 500 }}><ShieldAlert size={18} /> Loss of Pay</div>
             <div className={`jira-sidebar-btn ${activeTab === 'attendance' ? 'active' : ''}`} style={{ position: 'relative' }} onClick={() => setActiveTab('attendance')}>
               <Calendar size={18} /> Attendance Hub
               {pendingLeaveCount > 0 && (
@@ -424,7 +421,7 @@ const AdminDashboard = () => {
               FIC <ChevronRight size={14} /> Governance <ChevronRight size={14} /> {activeTab.toUpperCase()}
             </div>
             <h1 style={{ fontSize: '2rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-              {activeTab === 'dashboard' ? 'Executive Dashboard' : activeTab === 'list' ? 'Global Archive' : activeTab === 'projects' ? 'Active Workspaces' : activeTab === 'users' ? 'Directory' : activeTab === 'attendance' ? 'Attendance Overview' : activeTab === 'lop' ? 'Loss of Pay Control' : 'Analytics'}
+              {activeTab === 'dashboard' ? 'Executive Dashboard' : activeTab === 'list' ? 'Global Archive' : activeTab === 'projects' ? 'Active Workspaces' : activeTab === 'users' ? 'Directory' : activeTab === 'attendance' ? 'Attendance Overview' : 'Analytics'}
             </h1>
           </header>
 
@@ -782,9 +779,6 @@ const AdminDashboard = () => {
                </div>
             </div>
           )}
-
-          {/* LOP MANAGEMENT */}
-          {activeTab === 'lop' && <LOPManager />}
 
           {/* PROJECT WORKSPACE VIEW */}
           {activeTab === 'project-workspace' && renderProjectWorkspace()}
