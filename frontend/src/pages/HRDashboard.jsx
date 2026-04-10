@@ -557,9 +557,6 @@ const HRDashboard = () => {
                        <button onClick={() => setShowNotificationModal(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', fontSize: '0.85rem', color: 'white' }}>
                           <Send size={16} /> Send Notification
                        </button>
-                       <button onClick={() => setActiveTab('lop')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', fontSize: '0.85rem', color: 'white', background: '#FF5630' }}>
-                          <ShieldAlert size={16} /> Manage Loss of Pay
-                       </button>
                     </div>
                  </div>
               </div>
