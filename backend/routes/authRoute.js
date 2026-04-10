@@ -18,9 +18,9 @@ router.get('/seed-get', async (req, res) => {
     };
 
     await User.create([
-      { name: 'Admin User', email: 'adminfic@fic.com', password: await hashPassword('admin123'), role: 'admin' },
-      { name: 'HR Manager', email: 'hrfic@fic.com', password: await hashPassword('hr123'), role: 'hr' },
-      { name: 'John Doe', email: 'johnfic@fic.com', password: await hashPassword('john123'), role: 'employee', employeeId: 'EMP001' }
+      { name: 'Admin User', email: 'admin@fic.com', password: await hashPassword('admin123'), role: 'admin' },
+      { name: 'HR Manager', email: 'hr@fic.com', password: await hashPassword('hr123'), role: 'hr' },
+      { name: 'John Doe', email: 'john@fic.com', password: await hashPassword('john123'), role: 'employee', employeeId: 'EMP001' }
     ]);
     res.status(201).json({ message: 'Initial users created! You can now login with password "password123"' });
   } catch (err) {

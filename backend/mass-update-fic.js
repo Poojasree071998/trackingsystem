@@ -26,13 +26,13 @@ const migrate = async () => {
       let newPasswordRaw = '';
       
       if (user.role === 'admin') {
-        newEmail = 'adminfic@fic.com';
+        newEmail = 'admin@fic.com';
         newPasswordRaw = 'admin123';
       } else if (user.role === 'hr') {
-        newEmail = 'hrfic@fic.com';
+        newEmail = 'hr@fic.com';
         newPasswordRaw = 'hr123';
       } else {
-        newEmail = `${firstName}fic@fic.com`;
+        newEmail = `${firstName}@fic.com`;
         newPasswordRaw = `${firstName}123`;
       }
 
