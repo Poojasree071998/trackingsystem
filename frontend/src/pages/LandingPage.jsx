@@ -576,26 +576,6 @@ const LandingPage = () => {
                   </button>
                 </div>
 
-                {/* Service Status Indicator */}
-                <div style={{ 
-                  margin: '12px 40px 0', 
-                  padding: '8px 12px', 
-                  borderRadius: '8px', 
-                  background: '#F4F5F7', 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  fontSize: '0.75rem', 
-                  fontWeight: 700 
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: systemStatus.backend === 'online' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.backend === 'online' ? '0 0 6px rgba(54, 179, 126, 0.5)' : 'none' }}></div>
-                    <span style={{ color: '#42526E' }}>Backend: {systemStatus.backend.toUpperCase()}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.database === 'connected' ? '0 0 6px rgba(54, 179, 126, 0.5)' : 'none' }}></div>
-                    <span style={{ color: '#42526E' }}>Database: {systemStatus.database.toUpperCase()}</span>
-                  </div>
-                </div>
 
                 <div style={{ padding: '32px 40px 48px' }}>
                   <div style={{ display: 'flex', background: '#F4F5F7', padding: '4px', borderRadius: '12px', marginBottom: '2.5rem' }}>
