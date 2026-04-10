@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-/* Deploy Marker: 2026-04-10-LOP-FORCE-DEPLOY-V2 */
+/* Deploy Marker: 2026-04-10-SYNC-V7-FINAL */
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext.jsx';
