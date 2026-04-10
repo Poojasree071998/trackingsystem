@@ -32,8 +32,9 @@ const allowedOrigins = [
   "http://127.0.0.1:5176",
   "http://127.0.0.1:5177",
   "http://localhost:3000",
-  /\.vercel\.app$/,       // any Vercel deployment
-  /\.railway\.app$/,      // Railway hosted frontend
+  "https://trackingsystem1-yo3k.vercel.app", // User-provided deployment URL
+  /\.vercel\.app$/,                           // any other Vercel deployment
+  /\.railway\.app$/,                          // Railway hosted frontend
 ];
 
 const corsOptions = {

@@ -13,10 +13,10 @@ const getDevUrl = (port) => {
 };
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
-  // Foolproof detection: Use production URL for any domain OTHER than localhost
+  // Foolproof detection: Use origin for any domain OTHER than localhost
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
     ? getDevUrl('5001')
-    : 'https://trackingsystem-3mdl.onrender.com'
+    : window.location.origin
 );
 export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
