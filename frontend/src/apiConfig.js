@@ -22,6 +22,8 @@ export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
 console.log('📡 FIC API Strategy:', (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1') ? 'LOCAL' : 'PRODUCTION');
 console.log('🔗 Target Base URL:', API_BASE_URL);
+console.log('📦 DEPLOY VERSION:', '1.2.1-V8-SYNC');
+window.APP_VERSION = '1.2.1-V8-SYNC';
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
