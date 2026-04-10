@@ -1,4 +1,5 @@
-FORCE BUILD SYNC: 2026-04-10-16:48
+FORCE BUILD SYNC: 2026-04-10-18:16
 This file is added to trigger a fresh Vercel detection of the repository.
-Current Commit Ref: fd91f68
-Final Build ID: STABLE-FINAL-v2
+Current Commit Ref: 4e8a049
+Final Build ID: LOGIN-FIX-v3-STABLE
+Login fix: email normalize + cold-start retry applied to both login pages.
