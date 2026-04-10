@@ -781,9 +781,8 @@ const HRDashboard = () => {
       </div>
 
       {/* CREATE TASK DRAWER (RIGHT SIDE) */}
-      {showCreateModal && (
-        <div className="jira-drawer-overlay" onClick={() => setShowCreateModal(false)}>
-          <div className="jira-drawer-content" onClick={e => e.stopPropagation()}>
+      <div className={`right-drawer-overlay ${showCreateModal ? 'open' : ''}`} onClick={() => setShowCreateModal(false)}>
+        <div className={`right-drawer ${showCreateModal ? 'open' : ''}`} onClick={e => e.stopPropagation()}>
             <div className="drawer-header">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Dispatch New Duty</h2>
               <X size={24} onClick={() => setShowCreateModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
@@ -838,12 +837,10 @@ const HRDashboard = () => {
             </div>
           </div>
         </div>
-      )}
 
       {/* NOTIFICATION DRAWER (RIGHT SIDE) */}
-      {showNotificationModal && (
-        <div className="jira-drawer-overlay" onClick={() => setShowNotificationModal(false)}>
-          <div className="jira-drawer-content" onClick={e => e.stopPropagation()}>
+      <div className={`right-drawer-overlay ${showNotificationModal ? 'open' : ''}`} onClick={() => setShowNotificationModal(false)}>
+        <div className={`right-drawer ${showNotificationModal ? 'open' : ''}`} onClick={e => e.stopPropagation()}>
             <div className="drawer-header">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Pulse Broadcast</h2>
               <X size={24} onClick={() => setShowNotificationModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
@@ -871,7 +868,6 @@ const HRDashboard = () => {
             </div>
           </div>
         </div>
-      )}
 
       {/* MEMBER DETAILS MODAL */}
       {showMemberModal && selectedMember && (
