@@ -6,14 +6,13 @@ import {
   LogOut, PlusCircle, Briefcase, Users, FileBarChart, 
   Sun, Moon, Search, Filter, MessageSquare, Paperclip, X, CheckCircle, 
   Clock, AlertCircle, Activity, TrendingUp, BarChart, UserCheck, UserMinus, 
-  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield
+  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield, ShieldAlert
 } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 import axios from 'axios';
 import { useSocket } from '../context/SocketContext';
 import LOPManager from '../components/LOPManager';
-import { ShieldAlert } from 'lucide-react';
 import { API_BASE_URL, UPLOADS_BASE_URL } from '../apiConfig';
 import HRAttendance from '../components/HRAttendance';
 
@@ -390,7 +389,7 @@ const HRDashboard = () => {
           
           <div style={{ marginTop: 'auto', padding: '1rem', borderTop: '1px solid var(--card-border)' }}>
               <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                 Build: 2026-04-10-LOP-FORCE-V2
+                 Build: 2026-04-10-LOP-FINAL-STABLE
               </div>
              <div className="jira-sidebar-btn" onClick={handleLogout} style={{ color: 'var(--danger)', background: 'rgba(255, 86, 48, 0.05)' }}>
                 <LogOut size={18} /> Logout
