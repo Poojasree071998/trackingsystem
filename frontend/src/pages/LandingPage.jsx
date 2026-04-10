@@ -50,41 +50,62 @@ const LandingPage = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
-    try {
-      const res = await axios.post(API_ENDPOINTS.LOGIN, loginForm);
-      
-      // Ensure we have a valid user object before proceeding
-      if (res.data && res.data.user && res.data.token) {
-        login(res.data.token, res.data.user);
-        setIsLoading(false);
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowAuthModal(false);
-          setShowSuccess(false);
-          navigate(`/${res.data.user.role}-dashboard`);
-        }, 1500);
-      } else {
-        throw new Error('Invalid server response structure');
+
+    // Normalize email to handle whitespace/case mismatches
+    const normalizedEmail = loginForm.email.trim().toLowerCase();
+
+    const attemptLogin = async (retriesLeft) => {
+      try {
+        const res = await axios.post(API_ENDPOINTS.LOGIN, {
+          ...loginForm,
+          email: normalizedEmail
+        });
+
+        // Ensure we have a valid user object before proceeding
+        if (res.data && res.data.user && res.data.token) {
+          login(res.data.token, res.data.user);
+          setIsLoading(false);
+          setShowSuccess(true);
+          setTimeout(() => {
+            setShowAuthModal(false);
+            setShowSuccess(false);
+            navigate(`/${res.data.user.role}-dashboard`);
+          }, 1500);
+        } else {
+          throw new Error('Invalid server response structure');
+        }
+      } catch (err) {
+        if (err.response) {
+          const status = err.response.status;
+          const message = err.response.data?.message || '';
+
+          // 503 = Render backend cold-starting — retry automatically
+          if (status === 503 && retriesLeft > 0) {
+            setError(`⏳ Server is waking up... retrying in 4 seconds. (${retriesLeft} attempt${retriesLeft > 1 ? 's' : ''} left)`);
+            await new Promise(resolve => setTimeout(resolve, 4000));
+            return attemptLogin(retriesLeft - 1);
+          }
+
+          setIsLoading(false);
+          setError(message || 'Authentication failed. Please verify your credentials and try again.');
+        } else if (err.request) {
+          // No response at all — network or server down
+          if (retriesLeft > 0) {
+            setError(`⏳ Connecting to server... retrying. (${retriesLeft} attempt${retriesLeft > 1 ? 's' : ''} left)`);
+            await new Promise(resolve => setTimeout(resolve, 4000));
+            return attemptLogin(retriesLeft - 1);
+          }
+          setIsLoading(false);
+          setError('Server unreachable. Please try again in a moment.');
+        } else {
+          setIsLoading(false);
+          setError('Request setup failed. Please check your connection.');
+        }
+        setShowSuccess(false);
       }
-    } catch (err) {
-      setIsLoading(false);
-      const isLocal = window.location.hostname === 'localhost';
-      const apiUrl = API_ENDPOINTS.LOGIN.replace('/api/auth/login', '');
-      
-      if (err.response) {
-        // The server responded with a status code that falls out of the range of 2xx
-        setError(err.response.data.message || 'Authentication failed. Please verify your credentials and try again.');
-      } else if (err.request) {
-        // The request was made but no response was received
-        setError(`Server unreachable at ${apiUrl}. Please ensure the backend service is active. ${isLocal ? '(Run npm start on port 5001)' : ''}`);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        setError('Request setup failed. Please check your connection.');
-      }
-      // Explicitly reset success state to ensure no accidental redirect
-      setShowSuccess(false);
-    }
+    };
+
+    await attemptLogin(3);
   };
 
   const handleSignup = async (e) => {
