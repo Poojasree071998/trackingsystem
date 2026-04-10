@@ -358,7 +358,7 @@ const HRDashboard = () => {
             <div className={`jira-sidebar-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}><Activity size={18} /> HR Overview</div>
             <div className={`jira-sidebar-btn ${activeTab === 'list' ? 'active' : ''}`} onClick={() => setActiveTab('list')}><List size={18} /> Task Control</div>
             <div className={`jira-sidebar-btn ${activeTab === 'board' ? 'active' : ''}`} onClick={() => setActiveTab('board')}><Layout size={18} /> Team Board</div>
-            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><ShieldAlert size={18} /> Loss of Pay</div>
+            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><ShieldAlert size={18} /> Manage Loss of Pay</div>
           </div>
           
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
@@ -382,14 +382,13 @@ const HRDashboard = () => {
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Management</div>
             <div className={`jira-sidebar-btn ${activeTab === 'notifications' ? 'active' : ''}`} onClick={() => setActiveTab('notifications')}><Bell size={18} /> Inbox</div>
-            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><ShieldAlert size={18} /> Manage Loss of Pay</div>
             <div className="jira-sidebar-btn" onClick={() => setShowNotificationModal(true)} style={{ color: 'var(--primary)' }}><MessageSquare size={18} /> Send Alert</div>
             <div className="jira-sidebar-btn" onClick={() => setShowAddMemberModal(true)} style={{ color: 'var(--success)' }}><PlusCircle size={18} /> Add Operator</div>
           </div>
           
           <div style={{ marginTop: 'auto', padding: '1rem', borderTop: '1px solid var(--card-border)' }}>
               <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                 Build: 2026-04-10-LOP-PROD-STABLE
+                 Build: 2026-04-10-LOP-STABLE-FINAL
               </div>
              <div className="jira-sidebar-btn" onClick={handleLogout} style={{ color: 'var(--danger)', background: 'rgba(255, 86, 48, 0.05)' }}>
                 <LogOut size={18} /> Logout
