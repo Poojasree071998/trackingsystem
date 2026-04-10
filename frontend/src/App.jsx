@@ -55,6 +55,8 @@ function AppRoutes() {
 
 import { SocketProvider } from './context/SocketContext';
 
+/* Deploy Marker: 2026-04-10-LOP-FORCE-DEPLOY-STABLE-V4 */
+
 function App() {
   useEffect(() => {
     console.log('🚀 FIC Production Bridge Initialized');
@@ -64,7 +66,7 @@ function App() {
   return (
     <AuthProvider>
       <SocketProvider>
-        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Router>
           <AppRoutes />
         </Router>
       </SocketProvider>
