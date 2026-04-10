@@ -383,14 +383,15 @@ const HRDashboard = () => {
           <div style={{ padding: '0 0.8rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem' }}>Management</div>
             <div className={`jira-sidebar-btn ${activeTab === 'notifications' ? 'active' : ''}`} onClick={() => setActiveTab('notifications')}><Bell size={18} /> Inbox</div>
+            <div className={`jira-sidebar-btn ${activeTab === 'lop' ? 'active' : ''}`} onClick={() => setActiveTab('lop')} style={{ color: activeTab === 'lop' ? 'var(--primary)' : '#FF5630', fontWeight: 800 }}><ShieldAlert size={18} /> Manage Loss of Pay</div>
             <div className="jira-sidebar-btn" onClick={() => setShowNotificationModal(true)} style={{ color: 'var(--primary)' }}><MessageSquare size={18} /> Send Alert</div>
             <div className="jira-sidebar-btn" onClick={() => setShowAddMemberModal(true)} style={{ color: 'var(--success)' }}><PlusCircle size={18} /> Add Operator</div>
           </div>
           
           <div style={{ marginTop: 'auto', padding: '1rem', borderTop: '1px solid var(--card-border)' }}>
-             <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                Build: 2026-04-10-LOP-V1
-             </div>
+              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                 Build: 2026-04-10-LOP-FORCE-V2
+              </div>
              <div className="jira-sidebar-btn" onClick={handleLogout} style={{ color: 'var(--danger)', background: 'rgba(255, 86, 48, 0.05)' }}>
                 <LogOut size={18} /> Logout
              </div>
@@ -412,7 +413,7 @@ const HRDashboard = () => {
           {activeTab === 'dashboard' && (
             <div className="fade-in-up">
               {/* TOP: HR STATS */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.2rem', marginBottom: '2.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1.2rem', marginBottom: '2.5rem' }}>
                 <div className="jira-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                    <div style={{ width: 44, height: 44, background: 'rgba(54, 179, 126, 0.1)', color: 'var(--success)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Users size={24} />
@@ -447,6 +448,15 @@ const HRDashboard = () => {
                    <div>
                       <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{stats.totalInterviews || 0}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>INTERVIEWS</div>
+                   </div>
+                </div>
+                <div className="jira-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }} onClick={() => setActiveTab('lop')}>
+                   <div style={{ width: 44, height: 44, background: 'rgba(255, 86, 48, 0.1)', color: 'var(--danger)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <ShieldAlert size={24} />
+                   </div>
+                   <div>
+                      <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{stats.totalLopUsers || 0}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>LOP DEDUCTIONS</div>
                    </div>
                 </div>
               </div>
