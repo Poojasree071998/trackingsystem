@@ -120,28 +120,6 @@ const LandingPage = () => {
 
   return (
     <div className="bg-mesh" style={{ minHeight: '100vh', overflowX: 'hidden' }}>
-      {/* Production Visual Heartbeat */}
-      <div id="production-heartbeat" style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        background: window.location.hostname === 'localhost' ? '#00B8D9' : '#36B37E',
-        color: 'white',
-        padding: '4px 10px',
-        fontSize: '0.65rem',
-        fontWeight: 700,
-        textAlign: 'center',
-        zIndex: 1000000,
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '20px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <span>🌐 ENV: {window.location.hostname === 'localhost' ? 'DEVELOPMENT' : 'PRODUCTION'}</span>
-        <span>🔗 API: {API_ENDPOINTS.HEALTH.replace('/api/health', '')}</span>
-        <span>⏰ STATUS: {systemStatus.backend.toUpperCase()}</span>
-      </div>
 
       {/* Premium Navbar */}
       <nav style={{ 
