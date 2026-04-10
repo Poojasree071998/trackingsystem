@@ -754,10 +754,91 @@ const AdminDashboard = () => {
           {/* ANALYTICS / REPORTS */}
           {activeTab === 'reports' && (
              <div className="fade-in-up">
-                <div className="jira-card" style={{ padding: '4rem', textAlign: 'center' }}>
-                   <BarChart2 size={64} style={{ color: 'var(--primary)', opacity: 0.2, marginBottom: '2rem' }} />
-                   <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Under Intelligence Review</h2>
-                   <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Strategic data pipelines are currently being aggregated for Q4 reporting.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+                   {/* 1. GLOBAL PRODUCTIVITY FLOW */}
+                   <div className="jira-card" style={{ padding: '2rem' }}>
+                      <h3 style={{ marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 800 }}>Global Productivity Flow</h3>
+                      <div style={{ height: '300px' }}>
+                         <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={[
+                               { stage: 'To Do', volume: tasks.filter(t => t.status === 'To Do').length },
+                               { stage: 'In Progress', volume: tasks.filter(t => t.status === 'In Progress').length },
+                               { stage: 'Completed', volume: tasks.filter(t => t.status === 'Completed').length }
+                            ]}>
+                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--card-border)" />
+                               <XAxis dataKey="stage" axisLine={false} tickLine={false} stroke="var(--text-muted)" />
+                               <YAxis axisLine={false} tickLine={false} stroke="var(--text-muted)" />
+                               <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                               <Line type="monotone" dataKey="volume" stroke="var(--primary)" strokeWidth={4} dot={{ r: 6, fill: 'var(--primary)' }} activeDot={{ r: 10 }} />
+                            </LineChart>
+                         </ResponsiveContainer>
+                      </div>
+                   </div>
+
+                   {/* 2. RESOURCE DEPLOYMENT */}
+                   <div className="jira-card" style={{ padding: '2rem' }}>
+                      <h3 style={{ marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 800 }}>Resource Deployment</h3>
+                      <div style={{ height: '300px' }}>
+                         <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                               <Pie 
+                                 data={[
+                                    { name: 'Admin Command', value: allUsers.filter(u => u.role === 'admin').length },
+                                    { name: 'HR Hub', value: allUsers.filter(u => u.role === 'hr').length },
+                                    { name: 'Operator Units', value: allUsers.filter(u => u.role === 'employee').length }
+                                 ]} 
+                                 cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={8} dataKey="value"
+                               >
+                                  <Cell fill="var(--primary)" />
+                                  <Cell fill="var(--success)" />
+                                  <Cell fill="var(--accent)" />
+                               </Pie>
+                               <Tooltip />
+                               <Legend verticalAlign="bottom" height={36}/>
+                            </PieChart>
+                         </ResponsiveContainer>
+                      </div>
+                   </div>
+
+                   {/* 3. PORTFOLIO MOMENTUM (Project Progress) */}
+                   <div className="jira-card" style={{ padding: '2rem' }}>
+                      <h3 style={{ marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 800 }}>Portfolio Momentum</h3>
+                      <div style={{ height: '300px' }}>
+                         <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={projects.slice(0, 6).map(p => ({ name: p.projectKey, progress: p.progress || 0 }))}>
+                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--card-border)" />
+                               <XAxis dataKey="name" axisLine={false} tickLine={false} stroke="var(--text-muted)" />
+                               <YAxis axisLine={false} tickLine={false} stroke="var(--text-muted)" />
+                               <Tooltip cursor={{ fill: 'var(--column-bg)' }} />
+                               <Bar dataKey="progress" fill="var(--success)" radius={[4, 4, 0, 0]} barSize={30} />
+                            </BarChart>
+                         </ResponsiveContainer>
+                      </div>
+                   </div>
+
+                   {/* 4. PRIORITY CONCENTRATION */}
+                   <div className="jira-card" style={{ padding: '2rem' }}>
+                      <h3 style={{ marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 800 }}>Priority Concentration</h3>
+                      <div style={{ height: '300px' }}>
+                         <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={[
+                               { level: 'High Alert', count: tasks.filter(t => t.priority === 'High').length },
+                               { level: 'Standard', count: tasks.filter(t => t.priority === 'Medium').length },
+                               { level: 'Low Impact', count: tasks.filter(t => t.priority === 'Low').length }
+                            ]}>
+                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--card-border)" />
+                               <XAxis dataKey="level" axisLine={false} tickLine={false} stroke="var(--text-muted)" />
+                               <YAxis axisLine={false} tickLine={false} stroke="var(--text-muted)" />
+                               <Tooltip cursor={{ fill: 'var(--column-bg)' }} />
+                               <Bar dataKey="count" radius={[4, 4, 0, 0]} barSize={40}>
+                                  <Cell fill="var(--danger)" />
+                                  <Cell fill="var(--primary)" />
+                                  <Cell fill="var(--success)" />
+                               </Bar>
+                            </BarChart>
+                         </ResponsiveContainer>
+                      </div>
+                   </div>
                 </div>
              </div>
           )}
