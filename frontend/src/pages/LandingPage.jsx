@@ -689,11 +689,22 @@ const LandingPage = () => {
 
                     {modalTab === 'signup' && (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                         <input 
-                            placeholder="Designation" 
-                            value={signupForm.designation} onChange={e => setSignupForm({...signupForm, designation: e.target.value})}
-                            style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '2px solid #DFE1E6', outline: 'none', fontSize: '0.95rem' }} 
-                         />
+                          <select 
+                            className="form-input" 
+                            required
+                            value={signupForm.designation} 
+                            onChange={e => setSignupForm({...signupForm, designation: e.target.value})}
+                            style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '2px solid #DFE1E6', outline: 'none', fontSize: '0.95rem' }}
+                          >
+                            <option value="">Select Designation</option>
+                            <option value="Specialist">Specialist</option>
+                            <option value="Associate Analyst">Associate Analyst</option>
+                            <option value="Senior Analyst">Senior Analyst</option>
+                            <option value="Team Lead">Team Lead</option>
+                            <option value="Project Manager">Project Manager</option>
+                            <option value="Quality Specialist">Quality Specialist</option>
+                            <option value="Central Operations">Central Operations</option>
+                          </select>
                          <input 
                             placeholder="Department" 
                             value={signupForm.department} onChange={e => setSignupForm({...signupForm, department: e.target.value})}

@@ -952,7 +952,15 @@ const HRDashboard = () => {
                   </div>
                   <div className="form-group">
                      <label className="form-label">Designation</label>
-                     <input type="text" className="form-input" required value={addMemberForm.designation} onChange={e => setAddMemberForm({...addMemberForm, designation: e.target.value})} />
+                     <select className="form-input" required value={addMemberForm.designation} onChange={e => setAddMemberForm({...addMemberForm, designation: e.target.value})}>
+                        <option value="Specialist">Specialist</option>
+                        <option value="Associate Analyst">Associate Analyst</option>
+                        <option value="Senior Analyst">Senior Analyst</option>
+                        <option value="Team Lead">Team Lead</option>
+                        <option value="Project Manager">Project Manager</option>
+                        <option value="Quality Specialist">Quality Specialist</option>
+                        <option value="Central Operations">Central Operations</option>
+                     </select>
                   </div>
                   <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
                      <button type="button" onClick={() => setShowAddMemberModal(false)} className="btn-secondary" style={{ flex: 1 }}>Cancel</button>
