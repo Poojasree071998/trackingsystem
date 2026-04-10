@@ -25,8 +25,30 @@ const LOPManager = () => {
         axios.get(`${API_BASE_URL}/api/lop/overdue-tasks`),
         axios.get(`${API_BASE_URL}/api/lop`)
       ]);
-      setOverdueTasks(overdueRes.data);
-      setLopRecords(lopRes.data);
+
+      // Deduplicate Overdue Tasks (Key: EmployeeID + TaskTitle)
+      const uniqueTasks = [];
+      const taskSeen = new Set();
+      overdueRes.data.forEach(task => {
+        const key = `${task.assignedToEmployee?._id}-${task.taskTitle}`;
+        if (!taskSeen.has(key)) {
+          uniqueTasks.push(task);
+          taskSeen.add(key);
+        }
+      });
+      setOverdueTasks(uniqueTasks);
+
+      // Deduplicate History (Key: EmployeeID + TaskTitle)
+      const uniqueRecords = [];
+      const recordSeen = new Set();
+      lopRes.data.forEach(record => {
+        const key = `${record.employeeId?._id}-${record.taskId?.taskTitle || record.reason}`;
+        if (!recordSeen.has(key)) {
+          uniqueRecords.push(record);
+          recordSeen.add(key);
+        }
+      });
+      setLopRecords(uniqueRecords);
     } catch (err) {
       console.error('Failed to fetch LOP data', err);
     } finally {
