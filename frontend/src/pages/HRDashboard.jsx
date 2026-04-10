@@ -389,7 +389,7 @@ const HRDashboard = () => {
           
           <div style={{ marginTop: 'auto', padding: '1rem', borderTop: '1px solid var(--card-border)' }}>
               <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textAlign: 'center', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                 Build: 2026-04-10-LOP-FINAL-STABLE
+                 Build: 2026-04-10-LOP-STABLE-V3
               </div>
              <div className="jira-sidebar-btn" onClick={handleLogout} style={{ color: 'var(--danger)', background: 'rgba(255, 86, 48, 0.05)' }}>
                 <LogOut size={18} /> Logout
