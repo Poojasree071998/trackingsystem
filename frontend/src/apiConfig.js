@@ -9,7 +9,7 @@ const getDevUrl = (port) => {
      return `http://${hostname}:${port}`;
   }
   // Production fallback for Vercel/Render
-  return 'https://trackingsystem-3mdl.onrender.com'; 
+  return 'https://trackingsystem1-black.vercel.app'; 
 };
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
@@ -22,13 +22,13 @@ export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
 console.log('📡 FIC API Strategy:', (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1') ? 'LOCAL' : 'PRODUCTION');
 console.log('🔗 Target Base URL:', API_BASE_URL);
-console.log('📦 DEPLOY VERSION:', '1.2.1-V8-SYNC');
-window.APP_VERSION = '1.2.1-V8-SYNC';
+console.log('📦 DEPLOY VERSION:', '1.2.2-DIAG');
+window.APP_VERSION = '1.2.2-DIAG';
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
     ? getDevUrl('5001')
-    : 'https://trackingsystem-3mdl.onrender.com'
+    : 'https://trackingsystem1-black.vercel.app'
 );
 
 if (!API_BASE_URL && window.location.hostname !== 'localhost') {

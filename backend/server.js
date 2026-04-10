@@ -7,12 +7,17 @@ const http = require('http');
 const { Server } = require('socket.io');
 const dns = require('dns');
 
-// Force DNS resolution to Google Public DNS to avoid SRV query issues on local networks
-try {
-  dns.setServers(['8.8.8.8', '8.8.4.4']);
-  console.log('🌐 DNS resolution paths secured (Google DNS)');
-} catch (e) {
-  console.warn('⚠️  Note: Custom DNS configuration failed, using system defaults.');
+// Force DNS resolution to Google Public DNS only if specifically requested or in known problematic environments
+// On Vercel, this is often NOT recommended as it can break internal resolution.
+if (process.env.USE_GOOGLE_DNS === 'true' || (process.env.NODE_ENV !== 'production' && !process.env.VERCEL)) {
+  try {
+    dns.setServers(['8.8.8.8', '8.8.4.4']);
+    console.log('🌐 DNS resolution paths secured (Google DNS)');
+  } catch (e) {
+    console.warn('⚠️  Note: Custom DNS configuration failed, using system defaults.');
+  }
+} else {
+  console.log('🌐 Using system default DNS resolution');
 }
 
 dotenv.config();
@@ -96,6 +101,8 @@ app.use('/api/attendance', require('./routes/attendanceRoute'));
 app.use('/api/leaves', require('./routes/leaveRoute'));
 app.use('/api/lop', require('./routes/lopRoute'));
 
+let lastDbError = null;
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   const dbStatus = mongoose.connection.readyState;
@@ -110,7 +117,9 @@ app.get('/api/health', (req, res) => {
     status: 'online', 
     timestamp: new Date(),
     database: statusMap[dbStatus] || 'unknown',
-    dbReady: dbStatus === 1
+    dbReady: dbStatus === 1,
+    dbError: lastDbError,
+    version: '1.2.2-DIAG'
   });
 });
 
@@ -149,12 +158,14 @@ server.listen(PORT, '0.0.0.0', () => {
     
     console.log(`📡 URI prefix check: ${uri.substring(0, 15)}...`);
     
-    mongoose.connect(uri)
+    mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 })
       .then(() => {
         console.log('✅ Successfully connected to MongoDB Central');
         console.log(`📂 Database: ${mongoose.connection.name}`);
+        lastDbError = null;
       })
       .catch((err) => {
+        lastDbError = err.message;
         console.error('❌ Critical: MongoDB Connection Failed');
         console.error(`📝 Error Detail: ${err.message}`);
         console.log('⚠️  The server is running but authentication and data features will be restricted.');

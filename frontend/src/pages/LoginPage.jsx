@@ -62,7 +62,7 @@ const LoginPage = () => {
     logout();
   };
 
-  const [systemStatus, setSystemStatus] = useState({ backend: 'checking', database: 'checking' });
+  const [systemStatus, setSystemStatus] = useState({ backend: 'checking', database: 'checking', dbError: null });
 
   // Poll for system health
   useEffect(() => {
@@ -71,7 +71,8 @@ const LoginPage = () => {
         const res = await axios.get(API_ENDPOINTS.HEALTH);
         setSystemStatus({ 
           backend: 'online', 
-          database: res.data.dbReady ? 'connected' : 'disconnected' 
+          database: res.data.dbReady ? 'connected' : 'disconnected',
+          dbError: res.data.dbError || null
         });
       } catch (err) {
         setSystemStatus({ backend: 'offline', database: 'unknown' });
@@ -205,9 +206,16 @@ const LoginPage = () => {
               <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.backend === 'online' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.backend === 'online' ? '0 0 5px #36B37E' : 'none' }}></div>
               <span style={{ color: '#42526E' }}>BACKEND: {systemStatus.backend.toUpperCase()}</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.database === 'connected' ? '0 0 5px #36B37E' : 'none' }}></div>
-              <span style={{ color: '#42526E' }}>DATABASE: {systemStatus.database.toUpperCase()}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: systemStatus.database === 'connected' ? '#36B37E' : '#FF5630', boxShadow: systemStatus.database === 'connected' ? '0 0 5px #36B37E' : 'none' }}></div>
+                <span style={{ color: '#42526E' }}>DATABASE: {systemStatus.database.toUpperCase()}</span>
+              </div>
+              {systemStatus.dbError && (
+                <div style={{ fontSize: '0.55rem', color: '#FF5630', marginTop: '2px', maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={systemStatus.dbError}>
+                  Error: {systemStatus.dbError}
+                </div>
+              )}
             </div>
             <button 
               onClick={() => window.location.reload()} 
