@@ -12,13 +12,15 @@ router.get('/seed-get', async (req, res) => {
     const count = await User.countDocuments();
     if (count > 0) return res.status(400).json({ message: 'Users already seeded' });
 
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = (pwd) => bcrypt.hash(pwd, salt);
+    const hashPassword = async (pwd) => {
+      const salt = await bcrypt.genSalt(10);
+      return bcrypt.hash(pwd, salt);
+    };
 
     await User.create([
-      { name: 'Admin User', email: 'admin@techpro.com', password: await hashPassword('password123'), role: 'admin' },
-      { name: 'HR Manager', email: 'hr@techpro.com', password: await hashPassword('password123'), role: 'hr' },
-      { name: 'John Doe', email: 'employee@techpro.com', password: await hashPassword('password123'), role: 'employee', employeeId: 'EMP001' }
+      { name: 'Admin User', email: 'adminfic@fic.com', password: await hashPassword('admin123'), role: 'admin' },
+      { name: 'HR Manager', email: 'hrfic@fic.com', password: await hashPassword('hr123'), role: 'hr' },
+      { name: 'John Doe', email: 'johnfic@fic.com', password: await hashPassword('john123'), role: 'employee', employeeId: 'EMP001' }
     ]);
     res.status(201).json({ message: 'Initial users created! You can now login with password "password123"' });
   } catch (err) {
