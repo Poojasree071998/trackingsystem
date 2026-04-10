@@ -106,6 +106,7 @@ const HRDashboard = () => {
   }, [socket, user]);
 
   const fetchData = async () => {
+    if (!user || !user.id) return;
     try {
       const [tasksRes, employeesRes, statsRes, notifRes, projectsRes, leavesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/api/tasks?role=hr&userId=${user.id}`),

@@ -27,9 +27,9 @@ const LOPManager = () => {
       ]);
 
       // Sort tasks to prioritize those with existing LOP records
-      const sortedOverdue = overdueRes.data.sort((a, b) => {
-        if (a.lopRecord && !b.lopRecord) return -1;
-        if (!a.lopRecord && b.lopRecord) return 1;
+      const sortedOverdue = (overdueRes.data || []).sort((a, b) => {
+        if (a?.lopRecord && !b?.lopRecord) return -1;
+        if (!a?.lopRecord && b?.lopRecord) return 1;
         return 0;
       });
 
@@ -46,7 +46,7 @@ const LOPManager = () => {
       setOverdueTasks(uniqueTasks);
 
       // Sort history to show most recent records first
-      const sortedHistory = lopRes.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const sortedHistory = (lopRes.data || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       // Deduplicate History (Key: EmployeeID + TaskTitle)
       const uniqueRecords = [];

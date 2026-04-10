@@ -66,6 +66,7 @@ const AdminDashboard = () => {
   }, [socket, user]);
 
   const fetchData = async () => {
+    if (!user || !user.id) return;
     try {
       const [statsRes, tasksRes, notifRes, usersRes, projectsRes, leavesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/api/tasks/stats?role=admin&userId=${user.id}`),

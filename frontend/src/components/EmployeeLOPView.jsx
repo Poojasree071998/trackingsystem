@@ -18,7 +18,7 @@ const EmployeeLOPView = ({ userId }) => {
         const seen = new Set();
         
         // Sort to show most recent first
-        const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sorted = (res.data || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         
         sorted.forEach(record => {
           const key = record.taskId?.taskTitle || record.reason;
