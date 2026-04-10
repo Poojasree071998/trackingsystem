@@ -754,9 +754,17 @@ const HRDashboard = () => {
           {/* NOTIFICATIONS TAB */}
           {activeTab === 'notifications' && (
             <div className="fade-in-up">
-              <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '2rem', borderBottom: '1px solid var(--card-border)' }}>
-                 <div onClick={() => setNotifTab('inbox')} style={{ paddingBottom: '12px', borderBottom: notifTab === 'inbox' ? '3px solid var(--primary)' : 'none', cursor: 'pointer', fontWeight: 800, color: notifTab === 'inbox' ? 'var(--primary)' : 'var(--text-muted)' }}>Incoming</div>
-                 <div onClick={() => setNotifTab('sent')} style={{ paddingBottom: '12px', borderBottom: notifTab === 'sent' ? '3px solid var(--primary)' : 'none', cursor: 'pointer', fontWeight: 800, color: notifTab === 'sent' ? 'var(--primary)' : 'var(--text-muted)' }}>History</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid var(--card-border)' }}>
+                 <div style={{ display: 'flex', gap: '1.5rem' }}>
+                    <div onClick={() => setNotifTab('inbox')} style={{ paddingBottom: '12px', borderBottom: notifTab === 'inbox' ? '3px solid var(--primary)' : 'none', cursor: 'pointer', fontWeight: 800, color: notifTab === 'inbox' ? 'var(--primary)' : 'var(--text-muted)' }}>Incoming</div>
+                    <div onClick={() => setNotifTab('sent')} style={{ paddingBottom: '12px', borderBottom: notifTab === 'sent' ? '3px solid var(--primary)' : 'none', cursor: 'pointer', fontWeight: 800, color: notifTab === 'sent' ? 'var(--primary)' : 'var(--text-muted)' }}>History</div>
+                 </div>
+                 <button 
+                  onClick={() => setShowNotificationModal(true)}
+                  className="btn-primary" 
+                  style={{ marginBottom: '10px', padding: '6px 16px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'white' }}>
+                    <Plus size={16} /> New Transmission
+                 </button>
               </div>
               <div style={{ display: 'grid', gap: '1rem' }}>
                 {notifications.filter(n => notifTab === 'sent' ? n.sender?._id === user.id : n.recipient?._id === user.id).map(notif => (
@@ -838,33 +846,65 @@ const HRDashboard = () => {
           </div>
         </div>
 
-      {/* NOTIFICATION DRAWER (RIGHT SIDE) */}
+      {/* NOTIFICATION DRAWER (PULSE BROADCAST) */}
       <div className={`right-drawer-overlay ${showNotificationModal ? 'open' : ''}`} onClick={() => setShowNotificationModal(false)}>
         <div className={`right-drawer ${showNotificationModal ? 'open' : ''}`} onClick={e => e.stopPropagation()}>
-            <div className="drawer-header">
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Pulse Broadcast</h2>
-              <X size={24} onClick={() => setShowNotificationModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
+            <div className="drawer-header" style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--card-border)', background: 'var(--bg-color)', position: 'sticky', top: 0, zIndex: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Pulse Broadcast Hub</h2>
+                 <X size={24} onClick={() => setShowNotificationModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
+              </div>
             </div>
-            <div className="drawer-content">
-              <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.9rem' }}>Send real-time alerts to specific users or broadcast to the entire organization.</p>
+            
+            <div className="drawer-content" style={{ padding: '2rem' }}>
+              <div style={{ background: 'rgba(var(--primary-rgb), 0.05)', padding: '1.2rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(var(--primary-rgb), 0.1)' }}>
+                 <p style={{ color: 'var(--text-color)', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Shield size={16} style={{ color: 'var(--primary)' }} /> Secure Messaging Protocol
+                 </p>
+                 <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: '1.4' }}>
+                    Send real-time alerts to specific units or broadcast urgent directives to the entire organization.
+                 </p>
+              </div>
+
               <form onSubmit={handleSendNotification}>
-                <div className="form-group">
-                   <label className="form-label">Target Audience</label>
-                   <select className="form-select" required value={notificationForm.recipient} onChange={e => setNotificationForm({...notificationForm, recipient: e.target.value})}>
-                     <option value="">Select Target</option>
-                     <option value="all">🌐 ALL OPERATORS (GLOBAL)</option>
-                     {employees.map(emp => <option key={emp._id} value={emp._id}>{emp.name}</option>)}
+                <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                   <label className="form-label" style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '8px' }}>Target Audience</label>
+                   <select 
+                    className="form-select" 
+                    required 
+                    value={notificationForm.recipient} 
+                    onChange={e => setNotificationForm({...notificationForm, recipient: e.target.value})}
+                    style={{ width: '100%', padding: '12px', background: 'var(--column-bg)', border: '1px solid var(--card-border)', borderRadius: '8px', color: 'var(--text-color)', fontWeight: 600 }}
+                   >
+                     <option value="">Select Operational Unit</option>
+                     <option value="all" style={{ fontWeight: 800, color: 'var(--primary)' }}>🌐 GLOBAL BROADCAST (ALL UNITS)</option>
+                     <optgroup label="Deployed Employees">
+                        {employees.map(emp => <option key={emp._id} value={emp._id}>{emp.name} — {emp.designation}</option>)}
+                     </optgroup>
                    </select>
                 </div>
                 <div className="form-group">
-                   <label className="form-label">Transmission Message</label>
-                   <textarea className="form-textarea" required rows="6" value={notificationForm.message} onChange={e => setNotificationForm({...notificationForm, message: e.target.value})} placeholder="Urgent update or announcement..." />
+                   <label className="form-label" style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '8px' }}>Directive Transmission</label>
+                   <textarea 
+                    className="form-textarea" 
+                    required 
+                    rows="8" 
+                    value={notificationForm.message} 
+                    onChange={e => setNotificationForm({...notificationForm, message: e.target.value})} 
+                    placeholder="Enter urgent update, announcement, or instruction..." 
+                    style={{ width: '100%', padding: '15px', background: 'var(--column-bg)', border: '1px solid var(--card-border)', borderRadius: '8px', color: 'var(--text-color)', fontSize: '0.95rem', resize: 'none' }}
+                   />
                 </div>
               </form>
             </div>
-            <div className="drawer-footer">
-               <button onClick={() => setShowNotificationModal(false)} className="btn-secondary" style={{ padding: '10px 20px', fontSize: '0.9rem' }}>Discard</button>
-               <button onClick={handleSendNotification} className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.9rem' }}>Emit Pulse 🔔</button>
+
+            <div className="drawer-footer" style={{ padding: '1.5rem 2rem', borderTop: '1px solid var(--card-border)', background: 'var(--bg-color)', position: 'sticky', bottom: 0 }}>
+               <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem' }}>
+                  <button onClick={() => setShowNotificationModal(false)} className="btn-secondary" style={{ padding: '12px' }}>Discard</button>
+                  <button onClick={handleSendNotification} className="btn-primary" style={{ padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', color: 'white' }}>
+                     <Send size={18} /> Emit Transmission 🔔
+                  </button>
+               </div>
             </div>
           </div>
         </div>
