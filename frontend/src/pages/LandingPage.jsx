@@ -747,7 +747,7 @@ const LandingPage = () => {
       )}
       {/* BUILD SYNC MARKER */}
       <div style={{ position: 'fixed', bottom: '10px', right: '10px', fontSize: '10px', color: 'rgba(0,0,0,0.2)', pointerEvents: 'none', zIndex: 9999 }}>
-        DEPLOY: 2026-04-10-V8-SYNC
+        DEPLOY: 2026-04-10-V9-SYNC-FINAL
       </div>
     </div>
   );
