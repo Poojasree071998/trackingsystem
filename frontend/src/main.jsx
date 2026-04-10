@@ -7,7 +7,8 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>
-      <App />
+      {/* PROD SYNC: 2026-04-10-STABLE */}
+    <App />
     </ThemeProvider>
   </React.StrictMode>,
 )
