@@ -20,9 +20,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { name, email, designation, department } = req.body;
-    
+
+    // Normalize email to prevent case/space mismatch issues at login
+    const normalizedEmail = (email || '').trim().toLowerCase();
+    if (!normalizedEmail) return res.status(400).json({ message: 'Email is required.' });
+
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
     const salt = await bcrypt.genSalt(10);
@@ -30,7 +34,7 @@ router.post('/', async (req, res) => {
 
     const newUser = new User({
       name,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       role: 'employee',
       designation,

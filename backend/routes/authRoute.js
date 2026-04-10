@@ -29,22 +29,53 @@ router.get('/seed-get', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    // Critical: Verify DB connection before attempting lookup
-    if (require('mongoose').connection.readyState !== 1) {
-      return res.status(503).json({ message: 'Database Connection Error. Please verify your internet connection and ensure your IP is whitelisted in MongoDB Atlas.' });
+    const mongoose = require('mongoose');
+
+    // If the DB is still in the process of connecting (e.g. Render cold start),
+    // wait up to 10 seconds for it to become ready before failing.
+    if (mongoose.connection.readyState !== 1) {
+      let waited = 0;
+      while (mongoose.connection.readyState === 2 && waited < 10000) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        waited += 500;
+      }
+      // After waiting, if still not connected, return a proper error
+      if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({ 
+          message: 'The server is starting up. Please wait a moment and try again.',
+          retryAfter: 5
+        });
+      }
     }
 
     const { email, password } = req.body;
-    
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    
+
+    // Validate input fields are present
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required.' });
+    }
+
+    // Normalize email: trim whitespace and convert to lowercase to prevent case/space mismatches
+    const normalizedEmail = email.trim().toLowerCase();
+
+    console.log(`🔐 Login attempt for: ${normalizedEmail}`);
+
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) {
+      console.log(`❌ Login failed - user not found: ${normalizedEmail}`);
+      return res.status(401).json({ message: 'Invalid email or password.' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      console.log(`❌ Login failed - wrong password for: ${normalizedEmail}`);
+      return res.status(401).json({ message: 'Invalid email or password.' });
+    }
 
     const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
-    
+
+    console.log(`✅ Login successful for: ${normalizedEmail} (${user.role})`);
+
     res.json({
       token,
       user: {
@@ -57,7 +88,8 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error('❌ Login route error:', err.message);
+    res.status(500).json({ message: 'An internal server error occurred. Please try again.' });
   }
 });
 

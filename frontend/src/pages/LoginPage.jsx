@@ -102,29 +102,51 @@ const LoginPage = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
-    // Managed delay for professional "FIC-style" authentication transition
-    setTimeout(async () => {
+
+    // Normalize email before sending to handle whitespace/case issues
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const attemptLogin = async (retriesLeft) => {
       try {
         const res = await axios.post(API_ENDPOINTS.LOGIN, {
-          email, password, role
+          email: normalizedEmail, password, role
         });
-        
         login(res.data.token, res.data.user);
         setIsLoading(false);
         setShowSuccess(true);
       } catch (err) {
-        setIsLoading(false);
-        const isLocal = window.location.hostname === 'localhost';
         if (err.response) {
-          setError(err.response.data.message || 'Authentication failed. Please verify your credentials and try again.');
+          const status = err.response.status;
+          const message = err.response.data?.message || '';
+
+          // 503 means the Render backend is cold-starting — retry automatically
+          if (status === 503 && retriesLeft > 0) {
+            setError(`⏳ Server is waking up... retrying in 4 seconds. (${retriesLeft} attempt${retriesLeft > 1 ? 's' : ''} left)`);
+            await new Promise(resolve => setTimeout(resolve, 4000));
+            return attemptLogin(retriesLeft - 1);
+          }
+
+          setIsLoading(false);
+          setError(message || 'Authentication failed. Please verify your credentials and try again.');
         } else if (err.request) {
-          setError(`Server unreachable. Please ensure the backend is running at ${API_ENDPOINTS.LOGIN.replace('/api/auth/login', '')} ${isLocal ? '(Check Port 5001)' : ''}`);
+          // No response at all — network error or backend is completely down
+          if (retriesLeft > 0) {
+            setError(`⏳ Connecting to server... retrying. (${retriesLeft} attempt${retriesLeft > 1 ? 's' : ''} left)`);
+            await new Promise(resolve => setTimeout(resolve, 4000));
+            return attemptLogin(retriesLeft - 1);
+          }
+          setIsLoading(false);
+          const isLocal = window.location.hostname === 'localhost';
+          setError(`Server unreachable. Please try again in a moment.${isLocal ? ' (Check Port 5001)' : ''}`);
         } else {
+          setIsLoading(false);
           setError('Unexpected failure. Please refresh and try again.');
         }
       }
-    }, 600);
+    };
+
+    // Start with up to 3 retries on server startup issues
+    await attemptLogin(3);
   };
 
   return (
