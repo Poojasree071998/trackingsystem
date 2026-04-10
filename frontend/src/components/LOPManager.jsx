@@ -155,7 +155,7 @@ const LOPManager = () => {
       <div style={{ marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>LOP Management</h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
-          Monitor overdue tasks and manage Loss of Pay actions
+          Monitor overdue tasks and manage Loss of Pay actions | <span style={{ fontSize: '0.6rem', opacity: 0.5 }}>PROD-V6-DEDUPE</span>
         </p>
       </div>
 

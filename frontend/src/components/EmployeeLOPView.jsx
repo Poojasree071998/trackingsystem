@@ -12,7 +12,23 @@ const EmployeeLOPView = ({ userId }) => {
     const fetchLOP = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/api/lop/employee/${userId}`);
-        setRecords(res.data);
+        
+        // Deduplicate records (Key: TaskTitle or Reason)
+        const unique = [];
+        const seen = new Set();
+        
+        // Sort to show most recent first
+        const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        sorted.forEach(record => {
+          const key = record.taskId?.taskTitle || record.reason;
+          if (!seen.has(key)) {
+            unique.push(record);
+            seen.add(key);
+          }
+        });
+        
+        setRecords(unique);
       } catch (err) {
         console.error('Failed to fetch LOP records', err);
       } finally {
