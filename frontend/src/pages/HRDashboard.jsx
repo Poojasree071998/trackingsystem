@@ -939,7 +939,13 @@ const HRDashboard = () => {
       {/* ADD MEMBER MODAL */}
       {showAddMemberModal && (
          <div className="modal-overlay" onClick={() => setShowAddMemberModal(false)}>
-            <div className="glass-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '500px', padding: '2.5rem', borderRadius: '24px' }}>
+            <div className="glass-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '500px', padding: '2.5rem', borderRadius: '24px', position: 'relative' }}>
+               <button 
+                  onClick={() => setShowAddMemberModal(false)}
+                  style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+               >
+                  <X size={24} />
+               </button>
                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '2rem' }}>Invite New Operator</h2>
                <form onSubmit={handleAddMember}>
                   <div className="form-group">
