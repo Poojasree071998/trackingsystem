@@ -6,44 +6,6 @@ import { User, Mail, Lock, CheckCircle, X, ChevronRight, Loader2, Info } from 'l
 import mascotImg from '../assets/login_success_mascot.png';
 import { API_ENDPOINTS } from '../apiConfig';
 
-const SuccessModal = ({ onConfirm, userRole }) => (
-  <div className="modal-overlay" style={{ animation: 'fadeIn 0.4s ease' }}>
-    <div className="glass-panel fade-in-up" style={{ 
-      width: '100%', 
-      maxWidth: '440px', 
-      padding: '3rem', 
-      borderRadius: '24px', 
-      textAlign: 'center',
-      border: '1px solid var(--card-border)',
-      boxShadow: '0 20px 50px rgba(0,0,0,0.1)'
-    }}>
-      <div style={{ 
-        width: '80px', 
-        height: '80px', 
-        background: 'rgba(54, 179, 126, 0.1)', 
-        color: '#36B37E', 
-        borderRadius: '50%', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        margin: '0 auto 1.5rem' 
-      }}>
-        <CheckCircle size={40} />
-      </div>
-      <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-color)', marginBottom: '1rem' }}>Success!</h2>
-      <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1rem', lineHeight: '1.5' }}>
-        Identity verified as <strong>{userRole.toUpperCase()}</strong>. Initializing your secure workspace session...
-      </p>
-      <button 
-        onClick={onConfirm}
-        className="btn-primary"
-        style={{ width: '100%', padding: '14px', fontSize: '1rem' }}
-      >
-        Enter {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Dashboard
-      </button>
-    </div>
-  </div>
-);
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -52,7 +14,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   
   const { login, user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -84,17 +45,10 @@ const LoginPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Redirect if logged in OR clear if legacy session
+  // Redirect if logged in
   useEffect(() => {
     if (user) {
-      if (!user.createdAt) {
-        console.warn("Legacy session detected. Clearing storage.");
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.reload();
-      } else {
-        navigate(`/${user.role}-dashboard`);
-      }
+      navigate(`/${user.role}-dashboard`);
     }
   }, [user, navigate]);
 
@@ -112,8 +66,8 @@ const LoginPage = () => {
           email: normalizedEmail, password, role
         });
         login(res.data.token, res.data.user);
+        // Navigation will happen via the useEffect
         setIsLoading(false);
-        setShowSuccess(true);
       } catch (err) {
         if (err.response) {
           const status = err.response.status;
@@ -410,12 +364,6 @@ const LoginPage = () => {
          </div>
       </footer>
 
-      {showSuccess && user && (
-        <SuccessModal 
-          userRole={user.role}
-          onConfirm={() => navigate(`/${user.role}-dashboard`)} 
-        />
-      )}
 
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes spin {
