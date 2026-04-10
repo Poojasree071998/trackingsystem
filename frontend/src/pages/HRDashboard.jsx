@@ -112,7 +112,7 @@ const HRDashboard = () => {
         axios.get(`${API_BASE_URL}/api/tasks?role=hr&userId=${user.id}`),
         axios.get(`${API_BASE_URL}/api/users?role=employee`), // Get all employees for assignment
         axios.get(`${API_BASE_URL}/api/tasks/stats?role=hr&userId=${user.id}`),
-        axios.get(`${API_BASE_URL}/api/notifications?userId=${user.id}`),
+        axios.get(`${API_BASE_URL}/api/notifications?userId=${user.id}&role=hr`),
         axios.get(`${API_BASE_URL}/api/projects`),
         axios.get(`${API_BASE_URL}/api/leaves`) 
       ]);
@@ -767,21 +767,41 @@ const HRDashboard = () => {
                  </button>
               </div>
               <div style={{ display: 'grid', gap: '1rem' }}>
-                {notifications.filter(n => notifTab === 'sent' ? n.sender?._id?.toString() === user.id?.toString() : n.recipient?._id?.toString() === user.id?.toString()).map(notif => (
-                  <div key={notif._id} onClick={() => notifTab === 'inbox' && markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' && notifTab === 'inbox' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
-                    <div style={{ padding: '8px', background: 'rgba(54, 179, 126, 0.1)', color: 'var(--success)', borderRadius: '8px', height: 'fit-content' }}>
-                       <Bell size={20} />
+                {(() => {
+                  const filtered = notifications.filter(n => {
+                    const senderId = n.sender?._id?.toString() || n.sender?.toString();
+                    const recipientId = n.recipient?._id?.toString() || n.recipient?.toString();
+                    const currentUserId = user.id?.toString();
+                    
+                    return notifTab === 'sent' 
+                      ? senderId === currentUserId 
+                      : recipientId === currentUserId;
+                  });
+
+                  return filtered.length === 0 ? (
+                    <div className="jira-card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                      <Bell size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
+                      <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>No transmissions in this channel.</p>
+                      <p style={{ fontSize: '0.9rem' }}>Use 'New Transmission' to broadcast updates.</p>
                     </div>
-                    <div style={{ flex: 1 }}>
-                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--success)' }}>{notif.type.toUpperCase()}</span>
-                          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
-                       </div>
-                       <p style={{ fontWeight: 600, fontSize: '1rem' }}>{notif.message}</p>
-                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>{notifTab === 'sent' ? `Dispatched to: ${notif.recipient?.name || 'Everyone'}` : `Source: ${notif.sender?.name || 'System Central'}`}</div>
-                    </div>
-                  </div>
-                ))}
+                  ) : (
+                    filtered.map(notif => (
+                      <div key={notif._id} onClick={() => notifTab === 'inbox' && markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' && notifTab === 'inbox' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
+                        <div style={{ padding: '8px', background: 'rgba(54, 179, 126, 0.1)', color: 'var(--success)', borderRadius: '8px', height: 'fit-content' }}>
+                           <Bell size={20} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--success)' }}>{notif.type?.toUpperCase() || 'ALERT'}</span>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
+                           </div>
+                           <p style={{ fontWeight: 600, fontSize: '1rem' }}>{notif.message}</p>
+                           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>{notifTab === 'sent' ? `Dispatched to: ${notif.recipient?.name || 'Everyone'}` : `Source: ${notif.sender?.name || 'System Central'}`}</div>
+                        </div>
+                      </div>
+                    ))
+                  );
+                })()}
               </div>
             </div>
           )}

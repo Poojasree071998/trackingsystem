@@ -526,21 +526,41 @@ const EmployeeDashboard = () => {
                 <div onClick={() => setNotifTab('sent')} style={{ paddingBottom: '12px', borderBottom: notifTab === 'sent' ? '3px solid var(--primary)' : 'none', cursor: 'pointer', fontWeight: 800, color: notifTab === 'sent' ? 'var(--primary)' : 'var(--text-muted)' }}>Sent</div>
               </div>
               <div style={{ display: 'grid', gap: '1rem' }}>
-                {notifications.filter(n => notifTab === 'sent' ? n.sender?._id?.toString() === user.id?.toString() : n.recipient?._id?.toString() === user.id?.toString()).map(notif => (
-                  <div key={notif._id} onClick={() => notifTab === 'inbox' && markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
-                    <div style={{ padding: '8px', background: notif.type === 'interview_assignment' ? 'rgba(111, 110, 245, 0.1)' : 'rgba(0, 82, 204, 0.1)', color: notif.type === 'interview_assignment' ? '#6F6EF5' : 'var(--primary)', borderRadius: '8px', height: 'fit-content' }}>
-                      {notif.type === 'interview_assignment' ? <Calendar size={20} /> : <Bell size={20} />}
+                {(() => {
+                  const filtered = notifications.filter(n => {
+                    const senderId = n.sender?._id?.toString() || n.sender?.toString();
+                    const recipientId = n.recipient?._id?.toString() || n.recipient?.toString();
+                    const currentUserId = user.id?.toString();
+
+                    return notifTab === 'sent' 
+                      ? senderId === currentUserId 
+                      : recipientId === currentUserId;
+                  });
+
+                  return filtered.length === 0 ? (
+                    <div className="jira-card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                      <Inbox size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
+                      <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>Your transmission feed is clear.</p>
+                      <p style={{ fontSize: '0.9rem' }}>No active alerts in your current sector.</p>
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, color: notif.type === 'interview_assignment' ? '#6F6EF5' : 'var(--primary)' }}>{notif.type === 'interview_assignment' ? 'HIRING' : notif.type.toUpperCase()}</span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
+                  ) : (
+                    filtered.map(notif => (
+                      <div key={notif._id} onClick={() => notifTab === 'inbox' && markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
+                        <div style={{ padding: '8px', background: notif.type === 'interview_assignment' ? 'rgba(111, 110, 245, 0.1)' : 'rgba(0, 82, 204, 0.1)', color: notif.type === 'interview_assignment' ? '#6F6EF5' : 'var(--primary)', borderRadius: '8px', height: 'fit-content' }}>
+                          {notif.type === 'interview_assignment' ? <Calendar size={20} /> : <Bell size={20} />}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: notif.type === 'interview_assignment' ? '#6F6EF5' : 'var(--primary)' }}>{notif.type === 'interview_assignment' ? 'HIRING' : (notif.type?.toUpperCase() || 'ALERT')}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
+                          </div>
+                          <p style={{ fontWeight: 600, fontSize: '1rem', color: notif.type === 'interview_assignment' ? 'var(--text-color)' : 'inherit' }}>{notif.message}</p>
+                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>{notifTab === 'sent' ? `To: ${notif.recipient?.name || 'Unit'}` : `From: ${notif.sender?.name || 'System'}`}</div>
+                        </div>
                       </div>
-                      <p style={{ fontWeight: 600, fontSize: '1rem', color: notif.type === 'interview_assignment' ? 'var(--text-color)' : 'inherit' }}>{notif.message}</p>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>{notifTab === 'sent' ? `To: ${notif.recipient?.name}` : `From: ${notif.sender?.name || 'System'}`}</div>
-                    </div>
-                  </div>
-                ))}
+                    ))
+                  );
+                })()}
               </div>
             </div>
           )}

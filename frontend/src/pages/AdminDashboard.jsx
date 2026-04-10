@@ -425,7 +425,7 @@ const AdminDashboard = () => {
               FIC <ChevronRight size={14} /> Governance <ChevronRight size={14} /> {activeTab.toUpperCase()}
             </div>
             <h1 style={{ fontSize: '2rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-              {activeTab === 'dashboard' ? 'Executive Dashboard' : activeTab === 'list' ? 'Global Archive' : activeTab === 'projects' ? 'Active Workspaces' : activeTab === 'users' ? 'Directory' : activeTab === 'attendance' ? 'Attendance Overview' : activeTab === 'lop' ? 'Loss of Pay Control' : 'Analytics'}
+              {activeTab === 'dashboard' ? 'Executive Dashboard' : activeTab === 'list' ? 'Global Archive' : activeTab === 'projects' ? 'Active Workspaces' : activeTab === 'users' ? 'Directory' : activeTab === 'attendance' ? 'Attendance Overview' : activeTab === 'lop' ? 'Loss of Pay Control' : activeTab === 'notifications' ? 'System Audio Notifications' : 'Analytics'}
             </h1>
           </header>
 
@@ -847,20 +847,28 @@ const AdminDashboard = () => {
           {activeTab === 'notifications' && (
             <div className="fade-in-up">
                <div style={{ display: 'grid', gap: '1rem' }}>
-                  {notifications.map(notif => (
-                    <div key={notif._id} onClick={() => markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
-                      <div style={{ padding: '8px', background: 'rgba(0, 82, 204, 0.1)', color: 'var(--primary)', borderRadius: '8px', height: 'fit-content' }}>
-                        <Bell size={20} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)' }}>{notif.type.toUpperCase()}</span>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
-                        </div>
-                        <p style={{ fontWeight: 600, fontSize: '1rem' }}>{notif.message}</p>
-                      </div>
+                  {notifications.length === 0 ? (
+                    <div className="jira-card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                       <Bell size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
+                       <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>No system notifications currently active.</p>
+                       <p style={{ fontSize: '0.9rem' }}>All transmissions are acknowledged or clear.</p>
                     </div>
-                  ))}
+                  ) : (
+                    notifications.map(notif => (
+                      <div key={notif._id} onClick={() => markAsRead(notif._id)} className="jira-card" style={{ display: 'flex', gap: '1.5rem', background: notif.status === 'Unread' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--card-bg)' }}>
+                        <div style={{ padding: '8px', background: 'rgba(0, 82, 204, 0.1)', color: 'var(--primary)', borderRadius: '8px', height: 'fit-content' }}>
+                          <Bell size={20} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)' }}>{notif.type?.toUpperCase() || 'NOTIFICATION'}</span>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
+                          </div>
+                          <p style={{ fontWeight: 600, fontSize: '1rem' }}>{notif.message}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
                </div>
             </div>
           )}
