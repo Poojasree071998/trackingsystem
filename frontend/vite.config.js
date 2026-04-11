@@ -7,10 +7,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      'react': path.resolve('./node_modules/react'),
-      'react-dom': path.resolve('./node_modules/react-dom'),
-    },
+    dedupe: ['react', 'react-dom'],
   },
   server: {
     host: '0.0.0.0',
