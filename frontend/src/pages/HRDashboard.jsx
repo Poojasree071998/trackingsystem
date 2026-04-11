@@ -6,7 +6,7 @@ import {
   LogOut, PlusCircle, Briefcase, Users, FileBarChart, 
   Sun, Moon, Search, Filter, MessageSquare, Paperclip, X, CheckCircle, 
   Clock, AlertCircle, Activity, TrendingUp, UserCheck, UserMinus, 
-  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield, ShieldAlert, Plus
+  ChevronRight, ExternalLink, Mail, Award, Bell, List, Settings, Layout, Calendar, UserPlus, Send, Shield, ShieldAlert, Plus, Star
 } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -197,6 +197,20 @@ const HRDashboard = () => {
     } catch (err) {
       console.error("Notification custom error:", err);
       alert("Failed to mark notification as read.");
+    }
+  };
+
+  const handleSetRating = async (projectId, rating) => {
+    try {
+      await axios.put(`${API_BASE_URL}/api/projects/${projectId}/rating`, { rating });
+      // Update local state for immediate feedback
+      setProjects(prev => prev.map(p => p._id === projectId ? { ...p, rating } : p));
+      if (selectedProjectData && selectedProjectData._id === projectId) {
+        setSelectedProjectData({ ...selectedProjectData, rating });
+      }
+    } catch (err) {
+      console.error("Failed to set rating", err);
+      alert("Error saving rating. Please try again.");
     }
   };
 
@@ -741,7 +755,16 @@ const HRDashboard = () => {
                     {projects.map(proj => (
                       <div key={proj._id} onClick={() => { setSelectedProjectData(proj); setShowProjectDetailModal(true); }} className="jira-card" style={{ cursor: 'pointer', position: 'relative' }}>
                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                            <span className="badge badge-medium">{proj.projectKey}</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                               <span className="badge badge-medium">{proj.projectKey}</span>
+                               {proj.rating > 0 && (
+                                 <div style={{ display: 'flex', gap: '2px' }}>
+                                   {[1,2,3,4,5].map(s => (
+                                     <Star key={s} size={10} fill={s <= proj.rating ? "var(--warning)" : "none"} style={{ color: s <= proj.rating ? "var(--warning)" : "var(--card-border)" }} />
+                                   ))}
+                                 </div>
+                               )}
+                            </div>
                             <span className={`badge ${proj.status === 'Completed' ? 'badge-low' : 'badge-medium'}`}>{proj.status}</span>
                          </div>
                          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '2rem' }}>{proj.projectName}</h3>
@@ -1016,6 +1039,20 @@ const HRDashboard = () => {
                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Portfolio Workspace</span>
                   </div>
                   <h2 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-1px' }}>{selectedProjectData.projectName}</h2>
+                  <div style={{ display: 'flex', gap: '4px', marginTop: '10px' }}>
+                     {[1, 2, 3, 4, 5].map(star => (
+                        <Star 
+                           key={star} 
+                           size={20} 
+                           onClick={() => handleSetRating(selectedProjectData._id, star)}
+                           fill={star <= (selectedProjectData.rating || 0) ? "var(--warning)" : "none"}
+                           style={{ cursor: 'pointer', color: star <= (selectedProjectData.rating || 0) ? "var(--warning)" : "var(--text-muted)", transition: 'all 0.2s' }} 
+                        />
+                     ))}
+                     <span style={{ marginLeft: '8px', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)' }}>
+                        {selectedProjectData.rating > 0 ? `QUALITY: ${selectedProjectData.rating}/5` : 'UNRATED'}
+                     </span>
+                  </div>
                </div>
                <div 
                   onClick={() => setShowProjectDetailModal(false)}
