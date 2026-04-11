@@ -134,7 +134,14 @@ const HRDashboard = () => {
 
 
   const handleCreateTask = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    
+    // Explicit validation before sending
+    if (!taskForm.taskTitle || !taskForm.assignedToEmployee || !taskForm.project || !taskForm.deadline) {
+      alert("Missing required fields: Title, Assignee, Workspace, or Deadline.");
+      return;
+    }
+
     try {
       await axios.post(`${API_BASE_URL}/api/tasks/assign`, { ...taskForm, assignedByHR: user.id });
       setTaskForm({ 
@@ -152,7 +159,9 @@ const HRDashboard = () => {
       setShowCreateModal(false);
       fetchData(); // Refresh everything
     } catch (err) {
-      alert('Error creating task');
+      console.error('Task creation failed:', err.response?.data || err.message);
+      const serverMsg = err.response?.data?.error || err.response?.data?.message || err.message;
+      alert(`Error creating task: ${serverMsg}`);
     }
   };
 
@@ -891,11 +900,12 @@ const HRDashboard = () => {
                   <label className="form-label">Internal Briefing Notes</label>
                   <textarea className="form-textarea" value={taskForm.notes} onChange={e => setTaskForm({...taskForm, notes: e.target.value})} placeholder="Administrative context..." />
                 </div>
+                
+                <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
+                   <button type="button" onClick={() => setShowCreateModal(false)} className="btn-secondary" style={{ flex: 1, padding: '12px', fontSize: '0.9rem' }}>Cancel</button>
+                   <button type="submit" className="btn-primary" style={{ flex: 2, padding: '12px', fontSize: '0.9rem', color: 'white' }}>Initialize Task</button>
+                </div>
               </form>
-            </div>
-            <div className="drawer-footer">
-               <button onClick={() => setShowCreateModal(false)} className="btn-secondary" style={{ padding: '10px 20px', fontSize: '0.9rem' }}>Cancel</button>
-               <button onClick={handleCreateTask} className="btn-primary" style={{ padding: '10px 24px', fontSize: '0.9rem' }}>Initialize Task</button>
             </div>
           </div>
         </div>
