@@ -1,0 +1,8 @@
+NUCLEAR FORCE REDEPLOY: 2026-04-11 15:03
+Reason: Vercel cache stuck on 1.2.5
+Action: 
+1. Added no-cache headers
+2. Updated apiConfig to 1.3.1-NUCLEAR-FORCED
+3. Hardcoded direct Render bridge
+4. Bypassing Vercel proxy entirely
+Timestamp: 1712828600

@@ -17,10 +17,11 @@ export const API_BASE_URL = isLocal
 
 export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
-console.log('📡 FIC API Strategy:', isLocal ? 'LOCAL' : 'PRODUCTION (DIRECT)');
+console.log('📡 FIC API Strategy:', isLocal ? 'LOCAL' : 'PRODUCTION (NUCLEAR REDIRECT ACTIVE)');
 console.log('🔗 Target Base URL:', API_BASE_URL);
-console.log('📦 DEPLOY VERSION:', '1.3.1-DEFINITIVE');
-window.APP_VERSION = '1.3.1-DEFINITIVE';
+if (!isLocal) console.log('🛡️ SECURITY: Direct Render Bridge Enabled');
+console.log('📦 DEPLOY VERSION:', '1.3.1-NUCLEAR-FORCED');
+window.APP_VERSION = '1.3.1-NUCLEAR-FORCED';
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
   isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
