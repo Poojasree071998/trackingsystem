@@ -1,22 +1,17 @@
-const getDevUrl = (port) => {
-  const { hostname } = window.location;
-  const devHostnames = ['localhost', '127.0.0.1', '::1'];
-  if (devHostnames.includes(hostname)) {
-    return `http://${hostname}:${port}`;
-  }
-  // Fallback for other local network IPs
-  if (hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.')) {
-     return `http://${hostname}:${port}`;
-  }
-  // Production fallback for Vercel/Render
-  return 'https://trackingsystem1-black.vercel.app'; 
-};
+// ─── Backend URL Configuration ────────────────────────────────────────────────
+// LOCAL:      Express runs on port 5001
+// PRODUCTION: Express is hosted on Render → set VITE_API_BASE_URL in Vercel env vars
+//             OR update RENDER_BACKEND_URL below with your actual Render URL.
+// ──────────────────────────────────────────────────────────────────────────────
+const RENDER_BACKEND_URL = 'https://trackingsystem-backend.onrender.com'; // ← UPDATE THIS if different
+
+const isLocal = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname) ||
+  window.location.hostname.startsWith('192.168.') ||
+  window.location.hostname.startsWith('10.') ||
+  window.location.hostname.startsWith('172.');
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
-  // Foolproof detection: Use origin for any domain OTHER than localhost
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
-    ? getDevUrl('5001')
-    : window.location.origin
+  isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
 );
 export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
@@ -26,9 +21,7 @@ console.log('📦 DEPLOY VERSION:', '1.2.5-STABLE-FINAL');
 window.APP_VERSION = '1.2.5-STABLE-FINAL';
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1')
-    ? getDevUrl('5001')
-    : 'https://trackingsystem1-black.vercel.app'
+  isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
 );
 
 if (!API_BASE_URL && window.location.hostname !== 'localhost') {

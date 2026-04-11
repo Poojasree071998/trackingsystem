@@ -18,13 +18,53 @@ router.get('/seed-get', async (req, res) => {
     };
 
     await User.create([
-      { name: 'Admin User', email: 'admin@fic.com', password: await hashPassword('admin123'), role: 'admin' },
-      { name: 'HR Manager', email: 'hr@fic.com', password: await hashPassword('hr123'), role: 'hr' },
-      { name: 'John Doe', email: 'john@fic.com', password: await hashPassword('john123'), role: 'employee', employeeId: 'EMP001' }
+      { name: 'Admin User', email: 'admin@fic.com', password: await hashPassword('password123'), role: 'admin' },
+      { name: 'HR Manager', email: 'hr@fic.com', password: await hashPassword('password123'), role: 'hr' },
+      { name: 'John Doe', email: 'john@fic.com', password: await hashPassword('password123'), role: 'employee', employeeId: 'EMP001' }
     ]);
-    res.status(201).json({ message: 'Initial users created! You can now login with password "password123"' });
+    res.status(201).json({ message: 'Initial users created! Login: admin@fic.com / hr@fic.com / john@fic.com with password: password123' });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+// ✅ FORCE-RESET: Always resets all 3 core users to password123 (works even if users exist)
+// Call from browser: GET /api/auth/force-reset
+router.get('/force-reset', async (req, res) => {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash('password123', salt);
+
+    const coreUsers = [
+      { name: 'Admin User',  email: 'admin@fic.com', role: 'admin' },
+      { name: 'HR Manager',  email: 'hr@fic.com',    role: 'hr'    },
+      { name: 'John Doe',    email: 'john@fic.com',  role: 'employee', employeeId: 'EMP001' }
+    ];
+
+    const results = [];
+    for (const u of coreUsers) {
+      const existing = await User.findOne({ email: u.email });
+      if (existing) {
+        await User.updateOne({ email: u.email }, { $set: { password: hashed } });
+        results.push(`✅ Reset: ${u.email}`);
+      } else {
+        await User.create({ ...u, password: hashed });
+        results.push(`🆕 Created: ${u.email}`);
+      }
+    }
+
+    res.json({
+      success: true,
+      message: 'All core users reset to password123',
+      credentials: [
+        { email: 'admin@fic.com', password: 'password123', role: 'admin' },
+        { email: 'hr@fic.com',    password: 'password123', role: 'hr' },
+        { email: 'john@fic.com',  password: 'password123', role: 'employee' }
+      ],
+      details: results
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 

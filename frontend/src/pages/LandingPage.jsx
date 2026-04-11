@@ -505,11 +505,11 @@ const LandingPage = () => {
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(9, 30, 66, 0.54)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, backdropFilter: 'blur(4px)'
-        }} onClick={() => setShowDemoModal(false)}>
+        }} onMouseDown={() => setShowDemoModal(false)}>
           <div style={{
             background: 'white', borderRadius: '16px', width: '100%', maxWidth: '500px', 
             boxShadow: '0 20px 40px rgba(0,0,0,0.2)', overflow: 'hidden', position: 'relative'
-          }} onClick={e => e.stopPropagation()}>
+          }} onMouseDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
             {demoSubmitted ? (
               <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#e3fcef', color: '#006644', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
@@ -570,12 +570,12 @@ const LandingPage = () => {
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(9, 30, 66, 0.7)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, backdropFilter: 'blur(8px)'
-        }} onClick={() => setShowAuthModal(false)}>
+        }} onMouseDown={() => setShowAuthModal(false)}>
           <div style={{
             background: 'white', borderRadius: '24px', width: '100%', maxWidth: '480px', 
             boxShadow: '0 40px 100px rgba(0,0,0,0.3)', overflow: 'hidden', position: 'relative',
             border: '1px solid rgba(255, 255, 255, 0.2)'
-          }} onClick={e => e.stopPropagation()}>
+          }} onMouseDown={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
             
             {showSuccess ? (
               <div style={{ padding: '4rem 2rem', textAlign: 'center' }} className="fade-in">
