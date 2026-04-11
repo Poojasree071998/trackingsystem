@@ -120,7 +120,7 @@ const HRDashboard = () => {
       setEmployees(employeesRes.data);
       setStats(statsRes.data);
       setNotifications(notifRes.data);
-      setProjects(projectsRes.data.filter(p => p.lead?._id === user.id || p.members?.some(m => m._id === user.id)));
+      setProjects(projectsRes.data);
       setUnreadCount(notifRes.data.filter(n => n.status === 'Unread').length);
       setPendingLeaveCount(leavesRes.data.filter(l => l.status === 'Pending').length);
     } catch (e) {
@@ -404,7 +404,7 @@ const HRDashboard = () => {
               FIC <ChevronRight size={14} /> HR Control Hub <ChevronRight size={14} /> {activeTab.toUpperCase()}
             </div>
             <h1 style={{ fontSize: '2rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-              {activeTab === 'dashboard' ? 'Operational Summary' : activeTab === 'list' ? 'Task Control Center' : activeTab === 'board' ? 'Enterprise Workflow' : activeTab === 'employees' ? 'Unit Directory' : activeTab === 'attendance' ? 'Attendance Monitor' : activeTab === 'lop' ? 'Loss of Pay Management' : 'Communications'}
+              {activeTab === 'dashboard' ? 'Operational Summary' : activeTab === 'list' ? 'Task Control Center' : activeTab === 'board' ? 'Enterprise Workflow' : activeTab === 'employees' ? 'Unit Directory' : activeTab === 'attendance' ? 'Attendance Monitor' : activeTab === 'lop' ? 'Loss of Pay Management' : activeTab === 'projects' ? 'Active Portfolio Workspaces' : 'Communications'}
             </h1>
           </header>
 
@@ -728,26 +728,33 @@ const HRDashboard = () => {
             </div>
           )}
 
-          {/* PROJECTS TAB */}
           {activeTab === 'projects' && (
             <div className="fade-in-up">
-               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-                  {projects.map(proj => (
-                    <div key={proj._id} onClick={() => { setSelectedProjectData(proj); setShowProjectDetailModal(true); }} className="jira-card" style={{ cursor: 'pointer', position: 'relative' }}>
-                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                          <span className="badge badge-medium">{proj.projectKey}</span>
-                          <span className={`badge ${proj.status === 'Completed' ? 'badge-low' : 'badge-medium'}`}>{proj.status}</span>
-                       </div>
-                       <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '2rem' }}>{proj.projectName}</h3>
-                       <div style={{ marginTop: 'auto' }}>
-                          <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>COMPLIANCE RATE</div>
-                          <div style={{ height: 8, background: '#F4F5F7', borderRadius: '10px', overflow: 'hidden' }}>
-                             <div style={{ width: `${proj.progress || 0}%`, height: '100%', background: 'var(--primary)' }}></div>
-                          </div>
-                       </div>
-                    </div>
-                  ))}
-               </div>
+               {projects.length === 0 ? (
+                 <div className="jira-card" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    <Briefcase size={64} style={{ marginBottom: '1.5rem', opacity: 0.15 }} />
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>No Portfolio Workspaces</h3>
+                    <p>There are currently no active projects initialized in the system.</p>
+                 </div>
+               ) : (
+                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                    {projects.map(proj => (
+                      <div key={proj._id} onClick={() => { setSelectedProjectData(proj); setShowProjectDetailModal(true); }} className="jira-card" style={{ cursor: 'pointer', position: 'relative' }}>
+                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                            <span className="badge badge-medium">{proj.projectKey}</span>
+                            <span className={`badge ${proj.status === 'Completed' ? 'badge-low' : 'badge-medium'}`}>{proj.status}</span>
+                         </div>
+                         <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '2rem' }}>{proj.projectName}</h3>
+                         <div style={{ marginTop: 'auto' }}>
+                            <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>COMPLIANCE RATE</div>
+                            <div style={{ height: 8, background: '#F4F5F7', borderRadius: '10px', overflow: 'hidden' }}>
+                               <div style={{ width: `${proj.progress || 0}%`, height: '100%', background: 'var(--primary)' }}></div>
+                            </div>
+                         </div>
+                      </div>
+                    ))}
+                 </div>
+               )}
             </div>
           )}
 
