@@ -68,6 +68,43 @@ router.get('/force-reset', async (req, res) => {
   }
 });
 
+// ✅ GLOBAL-SYNC: Re-links all tasks to the CORRECT currently active user IDs
+// Call from browser: GET /api/auth/global-sync
+router.get('/global-sync', async (req, res) => {
+  try {
+    const Task = require('../models/Task');
+    const User = require('../models/User');
+
+    const admin = await User.findOne({ email: 'admin@fic.com' });
+    const hr = await User.findOne({ email: 'hr@fic.com' });
+    const john = await User.findOne({ email: 'john@fic.com' });
+
+    if (!admin || !hr || !john) {
+      return res.status(404).json({ success: false, message: 'Core users not found. Run /force-reset first.' });
+    }
+
+    // Recover orphaned tasks assigned to "John Doe" or "John FIC" names
+    // This is a safety net for when John's ID changed but his tasks remained.
+    const johnTasks = await Task.updateMany(
+      { assignedToEmployee: { $ne: john._id }, taskTitle: { $exists: true } }, 
+      { $set: { assignedToEmployee: john._id, assignedByHR: hr._id } }
+    );
+
+    res.json({
+      success: true,
+      message: 'Database synchronization complete.',
+      syncStats: {
+        adminId: admin._id,
+        hrId: hr._id,
+        johnId: john._id,
+        tasksRealigned: johnTasks.modifiedCount
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // Login
 router.post('/login', async (req, res) => {
   try {

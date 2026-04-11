@@ -37,17 +37,19 @@ router.get('/', async (req, res) => {
     // Debug logging for production visibility
     console.log(`🔍 Fetching tasks: Role=${role}, UserId=${userId}`);
 
-    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: 'Valid userId is required' });
+    // Admins don't strictly need a userId to view ALL tasks, 
+    // but for other roles it's required for filtering.
+    if (role !== 'admin' && (!userId || !mongoose.Types.ObjectId.isValid(userId))) {
+      return res.status(400).json({ error: 'Valid userId is required for this role' });
     }
 
-    const userObjectId = new mongoose.Types.ObjectId(userId);
+    const userObjectId = userId && mongoose.Types.ObjectId.isValid(userId) ? new mongoose.Types.ObjectId(userId) : null;
 
     let tasks;
     if (role === 'admin') {
       tasks = await Task.find()
-        .populate('assignedByHR', 'name')
-        .populate('assignedToEmployee', 'name')
+        .populate('assignedByHR', 'name email')
+        .populate('assignedToEmployee', 'name email')
         .populate('project', 'projectName projectKey');
     } else if (role === 'hr') {
       // Find tasks where HR is either the manager OR the assigned worker
@@ -57,18 +59,20 @@ router.get('/', async (req, res) => {
           { assignedToEmployee: userObjectId }
         ] 
       })
-      .populate('assignedByHR', 'name')
-      .populate('assignedToEmployee', 'name')
+      .populate('assignedByHR', 'name email')
+      .populate('assignedToEmployee', 'name email')
       .populate('project', 'projectName projectKey');
     } else {
+      // Employee view
       tasks = await Task.find({ assignedToEmployee: userObjectId })
-        .populate('assignedByHR', 'name')
+        .populate('assignedByHR', 'name email')
+        .populate('assignedToEmployee', 'name email')
         .populate('project', 'projectName projectKey');
     }
-    console.log(`✅ Returned ${tasks.length} tasks for UserId=${userId}`);
+    console.log(`✅ Returned ${tasks.length} tasks for UserId=${userId || 'Admin'}`);
     res.json(tasks);
   } catch (err) {
-    console.error(`❌ Task Fetch Error for UserId=${userId}:`, err.message);
+    console.error(`❌ Task Fetch Error:`, err.message);
     res.status(500).json({ error: err.message });
   }
 });
