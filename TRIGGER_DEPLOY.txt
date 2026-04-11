@@ -1,0 +1,6 @@
+NEW DEPLOY TRIGGER: 2026-04-11 14:48
+Enforcing fresh build sync for:
+1. Version 1.3.1-STABLE
+2. Role alignment verification
+3. Hardcoded Render Backend: https://trackingsystem-3mdl.onrender.com
+- END -

@@ -19,8 +19,8 @@ export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
 console.log('📡 FIC API Strategy:', isLocal ? 'LOCAL' : 'PRODUCTION (DIRECT)');
 console.log('🔗 Target Base URL:', API_BASE_URL);
-console.log('📦 DEPLOY VERSION:', '1.3.0-FINAL-RESOLVED');
-window.APP_VERSION = '1.3.0-FINAL-RESOLVED';
+console.log('📦 DEPLOY VERSION:', '1.3.1-DEFINITIVE');
+window.APP_VERSION = '1.3.1-DEFINITIVE';
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
   isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
