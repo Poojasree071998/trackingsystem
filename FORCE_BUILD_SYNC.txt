@@ -1,5 +1,6 @@
-FORCE BUILD SYNC: 2026-04-10-18:16
-This file is added to trigger a fresh Vercel detection of the repository.
-Current Commit Ref: 4e8a049
-Final Build ID: LOGIN-FIX-v3-STABLE
-Login fix: email normalize + cold-start retry applied to both login pages.
+FORCE BUILD SYNC: 2026-04-11-10:55
+Triggering fresh Vercel build to apply:
+1. Hardcoded Render Backend URL: https://trackingsystem-3mdl.onrender.com
+2. Improved Modal Click-Outside Prevention Logic
+3. Consolidated Vercel API Proxy Config
+Build Version: FINAL-FIX-V1

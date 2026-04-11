@@ -11,9 +11,7 @@ const isLocal = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostn
   window.location.hostname.startsWith('172.');
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
-  isLocal
-    ? `http://${window.location.hostname}:5001`
-    : '' // Production: use relative URLs — Vercel proxy forwards /api/* to Render
+  isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
 );
 export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
