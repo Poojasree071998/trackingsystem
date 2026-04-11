@@ -1,6 +1,8 @@
-FORCE BUILD SYNC: 2026-04-11-10:55
+FORCE BUILD SYNC: 2026-04-11-11:30
+BUILD ID: 1.3.0-FINAL-RESOLVED
 Triggering fresh Vercel build to apply:
-1. Hardcoded Render Backend URL: https://trackingsystem-3mdl.onrender.com
-2. Improved Modal Click-Outside Prevention Logic
-3. Consolidated Vercel API Proxy Config
-Build Version: FINAL-FIX-V1
+1. DEFINITIVE hardcoded Render Backend URL: https://trackingsystem-3mdl.onrender.com
+2. Stable Modal Backdrop Click Logic (e.target === e.currentTarget)
+3. Synchronized Vercel API Proxy configuration in both root and frontend configs.
+4. Added diagnostic logging for backend auth verification.
+-- FINISHED --

@@ -3,7 +3,7 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://trackingsystem-3mdl.onrender.com/api/:path*" },
+    { "source": "/api/(.*)", "destination": "https://trackingsystem-3mdl.onrender.com/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

@@ -101,14 +101,19 @@ router.post('/login', async (req, res) => {
     const normalizedEmail = email.trim().toLowerCase();
 
     console.log(`🔐 Login attempt for: ${normalizedEmail}`);
-
     const user = await User.findOne({ email: normalizedEmail });
+    
     if (!user) {
       console.log(`❌ Login failed - user not found: ${normalizedEmail}`);
+      // Log all users to see if there's a character encoding issue or similar
+      const allUsers = await User.find({}, { email: 1 });
+      console.log('Available users:', allUsers.map(u => u.email).join(', '));
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log(`Password match for ${normalizedEmail}: ${isMatch}`);
+    
     if (!isMatch) {
       console.log(`❌ Login failed - wrong password for: ${normalizedEmail}`);
       return res.status(401).json({ message: 'Invalid email or password.' });

@@ -3,22 +3,24 @@
 // PRODUCTION: Express is hosted on Render → set VITE_API_BASE_URL in Vercel env vars
 //             OR update RENDER_BACKEND_URL below with your actual Render URL.
 // ──────────────────────────────────────────────────────────────────────────────
-const RENDER_BACKEND_URL = 'https://trackingsystem-3mdl.onrender.com'; // ✅ Confirmed Render backend URL
+const RENDER_BACKEND_URL = 'https://trackingsystem-3mdl.onrender.com';
 
 const isLocal = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname) ||
   window.location.hostname.startsWith('192.168.') ||
   window.location.hostname.startsWith('10.') ||
   window.location.hostname.startsWith('172.');
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
-  isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
-);
+// DEFINITIVE FIX: Unconditionally use Render URL in production
+export const API_BASE_URL = isLocal 
+  ? `http://${window.location.hostname}:5001` 
+  : RENDER_BACKEND_URL;
+
 export const UPLOADS_BASE_URL = `${API_BASE_URL}/uploads`;
 
-console.log('📡 FIC API Strategy:', (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '::1') ? 'LOCAL' : 'PRODUCTION');
+console.log('📡 FIC API Strategy:', isLocal ? 'LOCAL' : 'PRODUCTION (DIRECT)');
 console.log('🔗 Target Base URL:', API_BASE_URL);
-console.log('📦 DEPLOY VERSION:', '1.2.5-STABLE-FINAL');
-window.APP_VERSION = '1.2.5-STABLE-FINAL';
+console.log('📦 DEPLOY VERSION:', '1.3.0-FINAL-RESOLVED');
+window.APP_VERSION = '1.3.0-FINAL-RESOLVED';
 
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (
   isLocal ? `http://${window.location.hostname}:5001` : RENDER_BACKEND_URL
