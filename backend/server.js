@@ -37,7 +37,8 @@ const allowedOrigins = [
   "http://127.0.0.1:5176",
   "http://127.0.0.1:5177",
   "http://localhost:3000",
-  "https://trackingsystem1-yo3k.vercel.app", // User-provided deployment URL
+  "https://trackingsystem1-yo3k.vercel.app",
+  "https://trackingsystem1-black.vercel.app", // ✅ Active production frontend
   /\.vercel\.app$/,                           // any other Vercel deployment
   /\.railway\.app$/,                          // Railway hosted frontend
 ];
