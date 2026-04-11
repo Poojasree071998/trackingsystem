@@ -120,7 +120,7 @@ app.get('/api/health', (req, res) => {
     database: statusMap[dbStatus] || 'unknown',
     dbReady: dbStatus === 1,
     dbError: lastDbError,
-    version: '1.2.2-DIAG'
+    version: '1.3.2-STABLE-RATING'
   });
 });
 

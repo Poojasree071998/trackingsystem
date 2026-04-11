@@ -209,8 +209,9 @@ const HRDashboard = () => {
         setSelectedProjectData({ ...selectedProjectData, rating });
       }
     } catch (err) {
+      const status = err.response?.status ? ` [CODE: ${err.response.status}]` : "";
       console.error("Failed to set rating", err);
-      alert("Error saving rating. Please try again.");
+      alert(`Error saving rating. Please try again.${status}`);
     }
   };
 

@@ -177,6 +177,7 @@ router.put('/:id/members', async (req, res) => {
 router.put('/:id/rating', async (req, res) => {
   try {
     const { rating } = req.body;
+    console.log(`⭐ UPDATING RATING: Project ${req.params.id} -> ${rating}`);
     if (rating < 0 || rating > 5) {
       return res.status(400).json({ error: 'Rating must be between 0 and 5' });
     }
