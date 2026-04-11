@@ -22,7 +22,8 @@ const ProjectSchema = new mongoose.Schema({
     default: 'Medium' 
   },
   deadline: { type: Date },
-  instructions: { type: String }
+  instructions: { type: String },
+  rating: { type: Number, default: 0, min: 0, max: 5 }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Project', ProjectSchema);

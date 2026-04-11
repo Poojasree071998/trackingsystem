@@ -173,6 +173,34 @@ router.put('/:id/members', async (req, res) => {
   }
 });
 
+// Update project rating
+router.put('/:id/rating', async (req, res) => {
+  try {
+    const { rating } = req.body;
+    if (rating < 0 || rating > 5) {
+      return res.status(400).json({ error: 'Rating must be between 0 and 5' });
+    }
+    
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      { rating },
+      { new: true }
+    );
+    
+    if (!project) return res.status(404).json({ error: 'Project not found' });
+    
+    // Broadcast dataUpdated
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('dataUpdated', { type: 'Project', id: project._id });
+    }
+    
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Delete a project
 router.delete('/:id', async (req, res) => {
   try {
