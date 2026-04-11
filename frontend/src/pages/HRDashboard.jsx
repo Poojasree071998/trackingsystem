@@ -746,7 +746,10 @@ const HRDashboard = () => {
                          </div>
                          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '2rem' }}>{proj.projectName}</h3>
                          <div style={{ marginTop: 'auto' }}>
-                            <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>COMPLIANCE RATE</div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
+                               <span>COMPLIANCE RATE</span>
+                               <span>{proj.taskCount > 0 ? `${proj.progress}% (${proj.completedTasks}/${proj.taskCount})` : '0% (NO TASKS)'}</span>
+                            </div>
                             <div style={{ height: 8, background: '#F4F5F7', borderRadius: '10px', overflow: 'hidden' }}>
                                <div style={{ width: `${proj.progress || 0}%`, height: '100%', background: 'var(--primary)' }}></div>
                             </div>
@@ -996,6 +999,95 @@ const HRDashboard = () => {
                </div>
             </div>
             <button onClick={() => setShowDetailsModal(false)} className="btn-primary" style={{ width: '100%' }}>Dismiss</button>
+          </div>
+        </div>
+      )}
+
+      {/* PROJECT DETAILS MODAL */}
+      {showProjectDetailModal && selectedProjectData && (
+        <div className="modal-overlay" onClick={() => setShowProjectDetailModal(false)}>
+          <div className="glass-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '800px', padding: '0', borderRadius: '24px', overflow: 'hidden' }}>
+            <div style={{ padding: '2.5rem', background: 'var(--bg-color)', borderBottom: '1px solid var(--card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+               <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                     <span className="badge badge-medium">{selectedProjectData.projectKey}</span>
+                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>PORTFOLIO ITEM</span>
+                  </div>
+                  <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>{selectedProjectData.projectName}</h2>
+               </div>
+               <X size={28} onClick={() => setShowProjectDetailModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
+            </div>
+
+            <div style={{ padding: '2.5rem', maxHeight: '70vh', overflowY: 'auto' }}>
+               <div style={{ marginBottom: '2.5rem' }}>
+                  <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                     <List size={16} /> DATA BRIEFING
+                  </h3>
+                  <div style={{ padding: '1.5rem', background: 'var(--column-bg)', borderRadius: '12px', border: '1px solid var(--card-border)', lineHeight: '1.6' }}>
+                     {selectedProjectData.description || "No specific briefing provided for this workspace."}
+                  </div>
+               </div>
+
+               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2.5rem' }}>
+                  <div>
+                     <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Users size={16} /> OPERATIONAL UNIT
+                     </h3>
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                           <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
+                              {selectedProjectData.lead?.name?.charAt(0) || 'L'}
+                           </div>
+                           <div>
+                              <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{selectedProjectData.lead?.name || 'Unassigned Lead'}</div>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Lead Coordinator</div>
+                           </div>
+                        </div>
+                        {selectedProjectData.members?.map(m => (
+                           <div key={m._id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--card-border)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
+                                 {m.name?.charAt(0)}
+                              </div>
+                              <div>
+                                 <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{m.name}</div>
+                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.role || 'Member'}</div>
+                              </div>
+                           </div>
+                        ))}
+                     </div>
+                  </div>
+
+                  <div>
+                     <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Activity size={16} /> EXECUTION RATE
+                     </h3>
+                     <div className="jira-card" style={{ padding: '1.2rem', background: 'var(--column-bg)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                           <span style={{ fontWeight: 700 }}>COMPLIANCE</span>
+                           <span style={{ fontWeight: 800, color: 'var(--primary)' }}>{selectedProjectData.progress}%</span>
+                        </div>
+                        <div style={{ height: 10, background: 'var(--card-border)', borderRadius: '5px', overflow: 'hidden', marginBottom: '1rem' }}>
+                           <div style={{ width: `${selectedProjectData.progress}%`, height: '100%', background: 'var(--primary)' }}></div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.8rem', fontSize: '0.8rem' }}>
+                           <div style={{ flex: 1, padding: '8px', background: 'var(--bg-color)', borderRadius: '8px', textAlign: 'center' }}>
+                              <div style={{ fontWeight: 800, fontSize: '1rem' }}>{selectedProjectData.taskCount}</div>
+                              <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>TASKS</div>
+                           </div>
+                           <div style={{ flex: 1, padding: '8px', background: 'var(--bg-color)', borderRadius: '8px', textAlign: 'center' }}>
+                              <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--success)' }}>{selectedProjectData.completedTasks}</div>
+                              <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>DONE</div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div style={{ padding: '1.5rem 2.5rem', background: 'var(--column-bg)', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '1rem' }}>
+               <button onClick={() => { setShowProjectDetailModal(false); setTaskForm({...taskForm, project: selectedProjectData._id}); setShowCreateModal(true); }} className="btn-primary" style={{ flex: 2, color: 'white' }}>DISPATCH DUTY TO WORKSPACE</button>
+               <button onClick={() => setShowProjectDetailModal(false)} className="btn-secondary" style={{ flex: 1 }}>DISMISS</button>
+            </div>
           </div>
         </div>
       )}
