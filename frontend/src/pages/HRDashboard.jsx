@@ -1006,77 +1006,99 @@ const HRDashboard = () => {
       {/* PROJECT DETAILS MODAL */}
       {showProjectDetailModal && selectedProjectData && (
         <div className="modal-overlay" onClick={() => setShowProjectDetailModal(false)}>
-          <div className="glass-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '800px', padding: '0', borderRadius: '24px', overflow: 'hidden' }}>
-            <div style={{ padding: '2.5rem', background: 'var(--bg-color)', borderBottom: '1px solid var(--card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="glass-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '900px', height: 'auto', maxHeight: '90vh', padding: '0', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            
+            {/* Header - Fixed */}
+            <div style={{ padding: '2rem 2.5rem', background: 'var(--bg-color)', borderBottom: '1px solid var(--card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
                <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
                      <span className="badge badge-medium">{selectedProjectData.projectKey}</span>
-                     <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>PORTFOLIO ITEM</span>
+                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Portfolio Workspace</span>
                   </div>
-                  <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>{selectedProjectData.projectName}</h2>
+                  <h2 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-1px' }}>{selectedProjectData.projectName}</h2>
                </div>
-               <X size={28} onClick={() => setShowProjectDetailModal(false)} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} />
+               <div 
+                  onClick={() => setShowProjectDetailModal(false)}
+                  style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--column-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px solid var(--card-border)', transition: 'all 0.2s' }}
+               >
+                  <X size={20} style={{ color: 'var(--text-muted)' }} />
+               </div>
             </div>
 
-            <div style={{ padding: '2.5rem', maxHeight: '70vh', overflowY: 'auto' }}>
-               <div style={{ marginBottom: '2.5rem' }}>
-                  <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                     <List size={16} /> DATA BRIEFING
+            {/* Content - Scrollable */}
+            <div style={{ padding: '2.5rem', overflowY: 'auto', flex: 1 }}>
+               
+               {/* Briefing Section */}
+               <div style={{ marginBottom: '3rem' }}>
+                  <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px', letterSpacing: '1px' }}>
+                     <List size={16} style={{ color: 'var(--primary)' }} /> Strategic Briefing
                   </h3>
-                  <div style={{ padding: '1.5rem', background: 'var(--column-bg)', borderRadius: '12px', border: '1px solid var(--card-border)', lineHeight: '1.6' }}>
-                     {selectedProjectData.description || "No specific briefing provided for this workspace."}
+                  <div style={{ padding: '1.8rem', background: 'var(--column-bg)', borderRadius: '16px', border: '1px solid var(--card-border)', lineHeight: '1.7', fontSize: '1rem', color: 'var(--text-color)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}>
+                     {selectedProjectData.description || "No operational briefing has been initialized for this workspace."}
                   </div>
                </div>
 
-               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2.5rem' }}>
-                  <div>
-                     <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Users size={16} /> OPERATIONAL UNIT
+               {/* Grid Section */}
+               <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 320px', gap: '2rem', alignItems: 'stretch' }}>
+                  
+                  {/* Left: Team List */}
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                     <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px', letterSpacing: '1px' }}>
+                        <Users size={16} style={{ color: 'var(--primary)' }} /> Deployed Unit
                      </h3>
-                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                           <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
+                     <div className="jira-card" style={{ flex: 1, padding: '1.5rem', background: 'var(--column-bg)', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingBottom: '1rem', borderBottom: '1px solid var(--card-border)' }}>
+                           <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800 }}>
                               {selectedProjectData.lead?.name?.charAt(0) || 'L'}
                            </div>
                            <div>
-                              <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{selectedProjectData.lead?.name || 'Unassigned Lead'}</div>
-                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Lead Coordinator</div>
+                              <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>{selectedProjectData.lead?.name || 'Unassigned Lead'}</div>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Lead Coordinator</div>
                            </div>
                         </div>
-                        {selectedProjectData.members?.map(m => (
-                           <div key={m._id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--card-border)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
-                                 {m.name?.charAt(0)}
-                              </div>
-                              <div>
-                                 <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{m.name}</div>
-                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.role || 'Member'}</div>
-                              </div>
-                           </div>
-                        ))}
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                           {selectedProjectData.members?.length > 0 ? (
+                             selectedProjectData.members.map(m => (
+                               <div key={m._id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                  <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--card-border)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.8rem' }}>
+                                     {m.name?.charAt(0)}
+                                  </div>
+                                  <div>
+                                     <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{m.name}</div>
+                                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.role || 'Member'}</div>
+                                  </div>
+                               </div>
+                             ))
+                           ) : (
+                             <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>No additional members deployed.</div>
+                           )}
+                        </div>
                      </div>
                   </div>
 
-                  <div>
-                     <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Activity size={16} /> EXECUTION RATE
+                  {/* Right: Stats Card */}
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                     <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px', letterSpacing: '1px' }}>
+                        <Activity size={16} style={{ color: 'var(--primary)' }} /> Performance Metrics
                      </h3>
-                     <div className="jira-card" style={{ padding: '1.2rem', background: 'var(--column-bg)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                           <span style={{ fontWeight: 700 }}>COMPLIANCE</span>
-                           <span style={{ fontWeight: 800, color: 'var(--primary)' }}>{selectedProjectData.progress}%</span>
+                     <div className="jira-card" style={{ flex: 1, padding: '2rem', background: 'var(--bg-color)', border: '2px solid var(--primary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem' }}>
+                           <span style={{ fontWeight: 800, fontSize: '0.75rem', color: 'var(--text-muted)' }}>COMPLIANCE</span>
+                           <span style={{ fontWeight: 900, fontSize: '1.8rem', color: 'var(--primary)', lineHeight: 1 }}>{selectedProjectData.progress}%</span>
                         </div>
-                        <div style={{ height: 10, background: 'var(--card-border)', borderRadius: '5px', overflow: 'hidden', marginBottom: '1rem' }}>
-                           <div style={{ width: `${selectedProjectData.progress}%`, height: '100%', background: 'var(--primary)' }}></div>
+                        <div style={{ height: 12, background: 'var(--column-bg)', borderRadius: '6px', overflow: 'hidden', marginBottom: '2rem', border: '1px solid var(--card-border)' }}>
+                           <div style={{ width: `${selectedProjectData.progress}%`, height: '100%', background: 'var(--primary)', borderRadius: '6px' }}></div>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.8rem', fontSize: '0.8rem' }}>
-                           <div style={{ flex: 1, padding: '8px', background: 'var(--bg-color)', borderRadius: '8px', textAlign: 'center' }}>
-                              <div style={{ fontWeight: 800, fontSize: '1rem' }}>{selectedProjectData.taskCount}</div>
-                              <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>TASKS</div>
+                        
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                           <div style={{ padding: '1.2rem 1rem', background: 'var(--column-bg)', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--card-border)' }}>
+                              <div style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '2px' }}>{selectedProjectData.taskCount}</div>
+                              <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: 800 }}>DUTIES</div>
                            </div>
-                           <div style={{ flex: 1, padding: '8px', background: 'var(--bg-color)', borderRadius: '8px', textAlign: 'center' }}>
-                              <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--success)' }}>{selectedProjectData.completedTasks}</div>
-                              <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>DONE</div>
+                           <div style={{ padding: '1.2rem 1rem', background: 'rgba(54, 179, 126, 0.05)', borderRadius: '12px', textAlign: 'center', border: '1px solid rgba(54, 179, 126, 0.1)' }}>
+                              <div style={{ fontWeight: 900, fontSize: '1.4rem', color: 'var(--success)', marginBottom: '2px' }}>{selectedProjectData.completedTasks}</div>
+                              <div style={{ color: 'var(--success)', fontSize: '0.7rem', fontWeight: 800 }}>RESOLVED</div>
                            </div>
                         </div>
                      </div>
@@ -1084,9 +1106,22 @@ const HRDashboard = () => {
                </div>
             </div>
 
-            <div style={{ padding: '1.5rem 2.5rem', background: 'var(--column-bg)', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '1rem' }}>
-               <button onClick={() => { setShowProjectDetailModal(false); setTaskForm({...taskForm, project: selectedProjectData._id}); setShowCreateModal(true); }} className="btn-primary" style={{ flex: 2, color: 'white' }}>DISPATCH DUTY TO WORKSPACE</button>
-               <button onClick={() => setShowProjectDetailModal(false)} className="btn-secondary" style={{ flex: 1 }}>DISMISS</button>
+            {/* Footer - Fixed */}
+            <div style={{ padding: '1.8rem 2.5rem', background: 'var(--column-bg)', borderTop: '1px solid var(--card-border)', display: 'flex', gap: '1.2rem', flexShrink: 0 }}>
+               <button 
+                  onClick={() => { setShowProjectDetailModal(false); setTaskForm({...taskForm, project: selectedProjectData._id}); setShowCreateModal(true); }} 
+                  className="btn-primary" 
+                  style={{ flex: 2, padding: '14px', fontSize: '1rem', fontWeight: 800, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
+               >
+                  <PlusCircle size={20} /> DISPATCH NEW DUTY
+               </button>
+               <button 
+                  onClick={() => setShowProjectDetailModal(false)} 
+                  className="btn-secondary" 
+                  style={{ flex: 1, padding: '14px', fontSize: '1rem', fontWeight: 700 }}
+               >
+                  CLOSE
+               </button>
             </div>
           </div>
         </div>
