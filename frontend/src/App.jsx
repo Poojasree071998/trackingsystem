@@ -65,15 +65,13 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <SocketProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </SocketProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <SocketProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </SocketProvider>
+    </AuthProvider>
   );
 }
 
