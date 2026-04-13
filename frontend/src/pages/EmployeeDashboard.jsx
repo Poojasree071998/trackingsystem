@@ -201,9 +201,14 @@ const EmployeeDashboard = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 10px', borderRadius: '20px', background: sysStatus === 'online' ? 'rgba(54, 179, 126, 0.15)' : 'rgba(255, 86, 48, 0.15)', border: `1px solid ${sysStatus === 'online' ? 'var(--success)' : 'var(--danger)'}` }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: sysStatus === 'online' ? 'var(--success)' : 'var(--danger)', boxShadow: sysStatus === 'online' ? '0 0 8px var(--success)' : 'none' }}></div>
-            <span style={{ fontSize: '0.7rem', fontWeight: 800, color: sysStatus === 'online' ? 'var(--success)' : 'var(--danger)', textTransform: 'uppercase' }}>{sysStatus}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 10px', borderRadius: '20px', background: sysStatus === 'online' ? 'rgba(54, 179, 126, 0.15)' : 'rgba(255, 86, 48, 0.15)', border: `1px solid ${sysStatus === 'online' ? 'var(--success)' : 'var(--danger)'}` }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: sysStatus === 'online' ? 'var(--success)' : 'var(--danger)', boxShadow: sysStatus === 'online' ? '0 0 8px var(--success)' : 'none' }}></div>
+              <span style={{ fontSize: '0.7rem', fontWeight: 800, color: sysStatus === 'online' ? 'var(--success)' : 'var(--danger)', textTransform: 'uppercase' }}>{sysStatus}</span>
+            </div>
+            <div style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 800, color: 'white', border: '1px solid rgba(255,255,255,0.1)' }}>
+              DATABASE CONTENT: {tasks.length}
+            </div>
           </div>
 
           <button onClick={toggleTheme} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'white' }}>
@@ -321,6 +326,40 @@ const EmployeeDashboard = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* NEW: FULL TASK PIPELINE ON SUMMARY */}
+              <div className="jira-card" style={{ marginBottom: '2.5rem', padding: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Active Task Pipeline</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Real-time view of all duties assigned to your sector.</p>
+                  </div>
+                  <button onClick={() => setActiveTab('list')} style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontWeight: 800, cursor: 'pointer', fontSize: '0.9rem' }}>View Backlog →</button>
+                </div>
+                <div style={{ display: 'grid', gap: '1rem' }}>
+                  {tasks.length === 0 ? (
+                    <div style={{ padding: '2rem', textAlign: 'center', border: '2px dashed var(--card-border)', borderRadius: '12px' }}>
+                      <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>No operations identified. Waiting for HR/Admin dispatch...</p>
+                    </div>
+                  ) : (
+                    tasks.map(t => (
+                      <div key={t._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: 'var(--bg-color)', border: '1px solid var(--card-border)', borderRadius: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <div style={{ padding: '8px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', borderRadius: '6px' }}><Layout size={18} /></div>
+                          <div>
+                            <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>{t.taskTitle}</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Project: {t.project?.projectName || 'General'} • Priority: <span style={{ color: t.priority === 'High' ? 'var(--danger)' : 'inherit', fontWeight: 700 }}>{t.priority}</span></div>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                          <span className={`badge ${t.status === 'Completed' ? 'badge-success' : 'badge-warning'}`} style={{ fontSize: '0.65rem' }}>{t.status}</span>
+                          <button onClick={() => { setSelectedProjectData(t.project); setShowProjectBrief(true); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><Info size={18} /></button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
 
               {/* MIDDLE: PRODUCTIVITY CHARTS */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2.5rem' }}>
@@ -351,10 +390,10 @@ const EmployeeDashboard = () => {
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie data={[
-                          { name: 'To Do', value: tasks.filter(t => t.status === 'To Do').length || 5 },
-                          { name: 'In Progress', value: tasks.filter(t => t.status === 'In Progress').length || 3 },
-                          { name: 'Under Review', value: tasks.filter(t => t.status === 'Under Review').length || 2 }
-                        ]} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
+                            { name: 'To Do', value: tasks.filter(t => t.status === 'To Do').length },
+                            { name: 'In Progress', value: tasks.filter(t => t.status === 'In Progress').length },
+                            { name: 'Under Review', value: tasks.filter(t => t.status === 'Under Review').length }
+                          ]} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
                           <Cell fill="#0052CC" />
                           <Cell fill="#6F6EF5" />
                           <Cell fill="#FFAB00" />
@@ -430,6 +469,14 @@ const EmployeeDashboard = () => {
                     <option value="Low">Low</option>
                   </select>
                 </div>
+                {(priorityFilter || selectedProjectFilter) && (
+                  <button 
+                    onClick={() => { setPriorityFilter(''); setSelectedProjectFilter(''); }}
+                    style={{ background: 'var(--danger)', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 800, cursor: 'pointer' }}
+                  >
+                    Reset All Filters
+                  </button>
+                )}
               </div>
 
               <div className="jira-table-container">
@@ -606,6 +653,10 @@ const EmployeeDashboard = () => {
                   <div className="glass-panel" style={{ padding: '1rem', borderRadius: '8px' }}>
                     <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>USER ROLE</div>
                     <div style={{ fontWeight: 700, textTransform: 'uppercase' }}>{user?.role}</div>
+                  </div>
+                  <div className="glass-panel" style={{ padding: '0.8rem', borderRadius: '8px', border: '1px dashed var(--danger)', marginTop: '1rem' }}>
+                    <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--danger)', marginBottom: '4px' }}>DEBUG: INTERNAL ACCOUNT ID</div>
+                    <div style={{ fontSize: '0.7rem', fontFamily: 'monospace', wordBreak: 'break-all' }}>{user?.id}</div>
                   </div>
                 </div>
               </div>

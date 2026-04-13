@@ -65,18 +65,17 @@ router.get('/', async (req, res) => {
       .populate('assignedToEmployee', 'name email')
       .populate('project', 'projectName projectKey');
     } else {
-      // Employee view - Strict filtering by their ID
-      console.log(`🕵️ [DEBUG] Employee Query: { assignedToEmployee: "${userObjectId}" }`);
-      tasks = await Task.find({ assignedToEmployee: userObjectId })
+      // Employee view - Harden query to handle both ObjectId and String formats
+      console.log(`🕵️ [DEBUG] Employee Query: { UserId: "${userId}" }`);
+      tasks = await Task.find({ 
+        $or: [
+          { assignedToEmployee: userObjectId },
+          { assignedToEmployee: userId } // Search by string ID as fallback
+        ]
+      })
         .populate('assignedByHR', 'name email')
         .populate('assignedToEmployee', 'name email')
         .populate('project', 'projectName projectKey');
-      
-      if (tasks.length === 0) {
-        // Quick verification: are there ANY tasks for this user but perhaps with slightly different field name or type?
-        const checkAny = await Task.countDocuments({ assignedToEmployee: userId });
-        console.log(`❓ [DEBUG] Raw string ID check for "${userId}": found ${checkAny} tasks`);
-      }
     }
     
     console.log(`✅ [SUCCESS] Returned ${tasks.length} tasks for UserId=${userId || 'Admin'}`);
@@ -211,7 +210,14 @@ router.get('/stats', async (req, res) => {
 
     let match = {};
     if (role === 'hr') match = { assignedByHR: userObjectId };
-    if (role === 'employee') match = { assignedToEmployee: userObjectId }; 
+    if (role === 'employee') {
+      match = { 
+        $or: [
+          { assignedToEmployee: userObjectId },
+          { assignedToEmployee: userId }
+        ] 
+      };
+    } 
 
     const total = await Task.countDocuments(match);
     const completed = await Task.countDocuments({ ...match, status: 'Completed' });
