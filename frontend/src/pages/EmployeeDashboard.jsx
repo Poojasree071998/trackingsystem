@@ -456,7 +456,7 @@ const EmployeeDashboard = () => {
           {activeTab === 'list' && (
             <div className="fade-in-up">
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', background: '#F4F5F7', padding: '6px 12px', borderRadius: '4px', border: '1px solid var(--card-border)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--card-border)', padding: '6px 12px', borderRadius: '4px', border: '1px solid var(--card-border)' }}>
                   <Filter size={16} style={{ marginRight: '8px', color: 'var(--text-muted)' }} />
                   <select
                     value={priorityFilter}
