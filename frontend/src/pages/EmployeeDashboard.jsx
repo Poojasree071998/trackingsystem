@@ -55,10 +55,18 @@ const EmployeeDashboard = () => {
 
   const fetchData = async () => {
     if (!user || !user.id) {
-      console.error("❌ Authentication Error: user.id is missing");
+      console.error("❌ Authentication Error: user.id is missing", user);
       setSysStatus('offline');
       return;
     }
+    
+    console.log("🕵️ [DIAGNOSTIC] Fetching tasks for employee:", {
+      id: user.id,
+      name: user.name,
+      role: user.role,
+      apiBase: API_BASE_URL
+    });
+
     try {
       const [tasksRes, statsRes, notifRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/api/tasks?role=employee&userId=${user.id}`).catch(err => { throw new Error(`Tasks: ${err.message}`); }),

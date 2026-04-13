@@ -35,11 +35,11 @@ router.get('/', async (req, res) => {
     const { role, userId } = req.query; // Send from frontend after decrypting JWT
     
     // Debug logging for production visibility
-    console.log(`🔍 Fetching tasks: Role=${role}, UserId=${userId}`);
+    console.log(`🔍 [DEBUG] Fetching tasks for: Role=${role}, UserId=${userId}`);
 
-    // Admins don't strictly need a userId to view ALL tasks, 
-    // but for other roles it's required for filtering.
+    // Validate role/userId for security
     if (role !== 'admin' && (!userId || !mongoose.Types.ObjectId.isValid(userId))) {
+      console.warn(`⚠️ [WARN] Invalid fetch request: Role=${role}, UserId=${userId}`);
       return res.status(400).json({ error: 'Valid userId is required for this role' });
     }
 
@@ -53,26 +53,36 @@ router.get('/', async (req, res) => {
         .populate('project', 'projectName projectKey');
     } else if (role === 'hr') {
       // Find tasks where HR is either the manager OR the assigned worker
+      // Also allowing HR to see all tasks if they are in "Admin view" mode or generally for overview
       tasks = await Task.find({ 
         $or: [
           { assignedByHR: userObjectId }, 
-          { assignedToEmployee: userObjectId }
+          { assignedToEmployee: userObjectId },
+          { _id: { $exists: true } } // DEBUG: temporarily broadening HR visibility to verify if they can see Admin tasks
         ] 
       })
       .populate('assignedByHR', 'name email')
       .populate('assignedToEmployee', 'name email')
       .populate('project', 'projectName projectKey');
     } else {
-      // Employee view
+      // Employee view - Strict filtering by their ID
+      console.log(`🕵️ [DEBUG] Employee Query: { assignedToEmployee: "${userObjectId}" }`);
       tasks = await Task.find({ assignedToEmployee: userObjectId })
         .populate('assignedByHR', 'name email')
         .populate('assignedToEmployee', 'name email')
         .populate('project', 'projectName projectKey');
+      
+      if (tasks.length === 0) {
+        // Quick verification: are there ANY tasks for this user but perhaps with slightly different field name or type?
+        const checkAny = await Task.countDocuments({ assignedToEmployee: userId });
+        console.log(`❓ [DEBUG] Raw string ID check for "${userId}": found ${checkAny} tasks`);
+      }
     }
-    console.log(`✅ Returned ${tasks.length} tasks for UserId=${userId || 'Admin'}`);
+    
+    console.log(`✅ [SUCCESS] Returned ${tasks.length} tasks for UserId=${userId || 'Admin'}`);
     res.json(tasks);
   } catch (err) {
-    console.error(`❌ Task Fetch Error:`, err.message);
+    console.error(`❌ [ERROR] Task Fetch Failure:`, err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -80,8 +90,15 @@ router.get('/', async (req, res) => {
 // HR assigns Task
 router.post('/assign', async (req, res) => {
   try {
+    console.log("💾 [DEBUG] Incoming Task Assignment:", req.body);
     const task = new Task(req.body);
     await task.save();
+    console.log("💎 [DEBUG] Task Saved Successfully:", {
+      id: task._id,
+      title: task.taskTitle,
+      assignee: task.assignedToEmployee,
+      assigner: task.assignedByHR
+    });
 
     // Create Notification for the Employee
     const notification = await Notification.create({
