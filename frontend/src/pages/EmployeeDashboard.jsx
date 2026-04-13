@@ -170,7 +170,7 @@ const EmployeeDashboard = () => {
           <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', marginLeft: '0.5rem' }}>Employee Portal</span>
           <div style={{ display: 'flex', gap: '1.2rem', marginLeft: '2rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>
             <span style={{ cursor: 'pointer', color: activeTab === 'dashboard' ? 'var(--primary)' : 'inherit' }} onClick={() => setActiveTab('dashboard')}>Summary</span>
-            <span style={{ cursor: 'pointer' }}>My Projects</span>
+            <span style={{ cursor: 'pointer', color: activeTab === 'projects' ? 'var(--primary)' : 'inherit' }} onClick={() => setActiveTab('projects')}>My Projects</span>
             <button
               onClick={() => setIsTaskDrawerOpen(true)}
               style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '4px 12px', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}>
@@ -608,6 +608,57 @@ const EmployeeDashboard = () => {
           {/* ATTENDANCE SECTION */}
           {activeTab === 'attendance' && (
             <EmployeeAttendance />
+          )}
+
+          {/* MY PROJECTS GRID */}
+          {activeTab === 'projects' && (
+            <div className="fade-in-up">
+              <div style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Assigned Workspaces</h2>
+                <p style={{ color: 'var(--text-muted)' }}>Overview of all projects linked to your active tasks.</p>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                {projects.length === 0 ? (
+                  <div className="jira-card" style={{ gridColumn: '1/-1', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    <Layout size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
+                    <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>No active projects found.</p>
+                    <p style={{ fontSize: '0.9rem' }}>Projects appear here once tasks are assigned to you.</p>
+                  </div>
+                ) : (
+                  projects.map(proj => (
+                    <div key={proj._id} className="jira-card" style={{ padding: '0', overflow: 'hidden' }}>
+                      <div style={{ height: '6px', background: 'var(--primary)' }}></div>
+                      <div style={{ padding: '1.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                          <div style={{ width: 40, height: 40, borderRadius: '8px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Activity size={20} />
+                          </div>
+                          <span className="table-key" style={{ fontSize: '0.75rem', fontWeight: 800 }}>{proj.projectKey}</span>
+                        </div>
+                        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '0.5rem' }}>{proj.projectName}</h3>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '38px' }}>
+                          {proj.instructions || 'Standard operation workspace. Follow task-specific guidelines.'}
+                        </p>
+                        <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <LayoutList size={14} style={{ color: 'var(--text-muted)' }} />
+                            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                              {tasks.filter(t => t.project?._id === proj._id).length} Active Tasks
+                            </span>
+                          </div>
+                          <button 
+                            onClick={() => { setSelectedProjectFilter(proj._id); setActiveTab('dashboard'); }}
+                            style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                          >
+                            View Board
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           )}
         </main>
       </div>
