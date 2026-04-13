@@ -168,9 +168,19 @@ const EmployeeDashboard = () => {
           </div>
           <div style={{ width: '1px', height: '24px', background: 'rgba(255,255,255,0.2)', marginLeft: '1rem' }}></div>
           <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', marginLeft: '0.5rem' }}>Employee Portal</span>
-          <div style={{ display: 'flex', gap: '1.2rem', marginLeft: '2rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-            <span style={{ cursor: 'pointer', color: activeTab === 'dashboard' ? 'var(--primary)' : 'inherit' }} onClick={() => setActiveTab('dashboard')}>Summary</span>
-            <span style={{ cursor: 'pointer', color: activeTab === 'projects' ? 'var(--primary)' : 'inherit' }} onClick={() => setActiveTab('projects')}>My Projects</span>
+          <div style={{ display: 'flex', gap: '1.2rem', marginLeft: '2rem', fontSize: '0.9rem', fontWeight: 600 }}>
+            <span 
+              style={{ cursor: 'pointer', color: activeTab === 'dashboard' ? 'var(--primary) !important' : 'rgba(255,255,255,0.8) !important', borderBottom: activeTab === 'dashboard' ? '2px solid var(--primary)' : 'none', padding: '4px 0' }} 
+              onClick={() => { console.log("Tab Clicked: Summary"); setActiveTab('dashboard'); }}
+            >
+              Summary
+            </span>
+            <span 
+              style={{ cursor: 'pointer', color: activeTab === 'projects' ? 'var(--primary) !important' : 'rgba(255,255,255,0.8) !important', borderBottom: activeTab === 'projects' ? '2px solid var(--primary)' : 'none', padding: '4px 0' }} 
+              onClick={() => { console.log("Tab Clicked: My Projects"); setActiveTab('projects'); }}
+            >
+              My Projects
+            </span>
             <button
               onClick={() => setIsTaskDrawerOpen(true)}
               style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '4px 12px', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}>
