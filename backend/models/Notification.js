@@ -6,7 +6,17 @@ const NotificationSchema = new mongoose.Schema({
   message: { type: String, required: true },
   type: { 
     type: String, 
-    enum: ['task_assignment', 'task_status_update', 'task_comment', 'project_assignment', 'alert'], 
+    enum: [
+      'task_assignment', 
+      'task_status_update', 
+      'task_comment', 
+      'project_assignment', 
+      'alert',
+      'interview_assignment',
+      'lop_warning',
+      'lop_applied',
+      'lop_waived'
+    ], 
     required: true 
   },
   relatedTask: { type: mongoose.Schema.Types.ObjectId, ref: 'Task' },
